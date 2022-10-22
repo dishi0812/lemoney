@@ -34,6 +34,13 @@ struct BudgetView: View {
                         .tint(.green)
                     }
                 }
+                HStack {
+                    Text("Total")
+                        .fontWeight(.bold)
+                    Spacer()
+                    Text("$\(String(format: "%.2f", categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })) Left")
+                        .fontWeight(.bold)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -47,7 +54,7 @@ struct BudgetView: View {
             .navigationTitle("Budget")
         }
         .sheet(isPresented: $addExpenseSheetShown) {
-            AddExpenseSheet()
+            AddExpenseSheet(categories: categories)
         }
     }
 }

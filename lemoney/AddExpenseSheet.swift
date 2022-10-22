@@ -8,13 +8,22 @@
 import SwiftUI
 
 struct AddExpenseSheet: View {
+    @State var expenseCategoryIndex = 0
+    @State var expenseName = ""
+    @State var price = 0
+    @State var categories: [Category]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct AddExpenseSheet_Previews: PreviewProvider {
-    static var previews: some View {
-        AddExpenseSheet()
+        Form {
+            Picker("Category", selection: $expenseCategoryIndex, content: {
+                ForEach(0 ..< categories.count, content: { i in
+                    Text("\(categories[i].name)")
+                })
+            })
+            TextField("Expense", text: $expenseName)
+            TextField("Price", text: $expenseName)
+                .keyboardType(.decimalPad)
+            
+        }
     }
 }
