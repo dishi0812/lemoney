@@ -12,5 +12,6 @@ struct Category: Identifiable {
     
     var name: String;
     var expenses: [Expense]
-    
+    var spendings: Double
+    var budget: Double
 }

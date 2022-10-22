@@ -9,22 +9,36 @@ import SwiftUI
 
 struct BudgetView: View {
     
-    @Binding var categories: [Category]
+    @State var categories: [Category]
     
     var body: some View {
-        Text("Budget View")
+        NavigationView {
+            List {
+                ForEach($categories) { $category in
+                    NavigationLink {
+                        ExpensesView()
+                    } label: {
+                        HStack {
+                            Text(category.name)
+                            Spacer()
+                            Text("$\(String(format: "%.2f", category.budget - category.spendings)) Left")
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Budget")
+        }
     }
 }
 
-//struct BudgetView_Previews: PreviewProvider {
-//    @State var categories = [
-//        Category(name: "Transport", expenses: []),
-//        Category(name: "Food", expenses: []),
-//        Category(name: "Clothes", expenses: []),
-//        Category(name: "Entertainment", expenses: []),
-//        Category(name: "Stationery", expenses: [])
-//    ]
-//    static var previews: some View {
-//        BudgetView(categories: categories)
-//    }
-//}
+struct BudgetView_Previews: PreviewProvider {
+    static var previews: some View {
+        BudgetView(categories: [
+            Category(name: "Transport", expenses: [], spendings: 123.23, budget: 132.23),
+            Category(name: "Food", expenses: [], spendings: 123.23, budget: 132.23),
+            Category(name: "Clothes", expenses: [], spendings: 123.23, budget: 132.23),
+            Category(name: "Entertainment", expenses: [], spendings: 123.23, budget: 132.23),
+            Category(name: "Stationery", expenses: [], spendings: 123.23, budget: 132.23)
+        ])
+    }
+}

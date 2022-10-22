@@ -9,33 +9,30 @@ import SwiftUI
 
 struct ContentView: View {
     @State var categories = [
-        Category(name: "Transport", expenses: []),
-        Category(name: "Food", expenses: []),
-        Category(name: "Clothes", expenses: []),
-        Category(name: "Entertainment", expenses: []),
-        Category(name: "Stationery", expenses: [])
+        Category(name: "Transport", expenses: [], spendings: 123.23, budget: 132.23),
+        Category(name: "Food", expenses: [], spendings: 123.23, budget: 132.23),
+        Category(name: "Clothes", expenses: [], spendings: 123.23, budget: 132.23),
+        Category(name: "Entertainment", expenses: [], spendings: 112.23, budget: 123432.343),
+        Category(name: "Stationery", expenses: [], spendings: 123.23, budget: 132.23)
     ]
     
     var body: some View {
-        VStack {
-            TabView {
-                HomeView()
-                    .tabItem {
-                        Label("Home", systemImage: "house.fill")
-                    }
-                
-                BudgetView(categories: $categories)
-                    .tabItem {
-                        Label("Budget", systemImage: "dollarsign.circle.fill")
-                    }
-                
-                WishlistView()
-                    .tabItem {
-                        Label("Wishlist", systemImage: "list.star")
-                    }
-            }
+        TabView {
+            HomeView()
+                .tabItem {
+                    Label("Home", systemImage: "house.fill")
+                }
+            
+            BudgetView(categories: categories)
+                .tabItem {
+                    Label("Budget", systemImage: "dollarsign.circle.fill")
+                }
+            
+            WishlistView()
+                .tabItem {
+                    Label("Wishlist", systemImage: "list.star")
+                }
         }
-        .padding()
     }
 }
 
