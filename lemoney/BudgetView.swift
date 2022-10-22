@@ -10,6 +10,7 @@ import SwiftUI
 struct BudgetView: View {
     
     @State var categories: [Category]
+    @State var addExpenseSheetShown = false
     
     var body: some View {
         NavigationView {
@@ -24,9 +25,29 @@ struct BudgetView: View {
                             Text("$\(String(format: "%.2f", category.budget - category.spendings)) Left")
                         }
                     }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button {
+                            addExpenseSheetShown = true
+                        } label: {
+                            Image(systemName: "plus")
+                        }
+                        .tint(.green)
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        addExpenseSheetShown = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
             }
             .navigationTitle("Budget")
+        }
+        .sheet(isPresented: $addExpenseSheetShown) {
+            AddExpenseSheet()
         }
     }
 }

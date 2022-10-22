@@ -13,6 +13,7 @@
 		D9A976A429038BD700038F05 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A976A329038BD700038F05 /* Category.swift */; };
 		D9A976A829038BF900038F05 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A976A729038BF800038F05 /* Expense.swift */; };
 		D9A976AA29038F4400038F05 /* ExpensesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A976A929038F4400038F05 /* ExpensesView.swift */; };
+		D9A976AC2903965400038F05 /* AddExpenseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A976AB2903965400038F05 /* AddExpenseSheet.swift */; };
 		D9E6983A29037D5B0018B4C7 /* lemoneyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E6983929037D5B0018B4C7 /* lemoneyApp.swift */; };
 		D9E6983C29037D5B0018B4C7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E6983B29037D5B0018B4C7 /* ContentView.swift */; };
 		D9E6983E29037D5E0018B4C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9E6983D29037D5E0018B4C7 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 		D9A976A329038BD700038F05 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		D9A976A729038BF800038F05 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
 		D9A976A929038F4400038F05 /* ExpensesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesView.swift; sourceTree = "<group>"; };
+		D9A976AB2903965400038F05 /* AddExpenseSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseSheet.swift; sourceTree = "<group>"; };
 		D9E6983629037D5B0018B4C7 /* lemoney.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lemoney.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E6983929037D5B0018B4C7 /* lemoneyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = lemoneyApp.swift; sourceTree = "<group>"; };
 		D9E6983B29037D5B0018B4C7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				D9A9769F290389D700038F05 /* BudgetView.swift */,
 				D9A976A1290389DD00038F05 /* WishlistView.swift */,
 				D9A976A929038F4400038F05 /* ExpensesView.swift */,
+				D9A976AB2903965400038F05 /* AddExpenseSheet.swift */,
 				D9E6983D29037D5E0018B4C7 /* Assets.xcassets */,
 				D9E6983F29037D5E0018B4C7 /* Preview Content */,
 			);
@@ -159,6 +162,7 @@
 				D9A9769E290389CE00038F05 /* HomeView.swift in Sources */,
 				D9A976A0290389D700038F05 /* BudgetView.swift in Sources */,
 				D9A976AA29038F4400038F05 /* ExpensesView.swift in Sources */,
+				D9A976AC2903965400038F05 /* AddExpenseSheet.swift in Sources */,
 				D9E6983C29037D5B0018B4C7 /* ContentView.swift in Sources */,
 				D9A976A2290389DD00038F05 /* WishlistView.swift in Sources */,
 				D9E6983A29037D5B0018B4C7 /* lemoneyApp.swift in Sources */,
