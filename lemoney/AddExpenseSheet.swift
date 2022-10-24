@@ -1,17 +1,10 @@
-//
-//  AddExpenseSheet.swift
-//  lemoney
-//
-//  Created by T Krobot on 22/10/22.
-//
-
 import SwiftUI
 
 struct AddExpenseSheet: View {
     @State var expenseCategoryIndex: Int
     @State var expenseName = ""
     @State var price = ""
-    @State var categories: [Category]
+    @Binding var categories: [Category]
     @State var alertShown = false
     @Environment(\.presentationMode) var presentationMode
     
@@ -25,6 +18,8 @@ struct AddExpenseSheet: View {
                 })
                 .pickerStyle(.menu)
                 TextField("Expense", text: $expenseName)
+                
+                // crashes when string entered so fix that somehow
                 TextField("Price", text: $price)
                     .keyboardType(.decimalPad)
             }
@@ -32,7 +27,8 @@ struct AddExpenseSheet: View {
             Section {
                 Button {
                     if (expenseName != "" && price != "") {
-                        categories[expenseCategoryIndex].expenses.append(Expense(name: expenseName, price: Double(price) ?? 5.00))
+                        categories[expenseCategoryIndex].expenses.append(Expense(name: expenseName, price: Double(price)!))
+                        print("Hello world")
                         presentationMode.wrappedValue.dismiss()
                     } else {
                         alertShown = true

@@ -1,10 +1,3 @@
-//
-//  BudgetView.swift
-//  lemoney
-//
-//  Created by T Krobot on 22/10/22.
-//
-
 import SwiftUI
 
 struct BudgetView: View {
@@ -19,7 +12,7 @@ struct BudgetView: View {
                 Section {
                     ForEach($categories) { $category in
                         NavigationLink {
-                            ExpensesView()
+                            ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: categories)
                         } label: {
                             HStack {
                                 Text(category.name)
@@ -70,7 +63,7 @@ struct BudgetView: View {
             .navigationTitle("Budget")
         }
         .sheet(isPresented: $addExpenseSheetShown) {
-            AddExpenseSheet(expenseCategoryIndex: selectedCategory, categories: categories)
+            AddExpenseSheet(expenseCategoryIndex: selectedCategory, categories: $categories)
         }
     }
 }
