@@ -19,19 +19,13 @@ struct ContentView: View {
     var body: some View {
         TabView {
             HomeView()
-                .tabItem {
-                    Label("Home", systemImage: "house.fill")
-                }
+                .tabItem { Label("Home", systemImage: "house.fill") }
             
             BudgetView(categories: categories)
-                .tabItem {
-                    Label("Budget", systemImage: "dollarsign.circle.fill")
-                }
+                .tabItem { Label("Budget", systemImage: "dollarsign.circle.fill") }
             
             WishlistView()
-                .tabItem {
-                    Label("Wishlist", systemImage: "list.star")
-                }
+                .tabItem { Label("Wishlist", systemImage: "list.star") }
         }
     }
 }

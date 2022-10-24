@@ -11,41 +11,57 @@ struct BudgetView: View {
     
     @State var categories: [Category]
     @State var addExpenseSheetShown = false
+    @State var selectedCategory = 0
     
     var body: some View {
         NavigationView {
             List {
-                ForEach($categories) { $category in
-                    NavigationLink {
-                        ExpensesView()
-                    } label: {
-                        HStack {
-                            Text(category.name)
-                            Spacer()
-                            Text("$\(String(format: "%.2f", category.budget - category.spendings)) Left")
-                        }
-                    }
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button {
-                            addExpenseSheetShown = true
+                Section {
+                    ForEach($categories) { $category in
+                        NavigationLink {
+                            ExpensesView()
                         } label: {
-                            Image(systemName: "plus")
+                            HStack {
+                                Text(category.name)
+                                Spacer()
+                                Text("$\(String(format: "%.2f", category.budget - category.spendings)) Left")
+                            }
                         }
-                        .tint(.green)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button {
+                                selectedCategory = categories.firstIndex(where: {$0.name == category.name}) ?? 0
+                                addExpenseSheetShown = true
+                            } label: {
+                                Image(systemName: "plus")
+                            }
+                            .tint(.green)
+                        }
                     }
-                }
-                HStack {
-                    Text("Total")
-                        .fontWeight(.bold)
-                    Spacer()
-                    Text("$\(String(format: "%.2f", categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })) Left")
-                        .fontWeight(.bold)
+                    HStack {
+                        Text("Total")
+                            .fontWeight(.bold)
+                        Spacer()
+                        Text("$\(String(format: "%.2f", categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })) Left")
+                            .fontWeight(.bold)
+                    }
+                } footer: {
+                    Text("Swipe right to add an expense, click to view spendings")
                 }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        addExpenseSheetShown = true
+                    Menu {
+                        Button {
+                            selectedCategory = 0
+                            addExpenseSheetShown = true
+                        } label: {
+                            Text("Expense")
+                        }
+                        Button {
+                            
+                        } label: {
+                            Text("Category")
+                        }
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -54,7 +70,7 @@ struct BudgetView: View {
             .navigationTitle("Budget")
         }
         .sheet(isPresented: $addExpenseSheetShown) {
-            AddExpenseSheet(categories: categories)
+            AddExpenseSheet(expenseCategoryIndex: selectedCategory, categories: categories)
         }
     }
 }
