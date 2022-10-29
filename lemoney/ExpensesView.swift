@@ -3,7 +3,7 @@ import SwiftUI
 struct ExpensesView: View {
     
     var category: Int
-    @State var categories: [Category]
+    @Binding var categories: [Category]
     @State var deleteAlertShown = false
     @State var expenseId = UUID()
     
@@ -11,8 +11,10 @@ struct ExpensesView: View {
         VStack {
             HStack {
                 Text("Spendings: $\(String(format: "%.2f", categories[category].spendings))")
+                    .fontWeight(.semibold)
                 Spacer()
                 Text("Left: $\(String(format: "%.2f", categories[category].budget - categories[category].spendings))")
+                    .fontWeight(.semibold)
             }
             .multilineTextAlignment(.center)
             .padding(.horizontal, 40)
@@ -21,19 +23,24 @@ struct ExpensesView: View {
             List {
                 if (!categories[category].expenses.isEmpty) {
                     ForEach(categories[category].expenses, id: \.id) { expense in
-                        HStack {
-                            Text(expense.name)
-                            Spacer()
-                            Text("$\(String(format: "%.2f", expense.price))")
-                        }
-                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                            Button {
-                                deleteAlertShown = true
-                                expenseId = expense.id
-                            } label: {
-                                Image(systemName: "trash")
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text(expense.name)
+                                Spacer()
+                                Text("$\(String(format: "%.2f", expense.price))")
                             }
-                            .tint(.red)
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button {
+                                    expenseId = expense.id
+                                    deleteAlertShown = true
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                                .tint(.red)
+                            }
+                            Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
+                                .opacity(0.6)
+                                .fontWeight(.light)
                         }
                     }
                 } else {
@@ -46,6 +53,7 @@ struct ExpensesView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Budget: $\(String(format: "%.2f", categories[category].budget))")
+                        .fontWeight(.semibold)
                 }
             }
         }

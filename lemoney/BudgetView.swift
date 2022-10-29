@@ -4,7 +4,10 @@ struct BudgetView: View {
     
     @State var categories: [Category]
     @State var addExpenseSheetShown = false
-    @State var selectedCategory = 0
+    @State var addCategorySheetShown = false
+    @State var selectedCategory: Int
+    @State var deleteAlertShown = false
+    @State var categoryId = UUID()
     
     var body: some View {
         NavigationView {
@@ -12,7 +15,7 @@ struct BudgetView: View {
                 Section {
                     ForEach($categories) { $category in
                         NavigationLink {
-                            ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: categories)
+                            ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: $categories)
                         } label: {
                             HStack {
                                 Text(category.name)
@@ -22,13 +25,25 @@ struct BudgetView: View {
                         }
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button {
-                                selectedCategory = categories.firstIndex(where: {$0.name == category.name}) ?? 0
+                                selectedCategory = categories.firstIndex(where: {$0.id == category.id})!
                                 addExpenseSheetShown = true
                             } label: {
                                 Image(systemName: "plus")
                             }
                             .tint(.green)
                         }
+                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                            Button {
+                                categoryId = category.id
+                                deleteAlertShown = true
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                            .tint(.red)
+                        }
+                    }
+                    .onMove { indices, newOffset in
+                        categories.move(fromOffsets: indices, toOffset: newOffset)
                     }
                     HStack {
                         Text("Total")
@@ -51,7 +66,7 @@ struct BudgetView: View {
                             Text("Expense")
                         }
                         Button {
-                            
+                            addCategorySheetShown = true
                         } label: {
                             Text("Category")
                         }
@@ -59,23 +74,24 @@ struct BudgetView: View {
                         Image(systemName: "plus")
                     }
                 }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    EditButton()
+                }
             }
             .navigationTitle("Budget")
         }
         .sheet(isPresented: $addExpenseSheetShown) {
-            AddExpenseSheet(expenseCategoryIndex: selectedCategory, categories: $categories)
+            AddExpenseSheet(categoryIndex: selectedCategory, categories: $categories)
+        }
+        .sheet(isPresented: $addCategorySheetShown) {
+            AddCategorySheet(categories: $categories, budgetGoal: 1200, savingsGoal: 800, balance: 1000)
+        }
+        .alert("Are you sure you want to delete this category?", isPresented: $deleteAlertShown) {
+            Button("Delete", role: .destructive) {
+                categories = categories.filter {$0.id != categoryId}
+            }
+            Button("Cancel", role: .cancel) {}
         }
     }
 }
 
-struct BudgetView_Previews: PreviewProvider {
-    static var previews: some View {
-        BudgetView(categories: [
-            Category(name: "Transport", expenses: [], spendings: 123.23, budget: 132.23),
-            Category(name: "Food", expenses: [], spendings: 123.23, budget: 132.23),
-            Category(name: "Clothes", expenses: [], spendings: 123.23, budget: 132.23),
-            Category(name: "Entertainment", expenses: [], spendings: 123.23, budget: 132.23),
-            Category(name: "Stationery", expenses: [], spendings: 123.23, budget: 132.23)
-        ])
-    }
-}
