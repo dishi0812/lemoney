@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		517E714B290CC0160088F17E /* AddCategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517E714A290CC0160088F17E /* AddCategorySheet.swift */; };
 		D9A9769E290389CE00038F05 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769D290389CE00038F05 /* HomeView.swift */; };
 		D9A976A0290389D700038F05 /* BudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769F290389D700038F05 /* BudgetView.swift */; };
 		D9A976A2290389DD00038F05 /* WishlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A976A1290389DD00038F05 /* WishlistView.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		517E714A290CC0160088F17E /* AddCategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategorySheet.swift; sourceTree = "<group>"; };
 		D9A9769D290389CE00038F05 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D9A9769F290389D700038F05 /* BudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetView.swift; sourceTree = "<group>"; };
 		D9A976A1290389DD00038F05 /* WishlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistView.swift; sourceTree = "<group>"; };
@@ -67,13 +69,14 @@
 			children = (
 				D9E6983929037D5B0018B4C7 /* lemoneyApp.swift */,
 				D9E6983B29037D5B0018B4C7 /* ContentView.swift */,
-				D9A976A329038BD700038F05 /* Category.swift */,
-				D9A976A729038BF800038F05 /* Expense.swift */,
 				D9A9769D290389CE00038F05 /* HomeView.swift */,
 				D9A9769F290389D700038F05 /* BudgetView.swift */,
-				D9A976A1290389DD00038F05 /* WishlistView.swift */,
+				D9A976A329038BD700038F05 /* Category.swift */,
+				D9A976A729038BF800038F05 /* Expense.swift */,
 				D9A976A929038F4400038F05 /* ExpensesView.swift */,
 				D9A976AB2903965400038F05 /* AddExpenseSheet.swift */,
+				517E714A290CC0160088F17E /* AddCategorySheet.swift */,
+				D9A976A1290389DD00038F05 /* WishlistView.swift */,
 				D9E6983D29037D5E0018B4C7 /* Assets.xcassets */,
 				D9E6983F29037D5E0018B4C7 /* Preview Content */,
 			);
@@ -159,6 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9A976A829038BF900038F05 /* Expense.swift in Sources */,
+				517E714B290CC0160088F17E /* AddCategorySheet.swift in Sources */,
 				D9A9769E290389CE00038F05 /* HomeView.swift in Sources */,
 				D9A976A0290389D700038F05 /* BudgetView.swift in Sources */,
 				D9A976AA29038F4400038F05 /* ExpensesView.swift in Sources */,

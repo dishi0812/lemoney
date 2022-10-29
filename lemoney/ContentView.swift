@@ -14,7 +14,7 @@ struct ContentView: View {
             HomeView()
                 .tabItem { Label("Home", systemImage: "house.fill") }
             
-            BudgetView(categories: categories)
+            BudgetView(categories: categories, selectedCategory: 0)
                 .tabItem { Label("Budget", systemImage: "dollarsign.circle.fill") }
             
             WishlistView()

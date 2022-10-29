@@ -11,8 +11,10 @@ struct ExpensesView: View {
         VStack {
             HStack {
                 Text("Spendings: $\(String(format: "%.2f", categories[category].spendings))")
+                    .fontWeight(.semibold)
                 Spacer()
                 Text("Left: $\(String(format: "%.2f", categories[category].budget - categories[category].spendings))")
+                    .fontWeight(.semibold)
             }
             .multilineTextAlignment(.center)
             .padding(.horizontal, 40)
@@ -28,8 +30,8 @@ struct ExpensesView: View {
                         }
                         .swipeActions(edge: .leading, allowsFullSwipe: true) {
                             Button {
-                                deleteAlertShown = true
                                 expenseId = expense.id
+                                deleteAlertShown = true
                             } label: {
                                 Image(systemName: "trash")
                             }
@@ -46,6 +48,7 @@ struct ExpensesView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Budget: $\(String(format: "%.2f", categories[category].budget))")
+                        .fontWeight(.semibold)
                 }
             }
         }
