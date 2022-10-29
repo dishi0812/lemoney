@@ -2,7 +2,28 @@ import SwiftUI
 
 struct WishlistView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            List {
+                Section {
+                    Text("flkdsjflkdsjfsd")
+                } header: {
+                    Text("Needs").foregroundColor(.black)
+                }
+                Section {
+                    Text("nookayergs")
+                } header: {
+                    Text("Wants").foregroundColor(.black)
+                }
+            }
+            .toolbar {
+                Menu {
+                    
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+            .navigationTitle("Wishlist")
+        }
     }
 }
 
