@@ -23,19 +23,24 @@ struct ExpensesView: View {
             List {
                 if (!categories[category].expenses.isEmpty) {
                     ForEach(categories[category].expenses, id: \.id) { expense in
-                        HStack {
-                            Text(expense.name)
-                            Spacer()
-                            Text("$\(String(format: "%.2f", expense.price))")
-                        }
-                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                            Button {
-                                expenseId = expense.id
-                                deleteAlertShown = true
-                            } label: {
-                                Image(systemName: "trash")
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text(expense.name)
+                                Spacer()
+                                Text("$\(String(format: "%.2f", expense.price))")
                             }
-                            .tint(.red)
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button {
+                                    expenseId = expense.id
+                                    deleteAlertShown = true
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                                .tint(.red)
+                            }
+                            Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
+                                .opacity(0.6)
+                                .fontWeight(.light)
                         }
                     }
                 } else {

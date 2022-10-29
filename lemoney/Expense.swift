@@ -5,6 +5,5 @@ struct Expense: Identifiable {
     
     var name: String
     var price: Double
-    
-    
+    var date: Date
 }

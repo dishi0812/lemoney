@@ -42,7 +42,7 @@ struct AddExpenseSheet: View {
                     }
                     if (expenseName != "" && expensePrice != "") {
                         // add expense
-                        categories[categoryIndex].expenses.append(Expense(name: expenseName, price: Double(expensePrice)!))
+                        categories[categoryIndex].expenses.append(Expense(name: expenseName, price: Double(expensePrice)!, date: Date()))
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
