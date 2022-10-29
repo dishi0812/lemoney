@@ -15,7 +15,7 @@ struct BudgetView: View {
                 Section {
                     ForEach($categories) { $category in
                         NavigationLink {
-                            ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: categories)
+                            ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: $categories)
                         } label: {
                             HStack {
                                 Text(category.name)

@@ -3,7 +3,7 @@ import SwiftUI
 struct ExpensesView: View {
     
     var category: Int
-    @State var categories: [Category]
+    @Binding var categories: [Category]
     @State var deleteAlertShown = false
     @State var expenseId = UUID()
     

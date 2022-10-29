@@ -4,7 +4,7 @@ struct AddExpenseSheet: View {
     // 'add' mode
     @State var categoryIndex: Int
     @State var expenseName = ""
-    @State var expensePrice = ""
+    @State var expensePrice = "5.00"
     @Binding var categories: [Category]
     
     @State var notFilledAlert = false

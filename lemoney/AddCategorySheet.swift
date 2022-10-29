@@ -38,12 +38,12 @@ struct AddCategorySheet: View {
                     }
                     if (!isValidName) {
                         invalidNameAlert = true
-                    } else if ((Double(categoryBudget) ?? (1/5)*savingsGoal) > savingsGoal) {
-                        invalidBudgetAlert = true
                     } else if ((Double(categoryBudget) ?? (1/5)*savingsGoal) > balance) {
                         insufficientFundsAlert = true
+                    } else if ((Double(categoryBudget) ?? (1/5)*savingsGoal) > savingsGoal) {
+                        invalidBudgetAlert = true
                     } else {
-                        categories.append(Category(name: categoryName, spendings: 0.00, budget: Double(categoryBudget) ?? (1/5)*savingsGoal))
+                        categories.append(Category(name: categoryName, budget: Double(categoryBudget) ?? (1/5)*savingsGoal))
                         presentationMode.wrappedValue.dismiss()
                     }
                 } label: {
@@ -60,7 +60,7 @@ struct AddCategorySheet: View {
         .alert("Unable to meet savings goal with this budget!", isPresented: $invalidBudgetAlert) {
             Button("OK", role: .cancel) {}
             Button("Continue Anyways") {
-                categories.append(Category(name: categoryName, spendings: 0.00, budget: Double(categoryBudget) ?? (1/5)*savingsGoal))
+                categories.append(Category(name: categoryName, budget: Double(categoryBudget) ?? (1/5)*savingsGoal))
                 presentationMode.wrappedValue.dismiss()
             }
         }

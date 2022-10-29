@@ -5,6 +5,8 @@ struct Category: Identifiable {
     
     var name: String;
     var expenses: [Expense] = []
-    var spendings: Double
+    var spendings: Double {
+        expenses.reduce(0) { $0 + $1.price }
+    }
     var budget: Double
 }
