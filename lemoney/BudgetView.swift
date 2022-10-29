@@ -6,6 +6,8 @@ struct BudgetView: View {
     @State var addExpenseSheetShown = false
     @State var addCategorySheetShown = false
     @State var selectedCategory: Int
+    @State var deleteAlertShown = false
+    @State var categoryId = UUID()
     
     var body: some View {
         NavigationView {
@@ -30,6 +32,18 @@ struct BudgetView: View {
                             }
                             .tint(.green)
                         }
+                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                            Button {
+                                categoryId = category.id
+                                deleteAlertShown = true
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                            .tint(.red)
+                        }
+                    }
+                    .onMove { indices, newOffset in
+                        categories.move(fromOffsets: indices, toOffset: newOffset)
                     }
                     HStack {
                         Text("Total")
@@ -60,6 +74,9 @@ struct BudgetView: View {
                         Image(systemName: "plus")
                     }
                 }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    EditButton()
+                }
             }
             .navigationTitle("Budget")
         }
@@ -68,6 +85,12 @@ struct BudgetView: View {
         }
         .sheet(isPresented: $addCategorySheetShown) {
             AddCategorySheet(categories: $categories, budgetGoal: 1200, savingsGoal: 800, balance: 1000)
+        }
+        .alert("Are you sure you want to delete this category?", isPresented: $deleteAlertShown) {
+            Button("Delete", role: .destructive) {
+                categories = categories.filter {$0.id != categoryId}
+            }
+            Button("Cancel", role: .cancel) {}
         }
     }
 }
