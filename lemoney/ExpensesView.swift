@@ -7,6 +7,8 @@ struct ExpensesView: View {
     @State var deleteAlertShown = false
     @State var expenseId = UUID()
     
+    @State var addExpenseSheetShown = false
+    
     var body: some View {
         VStack {
             HStack {
@@ -55,7 +57,17 @@ struct ExpensesView: View {
                     Text("Budget: $\(String(format: "%.2f", categories[category].budget))")
                         .fontWeight(.semibold)
                 }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        addExpenseSheetShown = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
             }
+        }
+        .sheet(isPresented: $addExpenseSheetShown) {
+            AddExpenseSheet(categoryIndex: category, categories: $categories)
         }
         .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
