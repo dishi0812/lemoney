@@ -25,7 +25,6 @@ struct CreateWishlistSheet: View {
                         .pickerStyle(.segmented)
                     }
                     TextField("Enter item here", text: $item)
-                    Text("Hello World!")
                 }
             }
         }
