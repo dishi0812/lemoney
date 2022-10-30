@@ -4,8 +4,12 @@ struct AddExpenseSheet: View {
     // 'add' mode
     @State var categoryIndex: Int
     @State var expenseName = ""
-    @State var expensePrice = "5.00"
+    @State var expensePrice = ""
+    
     @Binding var categories: [Category]
+    @Binding var budgetGoal: Double
+    @Binding var savingsGoal: Double
+    @Binding var balance: Double
     
     @State var notFilledAlert = false
     @State var invalidValueAlert = false
@@ -44,6 +48,7 @@ struct AddExpenseSheet: View {
                         if (expenseName != "" && expensePrice != "") {
                             // add expense
                             categories[categoryIndex].expenses.append(Expense(name: expenseName, price: Double(expensePrice)!, date: Date()))
+                            balance -= Double(expensePrice)!
                             presentationMode.wrappedValue.dismiss()
                         }
                     }

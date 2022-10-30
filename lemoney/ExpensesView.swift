@@ -9,6 +9,10 @@ struct ExpensesView: View {
     
     @State var addExpenseSheetShown = false
     
+    @Binding var budgetGoal: Double
+    @Binding var savingsGoal: Double
+    @Binding var balance: Double
+    
     var body: some View {
         VStack {
             HStack {
@@ -67,10 +71,11 @@ struct ExpensesView: View {
             }
         }
         .sheet(isPresented: $addExpenseSheetShown) {
-            AddExpenseSheet(categoryIndex: category, categories: $categories)
+            AddExpenseSheet(categoryIndex: category, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
         }
         .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
+                balance += categories[category].expenses.first(where: { $0.id == expenseId })!.price
                 categories[category].expenses = categories[category].expenses.filter { $0.id != expenseId }
             }
             Button("Cancel", role: .cancel) {}

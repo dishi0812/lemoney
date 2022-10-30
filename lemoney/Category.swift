@@ -9,4 +9,6 @@ struct Category: Identifiable {
         expenses.reduce(0) { $0 + $1.price }
     }
     var budget: Double
+    
+    var isStartingCategory: Bool
 }

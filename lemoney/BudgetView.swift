@@ -2,12 +2,18 @@ import SwiftUI
 
 struct BudgetView: View {
     
-    @State var categories: [Category]
+    @Binding var categories: [Category]
+    @State var selectedCategory: Int
+    
     @State var addExpenseSheetShown = false
     @State var addCategorySheetShown = false
-    @State var selectedCategory: Int
-    @State var deleteAlertShown = false
     @State var categoryId = UUID()
+    @State var deleteAlertShown = false
+    @State var unableToDeleteAlert = false
+    
+    @Binding var budgetGoal: Double
+    @Binding var savingsGoal: Double
+    @Binding var balance: Double
     
     var body: some View {
         NavigationView {
@@ -15,7 +21,7 @@ struct BudgetView: View {
                 Section {
                     ForEach($categories) { $category in
                         NavigationLink {
-                            ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: $categories)
+                            ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
                         } label: {
                             HStack {
                                 Text(category.name)
@@ -49,8 +55,12 @@ struct BudgetView: View {
                         }
                         .swipeActions(edge: .leading, allowsFullSwipe: true) {
                             Button {
-                                categoryId = category.id
-                                deleteAlertShown = true
+                                if (!category.isStartingCategory) {
+                                    categoryId = category.id
+                                    deleteAlertShown = true
+                                } else {
+                                    unableToDeleteAlert = true
+                                }
                             } label: {
                                 Image(systemName: "trash")
                             }
@@ -63,7 +73,7 @@ struct BudgetView: View {
                 }
                 Section {
                     HStack {
-                        Text("Total")
+                        Text("Total Left")
                             .fontWeight(.bold)
                         Spacer()
                         
@@ -102,16 +112,19 @@ struct BudgetView: View {
             .navigationTitle("Budget")
         }
         .sheet(isPresented: $addExpenseSheetShown) {
-            AddExpenseSheet(categoryIndex: selectedCategory, categories: $categories)
+            AddExpenseSheet(categoryIndex: selectedCategory, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
         }
         .sheet(isPresented: $addCategorySheetShown) {
-            AddCategorySheet(categories: $categories, budgetGoal: 1200, savingsGoal: 800, balance: 1000)
+            AddCategorySheet(categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
         }
         .alert("Are you sure you want to delete this category?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
                 categories = categories.filter {$0.id != categoryId}
             }
             Button("Cancel", role: .cancel) {}
+        }
+        .alert("Unable to delete category", isPresented: $unableToDeleteAlert) {
+            Button("OK", role: .cancel) {}
         }
     }
 }

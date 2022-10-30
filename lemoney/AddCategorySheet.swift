@@ -9,12 +9,13 @@ import SwiftUI
 
 struct AddCategorySheet: View {
     @Binding var categories: [Category]
-    var budgetGoal: Double
-    var savingsGoal: Double
-    var balance: Double
+    @Binding var budgetGoal: Double
+    @Binding var savingsGoal: Double
+    @Binding var balance: Double
     
     @State var categoryName = ""
     @State var categoryBudget = ""
+    @State var reducedSavings = 0.00
     
     @State var invalidNameAlert = false
     @State var invalidBudgetAlert = false
@@ -28,23 +29,26 @@ struct AddCategorySheet: View {
             Form {
                 Section {
                     TextField("Name", text: $categoryName)
-                    TextField("Budget ($\(String(format: "%.2f", savingsGoal)) Left)", text: $categoryBudget)
+                    TextField("Budget ($\(String(format: "%.2f", balance-savingsGoal-budgetGoal)) Left)", text: $categoryBudget)
                 }
                 Section {
                     Button {
+                        isValidName = true
                         for category in categories {
-                            if (category.name == categoryName) {
+                            if (category.name.lowercased() == categoryName.lowercased()) {
                                 isValidName = false
                             }
                         }
                         if (!isValidName) {
                             invalidNameAlert = true
-                        } else if ((Double(categoryBudget) ?? (1/5)*savingsGoal) > balance) {
+                        } else if (Double(categoryBudget)! > balance - budgetGoal) {
                             insufficientFundsAlert = true
-                        } else if ((Double(categoryBudget) ?? (1/5)*savingsGoal) > savingsGoal) {
+                        } else if (Double(categoryBudget)! > balance - savingsGoal - budgetGoal) {
                             invalidBudgetAlert = true
+                            reducedSavings = balance - budgetGoal - (Double(categoryBudget) ?? (1/5)*savingsGoal)
                         } else {
-                            categories.append(Category(name: categoryName, budget: Double(categoryBudget) ?? (1/5)*savingsGoal))
+                            categories.append(Category(name: categoryName, budget: Double(categoryBudget) ?? (1/5)*savingsGoal, isStartingCategory: false))
+                            budgetGoal += Double(categoryBudget)!
                             presentationMode.wrappedValue.dismiss()
                         }
                     } label: {
@@ -59,10 +63,14 @@ struct AddCategorySheet: View {
             .alert("Category Name Already In Use", isPresented: $invalidNameAlert) {
                 Button("OK", role: .cancel) {}
             }
-            .alert("Unable to meet savings goal with this budget!", isPresented: $invalidBudgetAlert) {
+            .alert("Unable to meet savings goal with this budget! Savings goal will have to be reduced to $\(reducedSavings) if you continue.", isPresented: $invalidBudgetAlert) {
                 Button("OK", role: .cancel) {}
                 Button("Continue Anyways") {
-                    categories.append(Category(name: categoryName, budget: Double(categoryBudget) ?? (1/5)*savingsGoal))
+                    categories.append(Category(name: categoryName, budget: Double(categoryBudget) ?? (1/5)*savingsGoal, isStartingCategory: false))
+                    budgetGoal += Double(categoryBudget) ?? (1/5)*savingsGoal
+                    if (budgetGoal + savingsGoal > balance) {
+                        savingsGoal = balance - budgetGoal
+                    }
                     presentationMode.wrappedValue.dismiss()
                 }
             }
