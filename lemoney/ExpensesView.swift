@@ -35,18 +35,18 @@ struct ExpensesView: View {
                                 Spacer()
                                 Text("$\(String(format: "%.2f", expense.price))")
                             }
-                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                                Button {
-                                    expenseId = expense.id
-                                    deleteAlertShown = true
-                                } label: {
-                                    Image(systemName: "trash")
-                                }
-                                .tint(.red)
-                            }
                             Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
                                 .opacity(0.6)
                                 .fontWeight(.light)
+                        }
+                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                            Button {
+                                expenseId = expense.id
+                                deleteAlertShown = true
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                            .tint(.red)
                         }
                     }
                 } else {
@@ -79,6 +79,9 @@ struct ExpensesView: View {
                 categories[category].expenses = categories[category].expenses.filter { $0.id != expenseId }
             }
             Button("Cancel", role: .cancel) {}
+        }
+        .onAppear {
+            categories[category].expenses.sort(by: {$0.date.timeIntervalSinceNow > $1.date.timeIntervalSinceNow})
         }
     }
 }

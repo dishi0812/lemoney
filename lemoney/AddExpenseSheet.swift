@@ -4,7 +4,7 @@ struct AddExpenseSheet: View {
     // 'add' mode
     @State var categoryIndex: Int
     @State var expenseName = ""
-    @State var expensePrice = ""
+    @State var expensePrice = Double()
     
     @Binding var categories: [Category]
     @Binding var budgetGoal: Double
@@ -27,7 +27,7 @@ struct AddExpenseSheet: View {
                     })
                     .pickerStyle(.menu)
                     TextField("Name", text: $expenseName)
-                    TextField("Price", text: $expensePrice)
+                    TextField("Price", value: $expensePrice, formatter: NumberFormatter())
                         .keyboardType(.decimalPad)
                 }
                 
@@ -35,20 +35,20 @@ struct AddExpenseSheet: View {
                 Button {
                     
                     func handleSubmit() -> Void {
-                        if (expenseName == "" || expensePrice == "") {
+                        if (expenseName == "" || expensePrice <= 0) {
                             // alert
                             notFilledAlert = true
                             return
                         }
-                        if (Double(expensePrice)! <= 0.00) {
+                        if (expensePrice <= 0.00) {
                             // alert
                             invalidValueAlert = true
                             return
                         }
-                        if (expenseName != "" && expensePrice != "") {
+                        if (expenseName != "" && expensePrice > 0) {
                             // add expense
-                            categories[categoryIndex].expenses.append(Expense(name: expenseName, price: Double(expensePrice)!, date: Date()))
-                            balance -= Double(expensePrice)!
+                            categories[categoryIndex].expenses.append(Expense(name: expenseName, price: expensePrice, date: Date()))
+                            balance -= expensePrice
                             presentationMode.wrappedValue.dismiss()
                         }
                     }

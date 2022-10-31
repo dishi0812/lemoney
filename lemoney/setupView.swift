@@ -1,10 +1,3 @@
-//
-//  setupView.swift
-//  lemoney
-//
-//  Created by TinkerTanker on 29/10/22.
-//
-
 import SwiftUI
 
 struct setupView: View {

@@ -14,8 +14,8 @@ struct AddCategorySheet: View {
     @Binding var balance: Double
     
     @State var categoryName = ""
-    @State var categoryBudget = ""
-    @State var reducedSavings = 0.00
+    @State var categoryBudget = 150.00
+    @State var reducedSavings = ""
     
     @State var invalidNameAlert = false
     @State var invalidBudgetAlert = false
@@ -29,7 +29,7 @@ struct AddCategorySheet: View {
             Form {
                 Section {
                     TextField("Name", text: $categoryName)
-                    TextField("Budget ($\(String(format: "%.2f", balance-savingsGoal-budgetGoal)) Left)", text: $categoryBudget)
+                    TextField("Budget ($\(String(format: "%.2f", balance-savingsGoal-budgetGoal)) Left)", value: $categoryBudget, formatter: NumberFormatter())
                 }
                 Section {
                     Button {
@@ -41,14 +41,14 @@ struct AddCategorySheet: View {
                         }
                         if (!isValidName) {
                             invalidNameAlert = true
-                        } else if (Double(categoryBudget)! > balance - budgetGoal) {
+                        } else if (categoryBudget > balance - budgetGoal) {
                             insufficientFundsAlert = true
-                        } else if (Double(categoryBudget)! > balance - savingsGoal - budgetGoal) {
+                        } else if (categoryBudget > balance - savingsGoal - budgetGoal) {
                             invalidBudgetAlert = true
-                            reducedSavings = balance - budgetGoal - (Double(categoryBudget) ?? (1/5)*savingsGoal)
+                            reducedSavings = String(format: "%.2f", balance - budgetGoal - categoryBudget)
                         } else {
-                            categories.append(Category(name: categoryName, budget: Double(categoryBudget) ?? (1/5)*savingsGoal, isStartingCategory: false))
-                            budgetGoal += Double(categoryBudget)!
+                            categories.append(Category(name: categoryName, budget: categoryBudget, isStartingCategory: false))
+                            budgetGoal += categoryBudget
                             presentationMode.wrappedValue.dismiss()
                         }
                     } label: {
@@ -66,8 +66,8 @@ struct AddCategorySheet: View {
             .alert("Unable to meet savings goal with this budget! Savings goal will have to be reduced to $\(reducedSavings) if you continue.", isPresented: $invalidBudgetAlert) {
                 Button("OK", role: .cancel) {}
                 Button("Continue Anyways") {
-                    categories.append(Category(name: categoryName, budget: Double(categoryBudget) ?? (1/5)*savingsGoal, isStartingCategory: false))
-                    budgetGoal += Double(categoryBudget) ?? (1/5)*savingsGoal
+                    categories.append(Category(name: categoryName, budget: categoryBudget, isStartingCategory: false))
+                    budgetGoal += categoryBudget
                     if (budgetGoal + savingsGoal > balance) {
                         savingsGoal = balance - budgetGoal
                     }

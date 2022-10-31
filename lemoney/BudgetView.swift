@@ -3,7 +3,7 @@ import SwiftUI
 struct BudgetView: View {
     
     @Binding var categories: [Category]
-    @State var selectedCategory: Int
+    @State var selectedCategory = Int()
     
     @State var addExpenseSheetShown = false
     @State var addCategorySheetShown = false
@@ -73,16 +73,26 @@ struct BudgetView: View {
                 }
                 Section {
                     HStack {
-                        Text("Total Left")
+                        Text("Total")
                             .fontWeight(.bold)
                         Spacer()
                         
                         if (categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) } <= 0.00) {
-                            Text("-$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
+                            Text("$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
                                 .fontWeight(.bold)
+                                .padding(5)
+                                .background(.red)
+                                .cornerRadius(14)
+                                .foregroundColor(.white)
+                                .fontWeight(.semibold)
                         } else {
                             Text("$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
                                 .fontWeight(.bold)
+                                .padding(5)
+                                .background(.green)
+                                .cornerRadius(14)
+                                .foregroundColor(.white)
+                                .fontWeight(.semibold)
                         }
                     }
                 }

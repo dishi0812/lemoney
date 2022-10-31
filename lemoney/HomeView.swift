@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @Binding var income: Double
     @Binding var categories: [Category]
     @Binding var budgetGoal: Double
     @Binding var savingsGoal: Double
@@ -9,63 +10,71 @@ struct HomeView: View {
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
     }
+    var savings: Double {
+        income - totalSpendings
+    }
     
     var body: some View {
         NavigationView {
             ZStack {
                 Color(.systemGray6)
                     .edgesIgnoringSafeArea(.all)
+                
                 VStack {
                     
+                    // budget progress bar
                     VStack(alignment: .leading) {
-                        Text("Budget")
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .padding(.leading, 10)
-                            .padding(.bottom, -5)
+                        Text("BUDGET")
+                            .font(.footnote)
+                            .fontWeight(.medium)
+                            .opacity(0.35)
+                            .padding(.leading, 6)
+                            .padding(.bottom, -7)
                             .padding(.top, 8)
                         
                         ZStack(alignment: .leading) {
                             Rectangle()
                                 .fill(Color(.systemGray5))
-                                .frame(width: 350, height: 35)
-                                .cornerRadius(20)
+                                .frame(width: 350, height: 25)
+                                .cornerRadius(13)
                                 .padding(.bottom, 10)
                             Rectangle()
                                 .fill(.green)
-                                .frame(width: 140, height: 35)
-                                .cornerRadius(20)
+                                .frame(width: 350-(totalSpendings/budgetGoal*350), height: 25)
+                                .cornerRadius(13)
                                 .padding(.bottom, 10)
                         }
                     }
                     .padding(.bottom, -25)
+                    .padding(.top, -12)
                     
+                    // navigation links
                     HStack {
                         NavigationLink {
                             // budget / goal setting view
                         } label: {
                             HStack {
                                 Image(systemName: "dollarsign.arrow.circlepath")
-                                    .font(.system(size: 35))
+                                    .font(.title)
                                     .padding(.trailing, -3)
                                     .padding(.leading, -5)
                                 
                                 VStack {
-                                    Text("$\(String(format: "%.2f", budgetGoal - totalSpendings))").fontWeight(.bold)
+                                    Text("$\(String(format: "%.2f", savings))").fontWeight(.bold)
                                     Text("Savings").fontWeight(.semibold)
                                 }
                                 
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
+                                    .fontWeight(.medium)
                                     .foregroundColor(Color(.systemGray3))
                             }
-                            .padding(15)
+                            .padding(10)
                         }
-                        .padding(.vertical, 11)
+                        .frame(height: 70)
                         .background(.white)
                         .cornerRadius(15)
                         
-                        Spacer()
                         
                         NavigationLink {
                             // overall spendings view
@@ -73,12 +82,12 @@ struct HomeView: View {
                             HStack {
                                 ZStack {
                                     Image(systemName: "dollarsign.circle")
-                                        .font(.system(size: 35))
+                                        .font(.title)
                                         .padding(.trailing, -3)
                                         .padding(.leading, -5)
                                     
                                     Image(systemName: "arrow.down")
-                                        .font(.system(size: 25))
+                                        .font(.title3)
                                         .fontWeight(.bold)
                                         .padding(.top, 20)
                                         .padding(.leading, 15)
@@ -86,23 +95,25 @@ struct HomeView: View {
                                 }
                                 
                                 VStack {
-                                    Text("$\(String(format: "%.2f", totalSpendings)) / $\(String(format: "%.2f", budgetGoal))").fontWeight(.bold)
+                                    Text("$\(String(format: "%.2f", totalSpendings))").fontWeight(.bold)
                                     Text("Spent").fontWeight(.semibold)
                                 }
                                 
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
+                                    .fontWeight(.medium)
                                     .foregroundColor(Color(.systemGray3))
                             }
-                            .padding(15)
+                            .padding(10)
                         }
+                        .frame(height: 70)
                         .background(.white)
                         .cornerRadius(15)
-                        
                     }
-                    .padding(20)
-                    Spacer()
+                    .padding(15)
                     
+                    
+                    // wishlist
                     List {
                         Section {
                             VStack(alignment: .leading) {
@@ -158,20 +169,18 @@ struct HomeView: View {
                                     Text("$50.00")
                                 }
                                 .fontWeight(.semibold)
-                                .padding(.top, 10)
 
                                 ZStack(alignment: .leading) {
                                     Rectangle()
                                         .fill(Color(.systemGray5))
-                                        .frame(width: 310)
+                                        .frame(width: 325, height: 18)
                                         .cornerRadius(20)
-                                        .padding(.bottom, 10)
                                     Rectangle()
                                         .fill(.green)
-                                        .frame(width: 120)
+                                        .frame(width: (balance-income+totalSpendings)/50 * 325 <= 325 ? (balance-income+totalSpendings)/50 * 325 : 325, height: 18)
                                         .cornerRadius(20)
-                                        .padding(.bottom, 10)
                                 }
+                                .padding(.top, -7)
                             }
                         } header: {
                             Text("Wants")
@@ -187,12 +196,19 @@ struct HomeView: View {
                             }
                             .tint(.green)
                         }
-                        
                     }
-                    
+                    .padding(.top, -15)
                 }
                 .foregroundColor(.black)
                 .navigationTitle("Home")
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Balance: $\(String(format: "%.2f", balance))")
+                        .font(.title3)
+                        .padding(.top, 10)
+                        .fontWeight(.bold)
+                }
             }
         }
     }
