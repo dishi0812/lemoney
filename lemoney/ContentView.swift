@@ -27,7 +27,13 @@ struct ContentView: View {
                     .tabItem { Label("Wishlist", systemImage: "list.star") }
             }
         } else {
-            setupView()
+            setupView(categories: [
+                Category(name: "Transport", expenses: [], budget: 150.00, isStartingCategory: true),
+                Category(name: "Food", expenses: [], budget: 150.00, isStartingCategory: true),
+                Category(name: "Clothes", expenses: [], budget: 150.00, isStartingCategory: true),
+                Category(name: "Entertainment", expenses: [], budget: 150.00, isStartingCategory: true),
+                Category(name: "Stationery", expenses: [], budget: 150.00, isStartingCategory: true)
+            ])
         }
     }
 }
