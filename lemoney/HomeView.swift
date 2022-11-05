@@ -27,7 +27,7 @@ struct HomeView: View {
                         Text("BUDGET")
                             .font(.footnote)
                             .fontWeight(.medium)
-                            .opacity(0.35)
+                            .opacity(0.45)
                             .padding(.leading, 6)
                             .padding(.bottom, -7)
                             .padding(.top, 8)
@@ -40,7 +40,7 @@ struct HomeView: View {
                                 .padding(.bottom, 10)
                             Rectangle()
                                 .fill(.green)
-                                .frame(width: 350-(totalSpendings/budgetGoal*350), height: 25)
+                                .frame(width: 350 - (totalSpendings/budgetGoal*350) < 0 ? 0 : 350 - (totalSpendings/budgetGoal*350), height: 25)
                                 .cornerRadius(13)
                                 .padding(.bottom, 10)
                         }
@@ -50,6 +50,8 @@ struct HomeView: View {
                     
                     // navigation links
                     HStack {
+                        Spacer()
+                        
                         NavigationLink {
                             // budget / goal setting view
                         } label: {
@@ -71,10 +73,10 @@ struct HomeView: View {
                             }
                             .padding(10)
                         }
-                        .frame(height: 70)
                         .background(.white)
                         .cornerRadius(15)
                         
+                        Spacer()
                         
                         NavigationLink {
                             // overall spendings view
@@ -106,9 +108,10 @@ struct HomeView: View {
                             }
                             .padding(10)
                         }
-                        .frame(height: 70)
                         .background(.white)
                         .cornerRadius(15)
+                        
+                        Spacer()
                     }
                     .padding(15)
                     
@@ -177,7 +180,7 @@ struct HomeView: View {
                                         .cornerRadius(20)
                                     Rectangle()
                                         .fill(.green)
-                                        .frame(width: (balance-income+totalSpendings)/50 * 325 <= 325 ? (balance-income+totalSpendings)/50 * 325 : 325, height: 18)
+                                        .frame(width: (balance-income+totalSpendings)/50 * 350 <= 350 ? (balance-income+totalSpendings)/50 * 350 : 350, height: 18)
                                         .cornerRadius(20)
                                 }
                                 .padding(.top, -7)

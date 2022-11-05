@@ -13,6 +13,7 @@ struct ContentView: View {
         Category(name: "Entertainment", expenses: [], budget: 150.00, isStartingCategory: true),
         Category(name: "Stationery", expenses: [], budget: 150.00, isStartingCategory: true)
     ]
+    
     let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
     var body: some View {
         if (!launchedBefore) {
@@ -23,7 +24,7 @@ struct ContentView: View {
                 BudgetView(categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
                     .tabItem { Label("Budget", systemImage: "dollarsign.circle.fill") }
                 
-                WishlistView()
+                WishlistView(categories: categories)
                     .tabItem { Label("Wishlist", systemImage: "list.star") }
             }
         } else {
