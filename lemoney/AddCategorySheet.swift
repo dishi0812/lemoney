@@ -29,7 +29,12 @@ struct AddCategorySheet: View {
             Form {
                 Section {
                     TextField("Name", text: $categoryName)
-                    TextField("Budget ($\(String(format: "%.2f", balance-savingsGoal-budgetGoal)) Left)", value: $categoryBudget, formatter: NumberFormatter())
+                    HStack {
+                        Text("$")
+                            .padding(.trailing, -6)
+                        TextField("Budget ($\(String(format: "%.2f", balance-savingsGoal-budgetGoal)) Left)", value: $categoryBudget, formatter: NumberFormatter())
+                            .keyboardType(.decimalPad)
+                    }
                 }
                 Section {
                     Button {

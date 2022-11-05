@@ -27,8 +27,13 @@ struct AddExpenseSheet: View {
                     })
                     .pickerStyle(.menu)
                     TextField("Name", text: $expenseName)
-                    TextField("Price", value: $expensePrice, formatter: NumberFormatter())
-                        .keyboardType(.decimalPad)
+                    
+                    HStack {
+                        Text("$")
+                            .padding(.trailing, -6)
+                        TextField("Price", value: $expensePrice, formatter: NumberFormatter())
+                            .keyboardType(.decimalPad)
+                    }
                 }
                 
                 // submit button
