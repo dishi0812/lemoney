@@ -14,6 +14,8 @@ struct ContentView: View {
         Category(name: "Stationery", expenses: [], budget: 150.00, isStartingCategory: true)
     ]
     
+    @State var wishlist: [WishlistItem] = []
+    
     let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
     var body: some View {
         if (!launchedBefore) {
@@ -24,7 +26,7 @@ struct ContentView: View {
                 BudgetView(categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
                     .tabItem { Label("Budget", systemImage: "dollarsign.circle.fill") }
                 
-                WishlistView(categories: categories)
+                WishlistView(categories: categories, wishlist: $wishlist)
                     .tabItem { Label("Wishlist", systemImage: "list.star") }
             }
         } else {

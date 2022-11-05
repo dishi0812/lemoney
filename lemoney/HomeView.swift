@@ -7,6 +7,7 @@ struct HomeView: View {
     @Binding var budgetGoal: Double
     @Binding var savingsGoal: Double
     @Binding var balance: Double
+    
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
     }
@@ -45,7 +46,7 @@ struct HomeView: View {
                                 .padding(.bottom, 10)
                         }
                     }
-                    .padding(.bottom, -25)
+                    .padding(.bottom, -20)
                     .padding(.top, -12)
                     
                     // navigation links

@@ -4,10 +4,12 @@ enum WishlistType {
     case need, want
 }
 
-struct WishlistItem {
+struct WishlistItem: Identifiable {
+    var id = UUID()
+    
     var type: WishlistType
     var name: String
     var price: Double
     var date: Date
-    var category: Category
+    var categoryId: UUID
 }

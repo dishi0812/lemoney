@@ -4,49 +4,92 @@ struct WishlistView: View {
     @State var categories: [Category]
     @State var addItemSheetShown = false
     
+    @Binding var wishlist: [WishlistItem]
+    
+    var needsList: [WishlistItem] { wishlist.filter { $0.type == .need } }
+    var wantsList: [WishlistItem] { wishlist.filter { $0.type == .want } }
+    
     var body: some View {
-            NavigationView {
-                List {
-                    Section {
-                        Text("")
-                    } header: {
-                        Text("Need").foregroundColor(.black)
-                            .font(.title2)
-                            .textCase(.none)
-                            .fontWeight(.bold)
+        NavigationView {
+            List {
+                Section {
+                    if (needsList.count > 0) {
+                        ForEach(needsList, id: \.id) { need in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    HStack {
+                                        Text("\(need.name)")
+                                        Spacer()
+                                        Text("$\(String(format: "%.2f", need.price))")
+                                    }
+                                    .fontWeight(.semibold)
+                                    
+                                    HStack {
+                                        Text("\(need.date.formatted(.dateTime.day().month().year()))")
+                                        Spacer()
+                                        Text("\(categories.first(where: {$0.id == need.categoryId})!.name)")
+                                    }
+                                    .fontWeight(.light)
+                                }
+                            }
+                        }
+                    } else {
+                        Text("No Needs")
                     }
-                    Section {
-                        Text("")
-                    } header: {
-                        Text("Want").foregroundColor(.black)
-                            .font(.title2)
-                            .textCase(.none)
-                            .fontWeight(.bold)
-                    }
+                } header: {
+                    Text("Needs").foregroundColor(.black)
+                        .font(.title2)
+                        .textCase(.none)
+                        .fontWeight(.bold)
                 }
-                .toolbar {
-                    Button {
-                        addItemSheetShown = true
-                    } label: {
-                        Image(systemName: "plus")
+                
+                
+                Section {
+                    if (wantsList.count > 0) {
+                        ForEach(wantsList, id: \.id) { want in
+                            VStack {
+                                HStack {
+                                    Text("\(want.name)")
+                                    Spacer()
+                                    Text("\(String(format: "%.2f", want.price))")
+                                }
+                                .fontWeight(.semibold)
+
+                                ZStack(alignment: .leading) {
+                                    Rectangle()
+                                        .fill(Color(.systemGray5))
+                                        .frame(width: 325, height: 18)
+                                        .cornerRadius(20)
+                                    Rectangle()
+                                        .fill(.green)
+                                        .frame(width: 60, height: 18)
+                                        .cornerRadius(20)
+                                }
+                                .padding(.top, -7)
+                            }
+                        }
+                    } else {
+                        Text("No Wants")
                     }
+                } header: {
+                    Text("Wants").foregroundColor(.black)
+                        .font(.title2)
+                        .textCase(.none)
+                        .fontWeight(.bold)
                 }
-                .navigationTitle("Wishlist")
             }
-            .sheet(isPresented: $addItemSheetShown) {
-                CreateWishlistSheet(categories: categories)
+            .toolbar {
+                Button {
+                    addItemSheetShown = true
+                } label: {
+                    Image(systemName: "plus")
+                }
             }
+            .navigationTitle("Wishlist")
+        }
+        .sheet(isPresented: $addItemSheetShown) {
+            CreateWishlistSheet(categories: categories, wishlist: $wishlist)
         }
     }
-
-struct WishlistView_Previews: PreviewProvider {
-    static var previews: some View {
-        WishlistView(categories: [
-            Category(name: "Transport", expenses: [], budget: 150.00, isStartingCategory: true),
-            Category(name: "Food", expenses: [], budget: 150.00, isStartingCategory: true),
-            Category(name: "Clothes", expenses: [], budget: 150.00, isStartingCategory: true),
-            Category(name: "Entertainment", expenses: [], budget: 150.00, isStartingCategory: true),
-            Category(name: "Stationery", expenses: [], budget: 150.00, isStartingCategory: true)
-        ])
-    }
 }
+

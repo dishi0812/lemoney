@@ -20,11 +20,11 @@ struct AddExpenseSheet: View {
             Form {
                 // inputs
                 Section {
-                    Picker("Category", selection: $categoryIndex, content: {
-                        ForEach(0 ..< categories.count, content: { i in
+                    Picker("Category", selection: $categoryIndex) {
+                        ForEach(0 ..< categories.count) { i in
                             Text("\(categories[i].name)")
-                        })
-                    })
+                        }
+                    }
                     .pickerStyle(.menu)
                     TextField("Name", text: $expenseName)
                     
@@ -35,40 +35,48 @@ struct AddExpenseSheet: View {
                             .keyboardType(.decimalPad)
                     }
                 }
-                
-                // submit button
-                Button {
-                    
-                    func handleSubmit() -> Void {
-                        if (expenseName == "" || expensePrice <= 0) {
-                            // alert
-                            notFilledAlert = true
-                            return
+            }
+            .navigationTitle("New Expense")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        func handleSubmit() -> Void {
+                            if (expenseName == "" || expensePrice <= 0) {
+                                // alert
+                                notFilledAlert = true
+                                return
+                            }
+                            if (expensePrice <= 0.00) {
+                                // alert
+                                invalidValueAlert = true
+                                return
+                            }
+                            if (expenseName != "" && expensePrice > 0) {
+                                // add expense
+                                categories[categoryIndex].expenses.append(Expense(name: expenseName, price: expensePrice, date: Date()))
+                                balance -= expensePrice
+                                presentationMode.wrappedValue.dismiss()
+                            }
                         }
-                        if (expensePrice <= 0.00) {
-                            // alert
-                            invalidValueAlert = true
-                            return
-                        }
-                        if (expenseName != "" && expensePrice > 0) {
-                            // add expense
-                            categories[categoryIndex].expenses.append(Expense(name: expenseName, price: expensePrice, date: Date()))
-                            balance -= expensePrice
-                            presentationMode.wrappedValue.dismiss()
+                        
+                        handleSubmit()
+                    } label: {
+                        HStack {
+                            Image(systemName: "plus")
+                                .padding(.trailing, -5)
+                                .font(.subheadline)
+                            Text("Add")
                         }
                     }
-                    
-                    handleSubmit()
-                } label: {
-                    HStack {
-                        Image(systemName: "plus")
-                            .padding(5)
-                            .cornerRadius(2.5)
-                        Text("Add Expense")
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Text("Cancel")
                     }
                 }
             }
-            .navigationTitle("New Expense")
             .alert("Please fill in all the blanks", isPresented: $notFilledAlert) {
                 Button("OK", role: .cancel) {}
             }

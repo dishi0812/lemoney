@@ -36,7 +36,10 @@ struct AddCategorySheet: View {
                             .keyboardType(.decimalPad)
                     }
                 }
-                Section {
+            }
+            .navigationTitle("New Category")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         isValidName = true
                         for category in categories {
@@ -59,12 +62,20 @@ struct AddCategorySheet: View {
                     } label: {
                         HStack {
                             Image(systemName: "plus")
-                            Text("Add Category")
+                                .padding(.trailing, -5)
+                                .font(.subheadline)
+                            Text("Add")
                         }
                     }
                 }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Text("Cancel")
+                    }
+                }
             }
-            .navigationTitle("New Category")
             .alert("Category Name Already In Use", isPresented: $invalidNameAlert) {
                 Button("OK", role: .cancel) {}
             }
