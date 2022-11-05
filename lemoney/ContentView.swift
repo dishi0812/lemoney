@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var income: Double = 1000.00
-    @State var budgetGoal: Double = 750.00
-    @State var savingsGoal: Double = 250.00
-    @State var balance: Double = 1030.00
+    @State var income: Double = 2000.00
+    @State var budgetGoal: Double = 1600.00
+    @State var savingsGoal: Double = 400.00
+    @State var balance: Double = 2000.00
     
     @State var categories = [
         Category(name: "Transport", expenses: [], budget: 150.00, isStartingCategory: true),
@@ -18,7 +18,7 @@ struct ContentView: View {
     
     let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
     var body: some View {
-        if (!launchedBefore) {
+        if (launchedBefore) {
             TabView {
                 HomeView(income: $income, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
                     .tabItem { Label("Home", systemImage: "house.fill") }
@@ -30,7 +30,7 @@ struct ContentView: View {
                     .tabItem { Label("Wishlist", systemImage: "list.star") }
             }
         } else {
-            setupView()
+            setupView(categories: $categories)
         }
     }
 }
