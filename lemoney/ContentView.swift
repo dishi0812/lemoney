@@ -6,31 +6,24 @@ struct ContentView: View {
     @State var savingsGoal: Double = 400.00
     @State var balance: Double = 2000.00
     
-    @State var categories = [
-        Category(name: "Transport", expenses: [], budget: 150.00, isStartingCategory: true),
-        Category(name: "Food", expenses: [], budget: 150.00, isStartingCategory: true),
-        Category(name: "Clothes", expenses: [], budget: 150.00, isStartingCategory: true),
-        Category(name: "Entertainment", expenses: [], budget: 150.00, isStartingCategory: true),
-        Category(name: "Stationery", expenses: [], budget: 150.00, isStartingCategory: true)
-    ]
-    
+    @StateObject var categoryManager = CategoryManager()
     @State var wishlist: [WishlistItem] = []
     
     let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
     var body: some View {
         if (launchedBefore) {
             TabView {
-                HomeView(income: $income, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+                HomeView(income: $income, categories: $categoryManager.categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
                     .tabItem { Label("Home", systemImage: "house.fill") }
                 
-                BudgetView(categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+                BudgetView(categories: $categoryManager.categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
                     .tabItem { Label("Budget", systemImage: "dollarsign.circle.fill") }
                 
-                WishlistView(categories: categories, wishlist: $wishlist)
+                WishlistView(categories: categoryManager.categories, wishlist: $wishlist)
                     .tabItem { Label("Wishlist", systemImage: "list.star") }
             }
         } else {
-            setupView(categories: $categories)
+            setupView(categories: $categoryManager.categories)
         }
     }
 }

@@ -1,9 +1,9 @@
 import Foundation
 
-struct Category: Identifiable {
+struct Category: Identifiable, Codable {
     var id = UUID()
     
-    var name: String;
+    var name: String
     var expenses: [Expense] = []
     var spendings: Double {
         expenses.reduce(0) { $0 + $1.price }
