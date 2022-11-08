@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		514FFF7C2915F3340067C365 /* WishlistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514FFF7B2915F3340067C365 /* WishlistItem.swift */; };
 		514FFF7E2917F4680067C365 /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514FFF7D2917F4680067C365 /* CategoryManager.swift */; };
+		514FFF83291A0B2A0067C365 /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514FFF82291A0B2A0067C365 /* CurrencyFormatter.swift */; };
 		517E714B290CC0160088F17E /* AddCategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517E714A290CC0160088F17E /* AddCategorySheet.swift */; };
 		D9A9769E290389CE00038F05 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769D290389CE00038F05 /* HomeView.swift */; };
 		D9A976A0290389D700038F05 /* BudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769F290389D700038F05 /* BudgetView.swift */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		514FFF7B2915F3340067C365 /* WishlistItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistItem.swift; sourceTree = "<group>"; };
 		514FFF7D2917F4680067C365 /* CategoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
+		514FFF82291A0B2A0067C365 /* CurrencyFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyFormatter.swift; sourceTree = "<group>"; };
 		517E714A290CC0160088F17E /* AddCategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategorySheet.swift; sourceTree = "<group>"; };
 		D9A9769D290389CE00038F05 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D9A9769F290389D700038F05 /* BudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetView.swift; sourceTree = "<group>"; };
@@ -56,6 +58,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		514FFF80291A01740067C365 /* Sheets */ = {
+			isa = PBXGroup;
+			children = (
+				D9A976AB2903965400038F05 /* AddExpenseSheet.swift */,
+				517E714A290CC0160088F17E /* AddCategorySheet.swift */,
+				D9CF3F2E290CD3880028C1C0 /* CreateWishlistSheet.swift */,
+				D9D950DC29160EC50052676A /* setupView.swift */,
+			);
+			path = Sheets;
+			sourceTree = "<group>";
+		};
+		514FFF81291A01AE0067C365 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D9E6983B29037D5B0018B4C7 /* ContentView.swift */,
+				D9A976A1290389DD00038F05 /* WishlistView.swift */,
+				D9A9769D290389CE00038F05 /* HomeView.swift */,
+				D9A9769F290389D700038F05 /* BudgetView.swift */,
+				D9A976A929038F4400038F05 /* ExpensesView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		D9E6982D29037D5B0018B4C7 = {
 			isa = PBXGroup;
 			children = (
@@ -75,20 +100,14 @@
 		D9E6983829037D5B0018B4C7 /* lemoney */ = {
 			isa = PBXGroup;
 			children = (
-				D9CF3F2E290CD3880028C1C0 /* CreateWishlistSheet.swift */,
+				514FFF81291A01AE0067C365 /* Views */,
+				514FFF80291A01740067C365 /* Sheets */,
 				D9E6983929037D5B0018B4C7 /* lemoneyApp.swift */,
-				D9E6983B29037D5B0018B4C7 /* ContentView.swift */,
 				514FFF7D2917F4680067C365 /* CategoryManager.swift */,
-				D9D950DC29160EC50052676A /* setupView.swift */,
-				D9A9769D290389CE00038F05 /* HomeView.swift */,
-				D9A9769F290389D700038F05 /* BudgetView.swift */,
 				D9A976A329038BD700038F05 /* Category.swift */,
 				D9A976A729038BF800038F05 /* Expense.swift */,
-				D9A976A929038F4400038F05 /* ExpensesView.swift */,
-				D9A976AB2903965400038F05 /* AddExpenseSheet.swift */,
-				517E714A290CC0160088F17E /* AddCategorySheet.swift */,
-				D9A976A1290389DD00038F05 /* WishlistView.swift */,
 				514FFF7B2915F3340067C365 /* WishlistItem.swift */,
+				514FFF82291A0B2A0067C365 /* CurrencyFormatter.swift */,
 				D9E6983D29037D5E0018B4C7 /* Assets.xcassets */,
 				D9E6983F29037D5E0018B4C7 /* Preview Content */,
 			);
@@ -177,6 +196,7 @@
 				514FFF7E2917F4680067C365 /* CategoryManager.swift in Sources */,
 				D9A976A829038BF900038F05 /* Expense.swift in Sources */,
 				517E714B290CC0160088F17E /* AddCategorySheet.swift in Sources */,
+				514FFF83291A0B2A0067C365 /* CurrencyFormatter.swift in Sources */,
 				D9A9769E290389CE00038F05 /* HomeView.swift in Sources */,
 				D9A976A0290389D700038F05 /* BudgetView.swift in Sources */,
 				D9A976AA29038F4400038F05 /* ExpensesView.swift in Sources */,

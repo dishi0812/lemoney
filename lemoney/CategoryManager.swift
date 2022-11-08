@@ -9,11 +9,11 @@ class CategoryManager: ObservableObject {
     }
     
     let sampleCategories: [Category] = [
-        Category(name: "Transport", expenses: [], budget: 150.00, isStartingCategory: true),
-        Category(name: "Food", expenses: [], budget: 150.00, isStartingCategory: true),
-        Category(name: "Clothes", expenses: [], budget: 150.00, isStartingCategory: true),
-        Category(name: "Entertainment", expenses: [], budget: 150.00, isStartingCategory: true),
-        Category(name: "Stationery", expenses: [], budget: 150.00, isStartingCategory: true)
+        Category(name: "Transport", expenses: [], budget: 320.00, isStartingCategory: true),
+        Category(name: "Food", expenses: [], budget: 320.00, isStartingCategory: true),
+        Category(name: "Clothes", expenses: [], budget: 320.00, isStartingCategory: true),
+        Category(name: "Entertainment", expenses: [], budget: 320.00, isStartingCategory: true),
+        Category(name: "Stationery", expenses: [], budget: 320.00, isStartingCategory: true)
     ]
     
     init() {

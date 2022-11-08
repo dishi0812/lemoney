@@ -13,7 +13,7 @@ struct AddExpenseSheet: View {
     
     @State var notFilledAlert = false
     @State var invalidValueAlert = false
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationView {
@@ -28,12 +28,8 @@ struct AddExpenseSheet: View {
                     .pickerStyle(.menu)
                     TextField("Name", text: $expenseName)
                     
-                    HStack {
-                        Text("$")
-                            .padding(.trailing, -6)
-                        TextField("Price", value: $expensePrice, formatter: NumberFormatter())
-                            .keyboardType(.decimalPad)
-                    }
+                    TextField("Price", value: $expensePrice, formatter: CurrencyFormatter())
+                        .keyboardType(.decimalPad)
                 }
             }
             .navigationTitle("New Expense")
@@ -55,7 +51,7 @@ struct AddExpenseSheet: View {
                                 // add expense
                                 categories[categoryIndex].expenses.append(Expense(name: expenseName, price: expensePrice, date: Date()))
                                 balance -= expensePrice
-                                presentationMode.wrappedValue.dismiss()
+                                dismiss()
                             }
                         }
                         
@@ -71,7 +67,7 @@ struct AddExpenseSheet: View {
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        presentationMode.wrappedValue.dismiss()
+                        dismiss()
                     } label: {
                         Text("Cancel")
                     }

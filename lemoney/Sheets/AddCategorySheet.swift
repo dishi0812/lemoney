@@ -22,19 +22,16 @@ struct AddCategorySheet: View {
     @State var insufficientFundsAlert = false
     @State var isValidName = true
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationView {
             Form {
                 Section {
                     TextField("Name", text: $categoryName)
-                    HStack {
-                        Text("$")
-                            .padding(.trailing, -6)
-                        TextField("Budget ($\(String(format: "%.2f", balance-savingsGoal-budgetGoal)) Left)", value: $categoryBudget, formatter: NumberFormatter())
-                            .keyboardType(.decimalPad)
-                    }
+                    
+                    TextField("Budget ($\(String(format: "%.2f", balance-savingsGoal-budgetGoal)) Left)", value: $categoryBudget, formatter: CurrencyFormatter())
+                        .keyboardType(.decimalPad)
                 }
             }
             .navigationTitle("New Category")
@@ -57,7 +54,7 @@ struct AddCategorySheet: View {
                         } else {
                             categories.append(Category(name: categoryName, budget: categoryBudget, isStartingCategory: false))
                             budgetGoal += categoryBudget
-                            presentationMode.wrappedValue.dismiss()
+                            dismiss()
                         }
                     } label: {
                         HStack {
@@ -70,7 +67,7 @@ struct AddCategorySheet: View {
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        presentationMode.wrappedValue.dismiss()
+                        dismiss()
                     } label: {
                         Text("Cancel")
                     }
@@ -87,7 +84,7 @@ struct AddCategorySheet: View {
                     if (budgetGoal + savingsGoal > balance) {
                         savingsGoal = balance - budgetGoal
                     }
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 }
             }
             .alert("Not enough money for that amount of budget", isPresented: $insufficientFundsAlert) {

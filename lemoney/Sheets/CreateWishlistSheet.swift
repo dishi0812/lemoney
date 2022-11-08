@@ -20,7 +20,7 @@ struct CreateWishlistSheet: View {
     @State var notFilledAlert = false
     
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationView {
@@ -64,9 +64,7 @@ struct CreateWishlistSheet: View {
                             TextField("Name", text: $name)
                             
                             HStack {
-                                Text("$")
-                                    .padding(.trailing, -6)
-                                TextField("Price", value: $price, formatter: NumberFormatter())
+                                TextField("Price", value: $price, formatter: CurrencyFormatter())
                             }
                             
                             if (type == 1) {
@@ -83,7 +81,7 @@ struct CreateWishlistSheet: View {
                                 if (name != "" && price > 0.00) {
                                     wishlist.append(WishlistItem(type: type == 1 ? .need : .want, name: name, price: price, date: date, categoryId: categories[categoryIndex].id))
                                     
-                                    presentationMode.wrappedValue.dismiss()
+                                    dismiss()
                                 } else {
                                     notFilledAlert = true
                                 }
@@ -98,7 +96,7 @@ struct CreateWishlistSheet: View {
                         }
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button {
-                                presentationMode.wrappedValue.dismiss()
+                                dismiss()
                             } label: {
                                 Text("Cancel")
                             }

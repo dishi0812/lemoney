@@ -181,7 +181,7 @@ struct HomeView: View {
                                         .cornerRadius(20)
                                     Rectangle()
                                         .fill(.green)
-                                        .frame(width: (balance-income+totalSpendings)/50 * 350 <= 350 ? (balance-income+totalSpendings)/50 * 350 : 350, height: 18)
+                                        .frame(width: 30, height: 18)
                                         .cornerRadius(20)
                                 }
                                 .padding(.top, -7)
