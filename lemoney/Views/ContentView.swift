@@ -24,8 +24,8 @@ struct ContentView: View {
             WishlistView(categories: categoryManager.categories, wishlist: $wishlist)
                 .tabItem { Label("Wishlist", systemImage: "list.star") }
         }
-        .fullScreenCover(isPresented: $showSetupSheet) {
-            setupView(categories: $categoryManager.categories, income: $income, balance: $balance, savings: $savingsGoal)
+        .sheet(isPresented: $showSetupSheet) {
+            SetupView(categories: $categoryManager.categories, income: $income, balance: $balance, savings: $savingsGoal)
         }
         .onAppear {
             if (!launchedBefore) { showSetupSheet = true }

@@ -5,9 +5,13 @@ struct WishlistView: View {
     @State var addItemSheetShown = false
     
     @Binding var wishlist: [WishlistItem]
-    
     var needsList: [WishlistItem] { wishlist.filter { $0.type == .need } }
     var wantsList: [WishlistItem] { wishlist.filter { $0.type == .want } }
+    
+    @State var type = 1
+    
+    @State var deleteAlertShown = false
+    @State var deleteId = UUID()
     
     var body: some View {
         NavigationView {
@@ -32,15 +36,42 @@ struct WishlistView: View {
                                     .fontWeight(.light)
                                 }
                             }
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button {
+                                    deleteId = need.id
+                                    deleteAlertShown = true
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                                .tint(.red)
+                            }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                    
+                                } label: {
+                                    Image(systemName: "checkmark")
+                                }
+                                .tint(.green)
+                            }
                         }
                     } else {
                         Text("No Needs")
                     }
                 } header: {
-                    Text("Needs").foregroundColor(.black)
-                        .font(.title2)
-                        .textCase(.none)
-                        .fontWeight(.bold)
+                    HStack {
+                        Text("Needs").foregroundColor(.black)
+                            .font(.title2)
+                            .textCase(.none)
+                            .fontWeight(.bold)
+                        Spacer()
+                        Button {
+                            type = 0
+                            addItemSheetShown = true
+                        } label: {
+                            Image(systemName: "plus")
+                                .font(.title3)
+                        }
+                    }
                 }
                 
                 
@@ -67,28 +98,57 @@ struct WishlistView: View {
                                 }
                                 .padding(.top, -7)
                             }
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button {
+                                    deleteId = want.id
+                                    deleteAlertShown = true
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                                .tint(.red)
+                            }
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button {
+                                    
+                                } label: {
+                                    Image(systemName: "checkmark")
+                                }
+                                .tint(.green)
+                            }
                         }
                     } else {
                         Text("No Wants")
                     }
                 } header: {
-                    Text("Wants").foregroundColor(.black)
-                        .font(.title2)
-                        .textCase(.none)
-                        .fontWeight(.bold)
-                }
-            }
-            .toolbar {
-                Button {
-                    addItemSheetShown = true
-                } label: {
-                    Image(systemName: "plus")
+                    HStack {
+                        Text("Wants").foregroundColor(.black)
+                            .font(.title2)
+                            .textCase(.none)
+                            .fontWeight(.bold)
+                        Spacer()
+                        Button {
+                            type = 1
+                            addItemSheetShown = true
+                        } label: {
+                            Image(systemName: "plus")
+                                .font(.title3)
+                        }
+                    }
                 }
             }
             .navigationTitle("Wishlist")
         }
         .sheet(isPresented: $addItemSheetShown) {
-            CreateWishlistSheet(categories: categories, wishlist: $wishlist)
+            CreateWishlistSheet(categories: categories, wishlist: $wishlist, type: type)
+        }
+        .alert("Are you sure you want to delete this item?", isPresented: $deleteAlertShown) {
+            Button("Delete", role: .destructive) {
+                wishlist = wishlist.filter {$0.id != deleteId}
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+        .onAppear {
+            wishlist = wishlist.sorted(by: {$0.date.timeIntervalSince1970 < $1.date.timeIntervalSince1970})
         }
     }
 }

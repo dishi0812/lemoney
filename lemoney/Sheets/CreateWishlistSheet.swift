@@ -11,7 +11,7 @@ struct CreateWishlistSheet: View {
     @State var categories: [Category]
     @Binding var wishlist: [WishlistItem]
     
-    @State var type = 1
+    @State var type: Int
     @State var categoryIndex = 3
     @State var name = String()
     @State var price = Double()
@@ -35,12 +35,12 @@ struct CreateWishlistSheet: View {
                                 Text("Type")
                                 Spacer()
                                 Picker("Type", selection: $type) {
-                                    ForEach(1 ..< 3) { i in
-                                        if (i == 1) {
-                                            Text("Want")
+                                    ForEach(0..<2) { i in
+                                        if (i == 0) {
+                                            Text("Need")
                                                 .font(.subheadline)
                                         } else {
-                                            Text("Need")
+                                            Text("Want")
                                                 .font(.subheadline)
                                         }
                                     }
@@ -79,7 +79,9 @@ struct CreateWishlistSheet: View {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button {
                                 if (name != "" && price > 0.00) {
-                                    wishlist.append(WishlistItem(type: type == 1 ? .need : .want, name: name, price: price, date: date, categoryId: categories[categoryIndex].id))
+                                    wishlist.append(WishlistItem(type: type == 0 ? .need : .want, name: name, price: price, date: date, categoryId: categories[categoryIndex].id))
+                                    
+                                    wishlist = wishlist.sorted(by: {$0.date.timeIntervalSince1970 < $1.date.timeIntervalSince1970})
                                     
                                     dismiss()
                                 } else {

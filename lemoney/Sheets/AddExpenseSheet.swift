@@ -47,7 +47,7 @@ struct AddExpenseSheet: View {
                                 invalidValueAlert = true
                                 return
                             }
-                            if (expenseName != "" && expensePrice > 0) {
+                            if (expenseName != "" && expensePrice > 0.00) {
                                 // add expense
                                 categories[categoryIndex].expenses.append(Expense(name: expenseName, price: expensePrice, date: Date()))
                                 balance -= expensePrice

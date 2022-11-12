@@ -11,6 +11,7 @@
 		514FFF7E2917F4680067C365 /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514FFF7D2917F4680067C365 /* CategoryManager.swift */; };
 		514FFF83291A0B2A0067C365 /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514FFF82291A0B2A0067C365 /* CurrencyFormatter.swift */; };
 		517E714B290CC0160088F17E /* AddCategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517E714A290CC0160088F17E /* AddCategorySheet.swift */; };
+		51D8C348291F346B002D52F1 /* setupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C347291F346B002D52F1 /* setupView.swift */; };
 		D9A9769E290389CE00038F05 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769D290389CE00038F05 /* HomeView.swift */; };
 		D9A976A0290389D700038F05 /* BudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769F290389D700038F05 /* BudgetView.swift */; };
 		D9A976A2290389DD00038F05 /* WishlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A976A1290389DD00038F05 /* WishlistView.swift */; };
@@ -19,7 +20,6 @@
 		D9A976AA29038F4400038F05 /* ExpensesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A976A929038F4400038F05 /* ExpensesView.swift */; };
 		D9A976AC2903965400038F05 /* AddExpenseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A976AB2903965400038F05 /* AddExpenseSheet.swift */; };
 		D9CF3F2F290CD3880028C1C0 /* CreateWishlistSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9CF3F2E290CD3880028C1C0 /* CreateWishlistSheet.swift */; };
-		D9D950DD29160EC50052676A /* setupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D950DC29160EC50052676A /* setupView.swift */; };
 		D9E6983A29037D5B0018B4C7 /* lemoneyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E6983929037D5B0018B4C7 /* lemoneyApp.swift */; };
 		D9E6983C29037D5B0018B4C7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E6983B29037D5B0018B4C7 /* ContentView.swift */; };
 		D9E6983E29037D5E0018B4C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9E6983D29037D5E0018B4C7 /* Assets.xcassets */; };
@@ -31,6 +31,7 @@
 		514FFF7D2917F4680067C365 /* CategoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
 		514FFF82291A0B2A0067C365 /* CurrencyFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyFormatter.swift; sourceTree = "<group>"; };
 		517E714A290CC0160088F17E /* AddCategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategorySheet.swift; sourceTree = "<group>"; };
+		51D8C347291F346B002D52F1 /* setupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = setupView.swift; sourceTree = "<group>"; };
 		D9A9769D290389CE00038F05 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D9A9769F290389D700038F05 /* BudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetView.swift; sourceTree = "<group>"; };
 		D9A976A1290389DD00038F05 /* WishlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistView.swift; sourceTree = "<group>"; };
@@ -39,7 +40,6 @@
 		D9A976A929038F4400038F05 /* ExpensesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesView.swift; sourceTree = "<group>"; };
 		D9A976AB2903965400038F05 /* AddExpenseSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseSheet.swift; sourceTree = "<group>"; };
 		D9CF3F2E290CD3880028C1C0 /* CreateWishlistSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWishlistSheet.swift; sourceTree = "<group>"; };
-		D9D950DC29160EC50052676A /* setupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = setupView.swift; sourceTree = "<group>"; };
 		D9E6983629037D5B0018B4C7 /* lemoney.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lemoney.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E6983929037D5B0018B4C7 /* lemoneyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = lemoneyApp.swift; sourceTree = "<group>"; };
 		D9E6983B29037D5B0018B4C7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -64,7 +64,7 @@
 				D9A976AB2903965400038F05 /* AddExpenseSheet.swift */,
 				517E714A290CC0160088F17E /* AddCategorySheet.swift */,
 				D9CF3F2E290CD3880028C1C0 /* CreateWishlistSheet.swift */,
-				D9D950DC29160EC50052676A /* setupView.swift */,
+				51D8C347291F346B002D52F1 /* setupView.swift */,
 			);
 			path = Sheets;
 			sourceTree = "<group>";
@@ -192,8 +192,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9D950DD29160EC50052676A /* setupView.swift in Sources */,
 				514FFF7E2917F4680067C365 /* CategoryManager.swift in Sources */,
+				51D8C348291F346B002D52F1 /* setupView.swift in Sources */,
 				D9A976A829038BF900038F05 /* Expense.swift in Sources */,
 				517E714B290CC0160088F17E /* AddCategorySheet.swift in Sources */,
 				514FFF83291A0B2A0067C365 /* CurrencyFormatter.swift in Sources */,

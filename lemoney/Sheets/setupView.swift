@@ -1,10 +1,10 @@
 import SwiftUI
 
-struct setupView: View {
+struct SetupView: View {
     @Binding var categories: [Category]
     @Binding var income: Double
     @Binding var balance: Double
-    @State var budget = Double()
+    @State var budget = 1600.00
     @Binding var savings: Double
     
     @Environment(\.dismiss) var dismiss
@@ -59,7 +59,7 @@ struct setupView: View {
                                         budget = income - savings
                                     }
                                     .onChange(of: income) { val in
-                                        savings = val / 5
+                                        savings = val / Double(categories.count)
                                         budget = income - savings
                                     }
                                     .padding(.leading, 3)
