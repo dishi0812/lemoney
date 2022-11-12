@@ -80,7 +80,7 @@ struct HomeView: View {
                         Spacer()
                         
                         NavigationLink {
-                            // overall spendings view
+                            TotalExpenseView(categories: $categories, totalSpendings: totalSpendings, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
                         } label: {
                             HStack {
                                 ZStack {

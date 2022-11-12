@@ -9,7 +9,6 @@ struct BudgetView: View {
     @State var addCategorySheetShown = false
     @State var categoryId = UUID()
     @State var deleteAlertShown = false
-    @State var unableToDeleteAlert = false
     
     @Binding var budgetGoal: Double
     @Binding var savingsGoal: Double
@@ -20,51 +19,83 @@ struct BudgetView: View {
             List {
                 Section {
                     ForEach($categories) { $category in
-                        NavigationLink {
-                            ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
-                        } label: {
-                            HStack {
-                                Text(category.name)
-                                Spacer()
-                                
-                                if (category.budget - category.spendings <= 0.00) {
-                                    Text("$\(String(format: "%.2f", category.spendings - category.budget))")
-                                        .padding(5)
-                                        .background(.red)
-                                        .cornerRadius(14)
-                                        .foregroundColor(.white)
-                                        .fontWeight(.semibold)
-                                } else {
-                                    Text("$\(String(format: "%.2f", category.budget - category.spendings))")
-                                        .padding(5)
-                                        .background(.green)
-                                        .cornerRadius(14)
-                                        .foregroundColor(.white)
-                                        .fontWeight(.semibold)
+                        if (!category.isStartingCategory) {
+                            NavigationLink {
+                                ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+                            } label: {
+                                HStack {
+                                    Text(category.name)
+                                    Spacer()
+                                    
+                                    if (category.budget - category.spendings <= 0.00) {
+                                        Text("$\(String(format: "%.2f", category.spendings - category.budget))")
+                                            .padding(5)
+                                            .background(.red)
+                                            .cornerRadius(14)
+                                            .foregroundColor(.white)
+                                            .fontWeight(.semibold)
+                                    } else {
+                                        Text("$\(String(format: "%.2f", category.budget - category.spendings))")
+                                            .padding(5)
+                                            .background(.green)
+                                            .cornerRadius(14)
+                                            .foregroundColor(.white)
+                                            .fontWeight(.semibold)
+                                    }
                                 }
                             }
-                        }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button {
-                                selectedCategory = categories.firstIndex(where: {$0.id == category.id})!
-                                addExpenseSheetShown = true
-                            } label: {
-                                Image(systemName: "plus")
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                    selectedCategory = categories.firstIndex(where: {$0.id == category.id})!
+                                    addExpenseSheetShown = true
+                                } label: {
+                                    Image(systemName: "plus")
+                                }
+                                .tint(.green)
                             }
-                            .tint(.green)
-                        }
-                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                            Button {
-                                if (!category.isStartingCategory) {
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button {
                                     categoryId = category.id
                                     deleteAlertShown = true
-                                } else {
-                                    unableToDeleteAlert = true
+                                } label: {
+                                    Image(systemName: "trash")
                                 }
-                            } label: {
-                                Image(systemName: "trash")
+                                .tint(.red)
                             }
-                            .tint(.red)
+                        } else {
+                            NavigationLink {
+                                ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+                            } label: {
+                                HStack {
+                                    Text(category.name)
+                                    Spacer()
+                                    
+                                    if (category.budget - category.spendings <= 0.00) {
+                                        Text("$\(String(format: "%.2f", category.spendings - category.budget))")
+                                            .padding(5)
+                                            .background(.red)
+                                            .cornerRadius(14)
+                                            .foregroundColor(.white)
+                                            .fontWeight(.semibold)
+                                    } else {
+                                        Text("$\(String(format: "%.2f", category.budget - category.spendings))")
+                                            .padding(5)
+                                            .background(.green)
+                                            .cornerRadius(14)
+                                            .foregroundColor(.white)
+                                            .fontWeight(.semibold)
+                                    }
+                                }
+                            }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                    selectedCategory = categories.firstIndex(where: {$0.id == category.id})!
+                                    addExpenseSheetShown = true
+                                } label: {
+                                    Image(systemName: "plus")
+                                }
+                                .tint(.green)
+                            }
                         }
                     }
                     .onMove { indices, newOffset in
@@ -132,9 +163,6 @@ struct BudgetView: View {
                 categories = categories.filter {$0.id != categoryId}
             }
             Button("Cancel", role: .cancel) {}
-        }
-        .alert("Unable to delete category", isPresented: $unableToDeleteAlert) {
-            Button("OK", role: .cancel) {}
         }
     }
 }

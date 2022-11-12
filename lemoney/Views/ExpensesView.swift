@@ -29,17 +29,20 @@ struct ExpensesView: View {
             List {
                 if (!categories[category].expenses.isEmpty) {
                     ForEach(categories[category].expenses, id: \.id) { expense in
-                        VStack(alignment: .leading) {
-                            HStack {
+                        HStack(alignment: .center) {
+                            VStack(alignment: .leading) {
                                 Text(expense.name)
-                                Spacer()
-                                Text("$\(String(format: "%.2f", expense.price))")
+                                    .fontWeight(.medium)
+                                Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
+                                    .opacity(0.6)
+                                    .fontWeight(.light)
                             }
-                            Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
-                                .opacity(0.6)
-                                .fontWeight(.light)
+                            Spacer()
+                            Text("$\(String(format: "%.2f", expense.price))")
+                                .font(.title2)
+                                .fontWeight(.medium)
                         }
-                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button {
                                 expenseId = expense.id
                                 deleteAlertShown = true

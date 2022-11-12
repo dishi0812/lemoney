@@ -49,7 +49,7 @@ struct AddExpenseSheet: View {
                             }
                             if (expenseName != "" && expensePrice > 0.00) {
                                 // add expense
-                                categories[categoryIndex].expenses.append(Expense(name: expenseName, price: expensePrice, date: Date()))
+                                categories[categoryIndex].expenses.append(Expense(name: expenseName, price: expensePrice, date: Date(), categoryId: categories[categoryIndex].id))
                                 balance -= expensePrice
                                 dismiss()
                             }
