@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BudgetView: View {
     
+    @Binding var userSettings: [String:Double]
     @Binding var categories: [Category]
     @State var selectedCategory = Int()
     
@@ -10,10 +11,6 @@ struct BudgetView: View {
     @State var categoryId = UUID()
     @State var deleteAlertShown = false
     
-    @Binding var budgetGoal: Double
-    @Binding var savingsGoal: Double
-    @Binding var balance: Double
-    
     var body: some View {
         NavigationView {
             List {
@@ -21,7 +18,7 @@ struct BudgetView: View {
                     ForEach($categories) { $category in
                         if (!category.isStartingCategory) {
                             NavigationLink {
-                                ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+                                ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, userSettings: $userSettings, categories: $categories)
                             } label: {
                                 HStack {
                                     Text(category.name)
@@ -64,7 +61,7 @@ struct BudgetView: View {
                             }
                         } else {
                             NavigationLink {
-                                ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+                                ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, userSettings: $userSettings, categories: $categories)
                             } label: {
                                 HStack {
                                     Text(category.name)
@@ -153,10 +150,10 @@ struct BudgetView: View {
             .navigationTitle("Budget")
         }
         .sheet(isPresented: $addExpenseSheetShown) {
-            AddExpenseSheet(categoryIndex: selectedCategory, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+            AddExpenseSheet(categoryIndex: selectedCategory, userSettings: $userSettings, categories: $categories)
         }
         .sheet(isPresented: $addCategorySheetShown) {
-            AddCategorySheet(categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+            AddCategorySheet(userSettings: $userSettings, categories: $categories)
         }
         .alert("Are you sure you want to delete this category?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {

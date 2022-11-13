@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct AddCategorySheet: View {
+    @Binding var userSettings: [String:Double]
     @Binding var categories: [Category]
-    @Binding var budgetGoal: Double
-    @Binding var savingsGoal: Double
-    @Binding var balance: Double
     
     @State var categoryName = ""
     @State var categoryBudget = 150.00
@@ -29,8 +27,7 @@ struct AddCategorySheet: View {
             Form {
                 Section {
                     TextField("Name", text: $categoryName)
-                    
-                    TextField("Budget ($\(String(format: "%.2f", balance-savingsGoal-budgetGoal)) Left)", value: $categoryBudget, formatter: CurrencyFormatter())
+                    TextField("Budget ($\(String(format: "%.2f", userSettings["balance"]!-userSettings["savingsGoal"]!-userSettings["budgetGoal"]!)) Left)", value: $categoryBudget, formatter: CurrencyFormatter())
                         .keyboardType(.decimalPad)
                 }
             }
@@ -46,14 +43,14 @@ struct AddCategorySheet: View {
                         }
                         if (!isValidName) {
                             invalidNameAlert = true
-                        } else if (categoryBudget > balance - budgetGoal) {
+                        } else if (categoryBudget > userSettings["balance"]! - userSettings["budgetGoal"]!) {
                             insufficientFundsAlert = true
-                        } else if (categoryBudget > balance - savingsGoal - budgetGoal) {
+                        } else if (categoryBudget > userSettings["balance"]! - userSettings["savingsGoal"]! - userSettings["budgetGoal"]!) {
                             invalidBudgetAlert = true
-                            reducedSavings = String(format: "%.2f", balance - budgetGoal - categoryBudget)
+                            reducedSavings = String(format: "%.2f", userSettings["balance"]! - userSettings["budgetGoal"]! - categoryBudget)
                         } else {
                             categories.append(Category(name: categoryName, budget: categoryBudget, isStartingCategory: false))
-                            budgetGoal += categoryBudget
+                            userSettings["budgetGoal"]! += categoryBudget
                             dismiss()
                         }
                     } label: {
@@ -80,9 +77,9 @@ struct AddCategorySheet: View {
                 Button("OK", role: .cancel) {}
                 Button("Continue Anyways") {
                     categories.append(Category(name: categoryName, budget: categoryBudget, isStartingCategory: false))
-                    budgetGoal += categoryBudget
-                    if (budgetGoal + savingsGoal > balance) {
-                        savingsGoal = balance - budgetGoal
+                    userSettings["budgetGoal"]! += categoryBudget
+                    if (userSettings["budgetGoal"]! + userSettings["savingsGoal"]! > userSettings["balance"]!) {
+                        userSettings["savingsGoal"]! = userSettings["balance"]! - userSettings["budgetGoal"]!
                     }
                     dismiss()
                 }

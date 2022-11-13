@@ -1,6 +1,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var userSettings = [
+        "income": 2000.00,
+        "budgetGoal": 1600.00,
+        "savingsGoal": 400.00,
+        "balance": 2000.00
+    ]
+    
     @State var income: Double = 2000.00
     @State var budgetGoal: Double = 1600.00
     @State var savingsGoal: Double = 400.00
@@ -15,17 +23,17 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            HomeView(income: $income, categories: $categoryManager.categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+            HomeView(userSettings: $userSettings, categories: $categoryManager.categories)
                 .tabItem { Label("Home", systemImage: "house.fill") }
             
-            BudgetView(categories: $categoryManager.categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+            BudgetView(userSettings: $userSettings, categories: $categoryManager.categories)
                 .tabItem { Label("Budget", systemImage: "dollarsign.circle.fill") }
             
             WishlistView(categories: categoryManager.categories, wishlist: $wishlist)
                 .tabItem { Label("Wishlist", systemImage: "list.star") }
         }
         .sheet(isPresented: $showSetupSheet) {
-            SetupView(categories: $categoryManager.categories, income: $income, balance: $balance, budget: $budgetGoal, savings: $savingsGoal, pageNum: 1, isFirstLaunch: true)
+            SetupView(userSettings: $userSettings, categories: $categoryManager.categories, pageNum: 1, isFirstLaunch: true)
         }
         .onAppear {
             if (!launchedBefore) { showSetupSheet = true }

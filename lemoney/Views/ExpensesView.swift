@@ -3,15 +3,12 @@ import SwiftUI
 struct ExpensesView: View {
     
     var category: Int
+    @Binding var userSettings: [String:Double]
     @Binding var categories: [Category]
     @State var deleteAlertShown = false
     @State var expenseId = UUID()
     
     @State var addExpenseSheetShown = false
-    
-    @Binding var budgetGoal: Double
-    @Binding var savingsGoal: Double
-    @Binding var balance: Double
     
     var body: some View {
         VStack {
@@ -74,11 +71,11 @@ struct ExpensesView: View {
             }
         }
         .sheet(isPresented: $addExpenseSheetShown) {
-            AddExpenseSheet(categoryIndex: category, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+            AddExpenseSheet(categoryIndex: category, userSettings: $userSettings, categories: $categories)
         }
         .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
-                balance += categories[category].expenses.first(where: { $0.id == expenseId })!.price
+                userSettings["balance"]! += categories[category].expenses.first(where: { $0.id == expenseId })!.price
                 categories[category].expenses = categories[category].expenses.filter { $0.id != expenseId }
             }
             Button("Cancel", role: .cancel) {}

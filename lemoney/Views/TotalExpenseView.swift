@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct TotalExpenseView: View {
+    
+    @Binding var userSettings: [String:Double]
     @Binding var categories: [Category]
     @State var deleteAlertShown = false
     
@@ -12,9 +14,6 @@ struct TotalExpenseView: View {
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
     }
-    @Binding var budgetGoal: Double
-    @Binding var savingsGoal: Double
-    @Binding var balance: Double
     
     var allExpenses: [Expense] { categories.reduce([]) {$0 + $1.expenses}.sorted(by: { $0.date.timeIntervalSince1970 > $1.date.timeIntervalSince1970 }) }
     
@@ -24,7 +23,7 @@ struct TotalExpenseView: View {
                 Text("Spendings: $\(String(format: "%.2f", totalSpendings))")
                     .fontWeight(.semibold)
                 Spacer()
-                Text("Left: $\(String(format: "%.2f", budgetGoal - totalSpendings))")
+                Text("Left: $\(String(format: "%.2f", userSettings["budgetGoal"]! - totalSpendings))")
                     .fontWeight(.semibold)
             }
             .multilineTextAlignment(.center)
@@ -71,7 +70,7 @@ struct TotalExpenseView: View {
             .listStyle(.plain)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Budget: $\(String(format: "%.2f", budgetGoal))")
+                    Text("Budget: $\(String(format: "%.2f", userSettings["budgetGoal"]!))")
                         .fontWeight(.semibold)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -84,13 +83,13 @@ struct TotalExpenseView: View {
             }
         }
         .sheet(isPresented: $addExpenseSheetShown) {
-            AddExpenseSheet(categoryIndex: 0, categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+            AddExpenseSheet(categoryIndex: 0, userSettings: $userSettings , categories: $categories)
         }
         .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
                 let categoryIndex = categories.firstIndex(where: {$0.id == categoryId})!
                 let value = categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!.price
-                balance += value
+                userSettings["balance"]! += value
                 categories[categoryIndex].expenses = categories[categoryIndex].expenses.filter { $0.id != expenseId }
             }
             Button("Cancel", role: .cancel) {}

@@ -2,17 +2,14 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @Binding var income: Double
+    @Binding var userSettings: [String:Double]
     @Binding var categories: [Category]
-    @Binding var budgetGoal: Double
-    @Binding var savingsGoal: Double
-    @Binding var balance: Double
     
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
     }
     var savings: Double {
-        income - totalSpendings
+        userSettings["income"]! - totalSpendings
     }
     
     var body: some View {
@@ -41,7 +38,7 @@ struct HomeView: View {
                                 .padding(.bottom, 10)
                             Rectangle()
                                 .fill(.green)
-                                .frame(width: 350 - (totalSpendings/budgetGoal*350) < 0 ? 0 : 350 - (totalSpendings/budgetGoal*350), height: 25)
+                                .frame(width: 350 - (totalSpendings/userSettings["budgetGoal"]!*350) < 0 ? 0 : 350 - (totalSpendings/userSettings["budgetGoal"]!*350), height: 25)
                                 .cornerRadius(13)
                                 .padding(.bottom, 10)
                         }
@@ -80,7 +77,7 @@ struct HomeView: View {
                         Spacer()
                         
                         NavigationLink {
-                            TotalExpenseView(categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+                            TotalExpenseView(userSettings: $userSettings, categories: $categories)
                         } label: {
                             HStack {
                                 ZStack {
@@ -208,14 +205,14 @@ struct HomeView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Balance: $\(String(format: "%.2f", balance))")
+                    Text("Balance: $\(String(format: "%.2f", userSettings["balance"]!))")
                         .font(.title3)
                         .padding(.top, 10)
                         .fontWeight(.bold)
                 }
                 ToolbarItem {
                     NavigationLink {
-                        SetupView(categories: $categories, income: $income, balance: $balance, budget: $budgetGoal, savings: $savingsGoal, pageNum: 2, isFirstLaunch: false)
+                        SetupView(userSettings: $userSettings, categories: $categories, pageNum: 2, isFirstLaunch: false)
                     } label: {
                         Image(systemName: "person.crop.circle")
                             .font(.title3)
