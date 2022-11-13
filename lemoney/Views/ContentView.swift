@@ -25,7 +25,7 @@ struct ContentView: View {
                 .tabItem { Label("Wishlist", systemImage: "list.star") }
         }
         .sheet(isPresented: $showSetupSheet) {
-            SetupView(categories: $categoryManager.categories, income: $income, balance: $balance, savings: $savingsGoal)
+            SetupView(categories: $categoryManager.categories, income: $income, balance: $balance, budget: $budgetGoal, savings: $savingsGoal, pageNum: 1, isFirstLaunch: true)
         }
         .onAppear {
             if (!launchedBefore) { showSetupSheet = true }

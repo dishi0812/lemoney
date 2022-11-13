@@ -80,7 +80,7 @@ struct HomeView: View {
                         Spacer()
                         
                         NavigationLink {
-                            TotalExpenseView(categories: $categories, totalSpendings: totalSpendings, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
+                            TotalExpenseView(categories: $categories, budgetGoal: $budgetGoal, savingsGoal: $savingsGoal, balance: $balance)
                         } label: {
                             HStack {
                                 ZStack {
@@ -212,6 +212,16 @@ struct HomeView: View {
                         .font(.title3)
                         .padding(.top, 10)
                         .fontWeight(.bold)
+                }
+                ToolbarItem {
+                    NavigationLink {
+                        SetupView(categories: $categories, income: $income, balance: $balance, budget: $budgetGoal, savings: $savingsGoal, pageNum: 2, isFirstLaunch: false)
+                    } label: {
+                        Image(systemName: "person.crop.circle")
+                            .font(.title3)
+                            .padding(.top, 10)
+                            .fontWeight(.bold)
+                    }
                 }
             }
         }
