@@ -8,12 +8,6 @@ struct ContentView: View {
         "savingsGoal": 400.00,
         "balance": 2000.00
     ]
-    
-    @State var income: Double = 2000.00
-    @State var budgetGoal: Double = 1600.00
-    @State var savingsGoal: Double = 400.00
-    @State var balance: Double = 2000.00
-    
     @StateObject var categoryManager = CategoryManager()
     @State var wishlist: [WishlistItem] = []
     
@@ -33,10 +27,15 @@ struct ContentView: View {
                 .tabItem { Label("Wishlist", systemImage: "list.star") }
         }
         .sheet(isPresented: $showSetupSheet) {
-            SetupView(userSettings: $userSettings, categories: $categoryManager.categories, pageNum: 1, isFirstLaunch: true)
+            if (!launchedBefore) {
+                SetupView(userSettings: $userSettings, categories: $categoryManager.categories, pageNum: 1, isFirstLaunch: true)
+            }
         }
         .onAppear {
-            if (!launchedBefore) { showSetupSheet = true }
+            if (!launchedBefore) {
+                UserDefaults.standard.set(true, forKey: "launchedBefore")
+                showSetupSheet = true
+            }
         }
     }
 }

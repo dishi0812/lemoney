@@ -50,7 +50,7 @@ struct TotalExpenseView: View {
                                     .opacity(0.8)
                             }
                         }
-                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button {
                                 categoryId = expense.categoryId
                                 expenseId = expense.id

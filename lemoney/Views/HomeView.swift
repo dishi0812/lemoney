@@ -51,7 +51,14 @@ struct HomeView: View {
                         Spacer()
                         
                         NavigationLink {
-                            // budget / goal setting view
+                            SavingsChartView(savings: [
+                                MonthOverview(categories: ["Transport": 50.00, "Food": 50.00], spendings: 100.00, savings: 100.00, month: "Jan"),
+                                MonthOverview(categories: ["Transport": 25.00, "Food": 75.00], spendings: 100.00, savings: 160.00, month: "Feb"),
+                                MonthOverview(categories: ["Transport": 100.00, "Food": 0.00], spendings: 100.00, savings: 120.00, month: "Mar"),
+                                MonthOverview(categories: ["Transport": 90.00, "Food": 10.00], spendings: 100.00, savings: 200.00, month: "Apr"),
+                                MonthOverview(categories: ["Transport": 30.00, "Food": 70.00], spendings: 100.00, savings: 180.00, month: "May"),
+                                MonthOverview(categories: ["Transport": 30.00, "Food": 70.00], spendings: 100.00, savings: 80.00, month: "Jun")
+                            ])
                         } label: {
                             HStack {
                                 Image(systemName: "dollarsign.arrow.circlepath")
@@ -134,7 +141,7 @@ struct HomeView: View {
                             }
                             VStack(alignment: .leading) {
                                 HStack {
-                                    Text("Premium Sidewalk")
+                                    Text("Defective Sidewalk")
                                     Spacer()
                                     Text("$280.00")
                                 }

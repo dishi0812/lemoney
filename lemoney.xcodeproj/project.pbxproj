@@ -13,6 +13,9 @@
 		517E714B290CC0160088F17E /* AddCategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517E714A290CC0160088F17E /* AddCategorySheet.swift */; };
 		51D8C348291F346B002D52F1 /* setupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C347291F346B002D52F1 /* setupView.swift */; };
 		51D8C34A291F375A002D52F1 /* TotalExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C349291F375A002D52F1 /* TotalExpenseView.swift */; };
+		51D8C35029211441002D52F1 /* SavingsChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C34F29211441002D52F1 /* SavingsChartView.swift */; };
+		51D8C35229211588002D52F1 /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C35129211588002D52F1 /* Overview.swift */; };
+		51D8C35429212193002D52F1 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C35329212193002D52F1 /* PieChart.swift */; };
 		D9A9769E290389CE00038F05 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769D290389CE00038F05 /* HomeView.swift */; };
 		D9A976A0290389D700038F05 /* BudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769F290389D700038F05 /* BudgetView.swift */; };
 		D9A976A2290389DD00038F05 /* WishlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A976A1290389DD00038F05 /* WishlistView.swift */; };
@@ -34,6 +37,9 @@
 		517E714A290CC0160088F17E /* AddCategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategorySheet.swift; sourceTree = "<group>"; };
 		51D8C347291F346B002D52F1 /* setupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = setupView.swift; sourceTree = "<group>"; };
 		51D8C349291F375A002D52F1 /* TotalExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalExpenseView.swift; sourceTree = "<group>"; };
+		51D8C34F29211441002D52F1 /* SavingsChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingsChartView.swift; sourceTree = "<group>"; };
+		51D8C35129211588002D52F1 /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
+		51D8C35329212193002D52F1 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		D9A9769D290389CE00038F05 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D9A9769F290389D700038F05 /* BudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetView.swift; sourceTree = "<group>"; };
 		D9A976A1290389DD00038F05 /* WishlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistView.swift; sourceTree = "<group>"; };
@@ -77,9 +83,11 @@
 				D9E6983B29037D5B0018B4C7 /* ContentView.swift */,
 				D9A976A1290389DD00038F05 /* WishlistView.swift */,
 				D9A9769D290389CE00038F05 /* HomeView.swift */,
-				51D8C349291F375A002D52F1 /* TotalExpenseView.swift */,
 				D9A9769F290389D700038F05 /* BudgetView.swift */,
 				D9A976A929038F4400038F05 /* ExpensesView.swift */,
+				51D8C349291F375A002D52F1 /* TotalExpenseView.swift */,
+				51D8C34F29211441002D52F1 /* SavingsChartView.swift */,
+				51D8C35329212193002D52F1 /* PieChart.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -109,6 +117,7 @@
 				514FFF7D2917F4680067C365 /* CategoryManager.swift */,
 				D9A976A329038BD700038F05 /* Category.swift */,
 				D9A976A729038BF800038F05 /* Expense.swift */,
+				51D8C35129211588002D52F1 /* Overview.swift */,
 				514FFF7B2915F3340067C365 /* WishlistItem.swift */,
 				514FFF82291A0B2A0067C365 /* CurrencyFormatter.swift */,
 				D9E6983D29037D5E0018B4C7 /* Assets.xcassets */,
@@ -202,10 +211,13 @@
 				514FFF83291A0B2A0067C365 /* CurrencyFormatter.swift in Sources */,
 				D9A9769E290389CE00038F05 /* HomeView.swift in Sources */,
 				D9A976A0290389D700038F05 /* BudgetView.swift in Sources */,
+				51D8C35029211441002D52F1 /* SavingsChartView.swift in Sources */,
 				D9A976AA29038F4400038F05 /* ExpensesView.swift in Sources */,
 				51D8C34A291F375A002D52F1 /* TotalExpenseView.swift in Sources */,
+				51D8C35429212193002D52F1 /* PieChart.swift in Sources */,
 				D9CF3F2F290CD3880028C1C0 /* CreateWishlistSheet.swift in Sources */,
 				D9A976AC2903965400038F05 /* AddExpenseSheet.swift in Sources */,
+				51D8C35229211588002D52F1 /* Overview.swift in Sources */,
 				D9E6983C29037D5B0018B4C7 /* ContentView.swift in Sources */,
 				D9A976A2290389DD00038F05 /* WishlistView.swift in Sources */,
 				514FFF7C2915F3340067C365 /* WishlistItem.swift in Sources */,
