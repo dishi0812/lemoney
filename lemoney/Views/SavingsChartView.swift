@@ -32,7 +32,7 @@ struct SavingsChartView: View {
                     }
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .frame(width: 300)
+                .frame(width: 350)
                 
                 List {
                     if (type == 0) {

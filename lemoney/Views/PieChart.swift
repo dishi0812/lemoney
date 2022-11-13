@@ -28,7 +28,7 @@ struct PieChart: View {
     var degrees: [Double] {
         var degreesList: [Double] = [0]
         for (_, val) in overview.categories {
-            degreesList.append((val / overview.spendings * 360) + degreesList[degreesList.count - 1])
+            degreesList.append((val / (overview.spendings + overview.savings) * 360) + degreesList[degreesList.count - 1])
         }
         return degreesList
     }
@@ -46,18 +46,20 @@ struct PieChart: View {
                 
                 PiePiece(startDegree: prevDegree, endDegree: currentDegree)
                     .fill(Color(uiColor: UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: 1)))
+                    .zIndex(0)
                 
                 if (currentValue != 0) {
                     GeometryReader { geometry in
                         VStack {
                             Text("\(currentKey)")
-                            Text("\(String(format: "%.1f", currentValue/overview.spendings*100))%")
+                            Text("\(String(format: "%.1f", currentValue/(overview.spendings + overview.savings)*100))%")
                             Text("$\(String(format: "%.2f", currentValue))")
                         }
                         .font(.subheadline)
                         .position(getLabelCoordinate(in: geometry.size, for: currentDegree - (currentDegree-prevDegree)/2))
                         .foregroundColor(.white)
                         .shadow(radius: 5)
+                        .zIndex(100)
                     }
                 }
             }

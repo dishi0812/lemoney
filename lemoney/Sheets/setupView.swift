@@ -78,7 +78,7 @@ struct SetupView: View {
                                     }
                                     .onChange(of: userSettings["income"]!) { val in
                                         userSettings["savingsGoal"]! = val / Double(categories.count)
-                                        userSettings["budget"]! = userSettings["income"]! - userSettings["savingsGoal"]!
+                                        userSettings["budgetGoal"]! = userSettings["income"]! - userSettings["savingsGoal"]!
                                     }
                                     .padding(.leading, 3)
                             }
@@ -136,21 +136,26 @@ struct SetupView: View {
                     
                     Spacer()
                     if (isFirstLaunch) {
-                        Button {
-                            if (userSettings["income"]! > 0.0 && userSettings["balance"]! > 0.0 && userSettings["savingsGoal"]! > 0.0 && userSettings["budgetGoal"]! > 0.0) {
-                                dismiss()
+                        HStack {
+                            Spacer()
+                            Button {
+                                if (userSettings["income"]! > 0.0 && userSettings["balance"]! > 0.0 && userSettings["savingsGoal"]! > 0.0 && userSettings["budgetGoal"]! > 0.0) {
+                                    dismiss()
+                                }
+                            } label: {
+                                Text("Start saving money!")
+                                    .frame(width: 320)
+                                    .padding(12)
+                                    .background(.green)
+                                    .foregroundColor(.white)
+                                    .fontWeight(.bold)
+                                    .font(.headline)
+                                    .cornerRadius(10)
+                                    .multilineTextAlignment(.center)
                             }
-                        } label: {
-                            Text("Start saving money!")
-                                .frame(width: 320)
-                                .padding(12)
-                                .background(.green)
-                                .foregroundColor(.white)
-                                .fontWeight(.bold)
-                                .font(.headline)
-                                .cornerRadius(10)
+                            .padding(.bottom, 15)
+                            Spacer()
                         }
-                        .padding(.bottom, 15)
                     }
                 }
                 .navigationTitle(isFirstLaunch ? "" : "Profile")
