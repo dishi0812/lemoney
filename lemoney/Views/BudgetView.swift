@@ -105,8 +105,8 @@ struct BudgetView: View {
                             .fontWeight(.bold)
                         Spacer()
                         
-                        if (categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) } <= 0.00) {
-                            Text("$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
+                        if (categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) } < 0.00) {
+                            Text("-$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
                                 .fontWeight(.bold)
                                 .padding(5)
                                 .background(.red)
