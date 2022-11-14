@@ -53,12 +53,13 @@ struct ContentView: View {
     var body: some View {
         TabView {
             HomeView(userSettings: $userSettings, overviews: $overviews, categories: $categoryManager.categories)
+            HomeView(userSettings: $userSettings, categories: $categoryManager.categories, wishlist: $wishlist)
                 .tabItem { Label("Home", systemImage: "house.fill") }
             
             BudgetView(userSettings: $userSettings, categories: $categoryManager.categories)
                 .tabItem { Label("Budget", systemImage: "dollarsign.circle.fill") }
             
-            WishlistView(categories: categoryManager.categories, wishlist: $wishlist)
+            WishlistView(categories: categoryManager.categories, wishlist: $wishlist, userSettings: $userSettings)
                 .tabItem { Label("Wishlist", systemImage: "list.star") }
         }
         .sheet(isPresented: $showSetupSheet) {
