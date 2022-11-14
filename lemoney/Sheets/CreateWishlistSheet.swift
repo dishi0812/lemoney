@@ -68,9 +68,9 @@ struct CreateWishlistSheet: View {
                             }
                             
                             if (type == 1) {
-                                DatePicker("Date Needed", selection: $date, displayedComponents: [.date])
-                            } else {
                                 DatePicker("Date Wanted", selection: $date, displayedComponents: [.date])
+                            } else {
+                                DatePicker("Date Needed", selection: $date, displayedComponents: [.date])
                             }
                         }
                     }
