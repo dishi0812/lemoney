@@ -23,7 +23,7 @@ struct ContentView: View {
             BudgetView(userSettings: $userSettings, categories: $categoryManager.categories)
                 .tabItem { Label("Budget", systemImage: "dollarsign.circle.fill") }
             
-            WishlistView(categories: categoryManager.categories, wishlist: $wishlist)
+            WishlistView(categories: categoryManager.categories, wishlist: $wishlist, userSettings: $userSettings)
                 .tabItem { Label("Wishlist", systemImage: "list.star") }
         }
         .sheet(isPresented: $showSetupSheet) {

@@ -5,13 +5,31 @@ struct WishlistView: View {
     @State var addItemSheetShown = false
     
     @Binding var wishlist: [WishlistItem]
+    @Binding var userSettings: [String:Double]
+    
     var needsList: [WishlistItem] { wishlist.filter { $0.type == .need } }
     var wantsList: [WishlistItem] { wishlist.filter { $0.type == .want } }
+    var totalSpendings: Double {
+        categories.reduce(0) { $0 + $1.spendings }
+    }
+    var savings: Double {
+        userSettings["income"]! - totalSpendings
+    }
     
     @State var type = 1
-    
     @State var deleteAlertShown = false
     @State var deleteId = UUID()
+    
+    func progressWidth(itemValue: Double) -> Double {
+        let width = (userSettings["balance"]! - savings) / itemValue * 325
+        if (width > 325) {
+            return 325
+        } else if (width < 0) {
+            return 0
+        } else {
+            return width
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -93,7 +111,7 @@ struct WishlistView: View {
                                         .cornerRadius(20)
                                     Rectangle()
                                         .fill(.green)
-                                        .frame(width: 60, height: 18)
+                                        .frame(width: progressWidth(itemValue: want.price), height: 18)
                                         .cornerRadius(20)
                                 }
                                 .padding(.top, -7)
