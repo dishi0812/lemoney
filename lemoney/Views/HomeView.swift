@@ -11,6 +11,10 @@ struct HomeView: View {
     var savings: Double {
         userSettings["income"]! - totalSpendings
     }
+    func progressWidth(itemValue: Double) -> Double {
+        var progressWidth = (userSettings["balance"]! - savings) / 100 * itemValue * 325
+        return progressWidth
+    }
     
     var body: some View {
         NavigationView {
@@ -185,7 +189,7 @@ struct HomeView: View {
                                         .cornerRadius(20)
                                     Rectangle()
                                         .fill(.green)
-                                        .frame(width: 30, height: 18)
+                                        .frame(width: progressWidth(itemValue: 50), height: 18)
                                         .cornerRadius(20)
                                 }
                                 .padding(.top, -7)
