@@ -37,7 +37,6 @@ struct PieChart: View {
     var body: some View {
         ZStack {
             ForEach(1..<overview.categories.count+1) { i in
-                
                 let currentKey = keys[i-1]
                 let currentValue = overview.categories[currentKey]!
                 
@@ -46,7 +45,7 @@ struct PieChart: View {
                 
                 PiePiece(startDegree: prevDegree, endDegree: currentDegree)
                     .fill(Color(uiColor: UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: 1)))
-                    .zIndex(0)
+                    .zIndex(-100)
                 
                 if (currentValue != 0) {
                     GeometryReader { geometry in
@@ -68,7 +67,7 @@ struct PieChart: View {
     
     private func getLabelCoordinate(in geoSize: CGSize, for degree: Double) -> CGPoint {
         let center = CGPoint(x: geoSize.width / 2, y: geoSize.height / 2)
-        let radius = geoSize.width / 3.5
+        let radius = geoSize.width / 3
         
         let yCoordinate = radius * sin(CGFloat(degree) * (CGFloat.pi / 180))
         let xCoordinate = radius * cos(CGFloat(degree) * (CGFloat.pi / 180))

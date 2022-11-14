@@ -16,6 +16,7 @@
 		51D8C35029211441002D52F1 /* SavingsChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C34F29211441002D52F1 /* SavingsChartView.swift */; };
 		51D8C35229211588002D52F1 /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C35129211588002D52F1 /* Overview.swift */; };
 		51D8C35429212193002D52F1 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C35329212193002D52F1 /* PieChart.swift */; };
+		51D8C3562921D492002D52F1 /* MonthOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C3552921D492002D52F1 /* MonthOverviewView.swift */; };
 		D9A9769E290389CE00038F05 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769D290389CE00038F05 /* HomeView.swift */; };
 		D9A976A0290389D700038F05 /* BudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769F290389D700038F05 /* BudgetView.swift */; };
 		D9A976A2290389DD00038F05 /* WishlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A976A1290389DD00038F05 /* WishlistView.swift */; };
@@ -40,6 +41,7 @@
 		51D8C34F29211441002D52F1 /* SavingsChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingsChartView.swift; sourceTree = "<group>"; };
 		51D8C35129211588002D52F1 /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
 		51D8C35329212193002D52F1 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
+		51D8C3552921D492002D52F1 /* MonthOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthOverviewView.swift; sourceTree = "<group>"; };
 		D9A9769D290389CE00038F05 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D9A9769F290389D700038F05 /* BudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetView.swift; sourceTree = "<group>"; };
 		D9A976A1290389DD00038F05 /* WishlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistView.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 		D9E6982D29037D5B0018B4C7 = {
 			isa = PBXGroup;
 			children = (
+				51D8C3552921D492002D52F1 /* MonthOverviewView.swift */,
 				D9E6983829037D5B0018B4C7 /* lemoney */,
 				D9E6983729037D5B0018B4C7 /* Products */,
 			);
@@ -206,6 +209,7 @@
 			files = (
 				514FFF7E2917F4680067C365 /* CategoryManager.swift in Sources */,
 				51D8C348291F346B002D52F1 /* setupView.swift in Sources */,
+				51D8C3562921D492002D52F1 /* MonthOverviewView.swift in Sources */,
 				D9A976A829038BF900038F05 /* Expense.swift in Sources */,
 				517E714B290CC0160088F17E /* AddCategorySheet.swift in Sources */,
 				514FFF83291A0B2A0067C365 /* CurrencyFormatter.swift in Sources */,

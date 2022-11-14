@@ -110,16 +110,11 @@ struct SetupView: View {
                                     
                                     Spacer()
                                     HStack {
-                                        if (isFirstLaunch) {
-                                            TextField("", value: $category.budget, formatter: CurrencyFormatter())
-                                                .onChange(of: userSettings["budgetGoal"]!) { value in
-                                                    category.budget = Double(value)/5.0
-                                                }
-                                                .padding(.horizontal, 4)
-                                        } else {
-                                            TextField("", value: $category.budget, formatter: CurrencyFormatter())
-                                                .padding(.horizontal, 4)
-                                        }
+                                        TextField("", value: $category.budget, formatter: CurrencyFormatter())
+                                            .onChange(of: userSettings["budgetGoal"]!) { value in
+                                                category.budget = Double(value)/5.0
+                                            }
+                                            .padding(.horizontal, 4)
                                     }
                                     .frame(width: 93, height: 30)
                                     .background(Color(.systemGray6))

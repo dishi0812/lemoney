@@ -32,7 +32,7 @@ struct SavingsChartView: View {
                     }
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .frame(width: 350)
+                .frame(width: 300)
                 
                 List {
                     if (type == 0) {
@@ -55,9 +55,8 @@ struct SavingsChartView: View {
                         }
                         
                         PieChart(overview: savings[monthDistribution])
-                        
-                        .frame(height: 300)
-                        .padding(12)
+                            .frame(height: 300)
+                            .padding(12)
                     }
                 }
                 .navigationTitle("Savings")

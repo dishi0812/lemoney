@@ -3,6 +3,7 @@ import SwiftUI
 struct HomeView: View {
     
     @Binding var userSettings: [String:Double]
+    @Binding var overviews: [MonthOverview]
     @Binding var categories: [Category]
     
     var totalSpendings: Double {
@@ -51,14 +52,7 @@ struct HomeView: View {
                         Spacer()
                         
                         NavigationLink {
-                            SavingsChartView(savings: [
-                                MonthOverview(categories: ["Transport": 50.00, "Food": 50.00, "Savings": 100.00], spendings: 100.00, savings: 100.00, month: "Jan"),
-                                MonthOverview(categories: ["Transport": 25.00, "Food": 75.00, "Savings": 160.00], spendings: 100.00, savings: 160.00, month: "Feb"),
-                                MonthOverview(categories: ["Transport": 100.00, "Food": 0.00, "Savings": 120.00], spendings: 100.00, savings: 120.00, month: "Mar"),
-                                MonthOverview(categories: ["Transport": 90.00, "Food": 10.00, "Savings": 200.00], spendings: 100.00, savings: 200.00, month: "Apr"),
-                                MonthOverview(categories: ["Transport": 30.00, "Food": 70.00, "Savings": 180.00], spendings: 100.00, savings: 180.00, month: "May"),
-                                MonthOverview(categories: ["Transport": 30.00, "Food": 70.00, "Savings": 80.00], spendings: 100.00, savings: 80.00, month: "Jun")
-                            ])
+                            SavingsChartView(savings: overviews)
                         } label: {
                             HStack {
                                 Image(systemName: "dollarsign.arrow.circlepath")
@@ -79,12 +73,13 @@ struct HomeView: View {
                             .padding(10)
                         }
                         .background(.white)
+                        .foregroundColor(.black)
                         .cornerRadius(15)
                         
                         Spacer()
                         
                         NavigationLink {
-                            TotalExpenseView(userSettings: $userSettings, categories: $categories)
+                            TotalExpenseView(userSettings: $userSettings, categories: $categories, viewOnly: false)
                         } label: {
                             HStack {
                                 ZStack {
@@ -113,6 +108,7 @@ struct HomeView: View {
                             }
                             .padding(10)
                         }
+                        .foregroundColor(.black)
                         .background(.white)
                         .cornerRadius(15)
                         
@@ -207,7 +203,6 @@ struct HomeView: View {
                     }
                     .padding(.top, -15)
                 }
-                .foregroundColor(.black)
                 .navigationTitle("Home")
             }
             .toolbar {

@@ -4,12 +4,14 @@ struct TotalExpenseView: View {
     
     @Binding var userSettings: [String:Double]
     @Binding var categories: [Category]
+    var viewOnly: Bool
     @State var deleteAlertShown = false
     
     @State var categoryId = UUID()
     @State var expenseId = UUID()
     
     @State var addExpenseSheetShown = false
+    
     
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
@@ -32,33 +34,55 @@ struct TotalExpenseView: View {
             
             List {
                 if (!allExpenses.isEmpty) {
-                    ForEach(allExpenses, id: \.id) { expense in
-                        VStack(alignment: .trailing) {
-                            HStack {
-                                Text(expense.name)
-                                Spacer()
-                                Text("$\(String(format: "%.2f", expense.price))")
+                    if (!viewOnly) {
+                        ForEach(allExpenses, id: \.id) { expense in
+                            VStack(alignment: .trailing) {
+                                HStack {
+                                    Text(expense.name)
+                                    Spacer()
+                                    Text("$\(String(format: "%.2f", expense.price))")
+                                }
+                                HStack {
+                                    Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
+                                        .opacity(0.8)
+                                        .fontWeight(.light)
+                                    
+                                    Spacer()
+                                    Text("\(categories.first(where: { $0.id == expense.categoryId })!.name)")
+                                        .fontWeight(.light)
+                                        .opacity(0.8)
+                                }
                             }
-                            HStack {
-                                Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
-                                    .opacity(0.8)
-                                    .fontWeight(.light)
-                                
-                                Spacer()
-                                Text("\(categories.first(where: { $0.id == expense.categoryId })!.name)")
-                                    .fontWeight(.light)
-                                    .opacity(0.8)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                    categoryId = expense.categoryId
+                                    expenseId = expense.id
+                                    deleteAlertShown = true
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                                .tint(.red)
                             }
                         }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button {
-                                categoryId = expense.categoryId
-                                expenseId = expense.id
-                                deleteAlertShown = true
-                            } label: {
-                                Image(systemName: "trash")
+                    } else {
+                        ForEach(allExpenses, id: \.id) { expense in
+                            VStack(alignment: .trailing) {
+                                HStack {
+                                    Text(expense.name)
+                                    Spacer()
+                                    Text("$\(String(format: "%.2f", expense.price))")
+                                }
+                                HStack {
+                                    Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
+                                        .opacity(0.8)
+                                        .fontWeight(.light)
+                                    
+                                    Spacer()
+                                    Text("\(categories.first(where: { $0.id == expense.categoryId })!.name)")
+                                        .fontWeight(.light)
+                                        .opacity(0.8)
+                                }
                             }
-                            .tint(.red)
                         }
                     }
                 } else {
@@ -73,11 +97,13 @@ struct TotalExpenseView: View {
                     Text("Budget: $\(String(format: "%.2f", userSettings["budgetGoal"]!))")
                         .fontWeight(.semibold)
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        addExpenseSheetShown = true
-                    } label: {
-                        Image(systemName: "plus")
+                if (!viewOnly) {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            addExpenseSheetShown = true
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
             }
