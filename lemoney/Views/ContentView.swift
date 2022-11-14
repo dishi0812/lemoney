@@ -17,7 +17,7 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            HomeView(userSettings: $userSettings, categories: $categoryManager.categories)
+            HomeView(userSettings: $userSettings, categories: $categoryManager.categories, wishlist: $wishlist)
                 .tabItem { Label("Home", systemImage: "house.fill") }
             
             BudgetView(userSettings: $userSettings, categories: $categoryManager.categories)

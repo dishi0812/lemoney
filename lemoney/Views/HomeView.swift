@@ -4,6 +4,7 @@ struct HomeView: View {
     
     @Binding var userSettings: [String:Double]
     @Binding var categories: [Category]
+    @Binding var wishlist: [WishlistItem]
     
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
@@ -12,8 +13,14 @@ struct HomeView: View {
         userSettings["income"]! - totalSpendings
     }
     func progressWidth(itemValue: Double) -> Double {
-        var progressWidth = (userSettings["balance"]! - savings) / 100 * itemValue * 325
-        return progressWidth
+        let width = (userSettings["balance"]! - savings) / itemValue * 325
+        if (width > 325) {
+            return 325
+        } else if (width < 0) {
+            return 0
+        } else {
+            return width
+        }
     }
     
     var body: some View {
@@ -174,25 +181,27 @@ struct HomeView: View {
                         }
                         
                         Section {
-                            VStack {
-                                HStack {
-                                    Text("Draconic Keychain")
-                                    Spacer()
-                                    Text("$50.00")
-                                }
-                                .fontWeight(.semibold)
+                            ForEach(wishlist) { wishlistItem in
+                                VStack {
+                                    HStack {
+                                        Text(wishlistItem.name)
+                                        Spacer()
+                                        Text("$\(String(format: "%.2f", wishlistItem.price))")
+                                    }
+                                    .fontWeight(.semibold)
 
-                                ZStack(alignment: .leading) {
-                                    Rectangle()
-                                        .fill(Color(.systemGray5))
-                                        .frame(width: 325, height: 18)
-                                        .cornerRadius(20)
-                                    Rectangle()
-                                        .fill(.green)
-                                        .frame(width: progressWidth(itemValue: 50), height: 18)
-                                        .cornerRadius(20)
+                                    ZStack(alignment: .leading) {
+                                        Rectangle()
+                                            .fill(Color(.systemGray5))
+                                            .frame(width: 325, height: 18)
+                                            .cornerRadius(20)
+                                        Rectangle()
+                                            .fill(.green)
+                                            .frame(width: progressWidth(itemValue: wishlistItem.price), height: 18)
+                                            .cornerRadius(20)
+                                    }
+                                    .padding(.top, -7)
                                 }
-                                .padding(.top, -7)
                             }
                         } header: {
                             Text("Wants")
