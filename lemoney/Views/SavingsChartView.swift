@@ -14,6 +14,8 @@ struct SavingsChartView: View {
     @State var type = 0
     @State var monthDistribution = 0
     
+    var keys: [String] { Array(savings[monthDistribution].categories.keys) }
+    
     var body: some View {
         ZStack {
             Color(.systemGray6)
@@ -33,9 +35,9 @@ struct SavingsChartView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .frame(width: 300)
-                
-                List {
-                    if (type == 0) {
+            
+                if (type == 0) {
+                    List {
                         Chart {
                             ForEach(savings) { overview in
                                 BarMark(
@@ -47,21 +49,23 @@ struct SavingsChartView: View {
                         }
                         .frame(height: 300)
                         .padding(12)
-                    } else if (type == 1) {
+                    }
+                } else if (type == 1) {
+                    
+                    List {
                         Picker("Month", selection: $monthDistribution) {
                             ForEach(0..<savings.count) { i in
                                 Text("\(savings[i].month)")
                             }
                         }
                         
-                        PieChart(overview: savings[monthDistribution])
-                            .frame(height: 300)
-                            .padding(12)
+                        PieChart(overview: savings[monthDistribution], keys: keys)
+                            .frame(width: 330, height: 330)
                     }
                 }
-                .navigationTitle("Savings")
             }
         }
+        .navigationTitle("Savings")
         .onAppear {
             monthDistribution = savings.count - 1
         }

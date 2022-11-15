@@ -34,7 +34,7 @@ struct BudgetView: View {
                                     } else {
                                         Text("$\(String(format: "%.2f", category.budget - category.spendings))")
                                             .padding(5)
-                                            .background(.green)
+                                            .background(Color("AccentColor"))
                                             .cornerRadius(14)
                                             .foregroundColor(.white)
                                             .fontWeight(.semibold)
@@ -77,7 +77,7 @@ struct BudgetView: View {
                                     } else {
                                         Text("$\(String(format: "%.2f", category.budget - category.spendings))")
                                             .padding(5)
-                                            .background(.green)
+                                            .background(Color("AccentColor"))
                                             .cornerRadius(14)
                                             .foregroundColor(.white)
                                             .fontWeight(.semibold)
@@ -117,7 +117,7 @@ struct BudgetView: View {
                             Text("$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
                                 .fontWeight(.bold)
                                 .padding(5)
-                                .background(.green)
+                                .background(Color("AccentColor"))
                                 .cornerRadius(14)
                                 .foregroundColor(.white)
                                 .fontWeight(.semibold)

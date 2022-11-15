@@ -7,6 +7,9 @@ struct MonthOverviewView: View {
     @Binding var categories: [Category]
     @Binding var userSettings: [String:Double]
     
+    
+    var keys: [String] { Array(overviews[overviews.count - 1].categories.keys) }
+    
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
     }
@@ -95,15 +98,16 @@ struct MonthOverviewView: View {
                     
                     
                     VStack {
-                        List {
-                            PieChart(overview: overviews[overviews.count - 1])
-                                .frame(height: 340)
-                        }
+                        PieChart(overview: overviews[overviews.count - 1], keys: keys)
+                            .frame(width: 350, height: 350)
+                            .padding(.vertical, 20)
                         
                         if (overviews[overviews.count - 1].spendings > userSettings["savingsGoal"]!) {
                             Text("You have overspent this month!")
                                 .foregroundColor(.red)
                                 .font(.footnote)
+                                .padding(.top, 10)
+                                .padding(.bottom, -3)
                         }
                         NavigationLink {
                             SetupView(userSettings: $userSettings, categories: $categories, pageNum: 2, isFirstLaunch: false)

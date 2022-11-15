@@ -22,12 +22,12 @@ struct ContentView: View {
         "balance": 2000.00
     ]
     @State var overviews = [
-        MonthOverview(categories: ["Transport": 50.00, "Food": 50.00, "Savings": 100.00], spendings: 100.00, savings: 100.00, month: "Jan"),
-        MonthOverview(categories: ["Transport": 25.00, "Food": 75.00, "Savings": 160.00], spendings: 100.00, savings: 160.00, month: "Feb"),
-        MonthOverview(categories: ["Transport": 100.00, "Food": 0.00, "Savings": 120.00], spendings: 100.00, savings: 120.00, month: "Mar"),
-        MonthOverview(categories: ["Transport": 90.00, "Food": 10.00, "Savings": 200.00], spendings: 100.00, savings: 200.00, month: "Apr"),
-        MonthOverview(categories: ["Transport": 30.00, "Food": 70.00, "Savings": 180.00], spendings: 100.00, savings: 180.00, month: "May"),
-        MonthOverview(categories: ["Transport": 30.00, "Food": 70.00, "Savings": 80.00], spendings: 100.00, savings: 80.00, month: "Jun")
+        MonthOverview(categories: ["Transport": 50.00, "Food": 50.00, "Savings": 100.00, "Clothes": 60.00, "Stationery": 80.00, "Entertainment": 90.00], savings: 100.00, month: "Jan"),
+        MonthOverview(categories: ["Transport": 25.00, "Food": 75.00, "Savings": 160.00, "Clothes": 90.00, "Stationery": 40.00, "Entertainment": 120.00], savings: 160.00, month: "Feb"),
+        MonthOverview(categories: ["Transport": 100.00, "Food": 0.00, "Savings": 120.00, "Clothes": 25.00, "Stationery": 50.00, "Entertainment": 60.00], savings: 120.00, month: "Mar"),
+        MonthOverview(categories: ["Transport": 90.00, "Food": 10.00, "Savings": 200.00, "Clothes": 53.00, "Stationery": 10.00, "Entertainment": 130.00], savings: 200.00, month: "Apr"),
+        MonthOverview(categories: ["Transport": 30.00, "Food": 70.00, "Savings": 180.00, "Clothes": 30.00, "Stationery": 135.00, "Entertainment": 38.00], savings: 180.00, month: "May"),
+        MonthOverview(categories: ["Transport": 30.00, "Food": 70.00, "Savings": 80.00, "Clothes": 45.00, "Stationery": 23.00, "Entertainment": 8.00], savings: 80.00, month: "Jun")
     ]
     @StateObject var categoryManager = CategoryManager()
     @State var wishlist: [WishlistItem] = []
@@ -87,7 +87,7 @@ struct ContentView: View {
                     if (savings > 0.00) {
                         categoriesDict["Savings"] = savings
                     }
-                    let overview = MonthOverview(categories: categoriesDict, spendings: totalSpendings, savings: savings, month: prevDate.formatted(.dateTime.month()))
+                    let overview = MonthOverview(categories: categoriesDict, savings: savings, month: prevDate.formatted(.dateTime.month()))
                     overviews.append(overview)
                     if (overviews.count > 6) {
                         overviews.remove(at: 0)

@@ -23,7 +23,7 @@ struct PiePiece: Shape {
 
 struct PieChart: View {
     let overview: MonthOverview
-    var keys: [String] { Array(overview.categories.keys) }
+    let keys: [String]
     
     var degrees: [Double] {
         var degreesList: [Double] = [0]
@@ -33,51 +33,52 @@ struct PieChart: View {
         return degreesList
     }
     
-    
     var body: some View {
         ZStack {
-            ForEach(1..<overview.categories.count+1) { i in
+            ForEach(1..<keys.count+1) { i in
                 let currentKey = keys[i-1]
                 let currentValue = overview.categories[currentKey]!
                 
                 let currentDegree = degrees[i]
                 let prevDegree = degrees[i-1]
                 
-                PiePiece(startDegree: prevDegree, endDegree: currentDegree)
-                    .fill(Color(uiColor: UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: 1)))
-                    .zIndex(-100)
+                if (overview.categories.count == 6) {
+                    PiePiece(startDegree: prevDegree, endDegree: currentDegree)
+                        .fill(Color("\(currentKey)"))
+                        .zIndex(-100)
+                } else {
+                    PiePiece(startDegree: prevDegree, endDegree: currentDegree)
+                        .fill(Color(uiColor: UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: 1)))
+                        .zIndex(-100)
+                }
                 
                 if (currentValue != 0) {
                     GeometryReader { geometry in
+                        
+                        let percentage = String(format: "%.1f", currentValue/(overview.spendings + overview.savings)*100)
                         VStack {
                             Text("\(currentKey)")
-                            Text("\(String(format: "%.1f", currentValue/(overview.spendings + overview.savings)*100))%")
-                            Text("$\(String(format: "%.2f", currentValue))")
+                            Text("\(percentage)%")
                         }
-                        .font(.subheadline)
-                        .position(getLabelCoordinate(in: geometry.size, for: currentDegree - (currentDegree-prevDegree)/2))
                         .foregroundColor(.white)
-                        .shadow(radius: 5)
-                        .zIndex(100)
+                        .position(getLabelCoordinate(in: geometry.size, for: currentDegree - (currentDegree-prevDegree)/2, mode: "Text"))
                     }
+                    .zIndex(100)
+                    .font(.caption)
+                    .fontWeight(.bold)
                 }
             }
         }
     }
     
-    private func getLabelCoordinate(in geoSize: CGSize, for degree: Double) -> CGPoint {
+    private func getLabelCoordinate(in geoSize: CGSize, for degree: Double, mode: String) -> CGPoint {
         let center = CGPoint(x: geoSize.width / 2, y: geoSize.height / 2)
-        let radius = geoSize.width / 3
+        
+        let radius = mode == "Text" ? geoSize.width / 3 : geoSize.width / 1.7
         
         let yCoordinate = radius * sin(CGFloat(degree) * (CGFloat.pi / 180))
         let xCoordinate = radius * cos(CGFloat(degree) * (CGFloat.pi / 180))
         
         return CGPoint(x: center.x + xCoordinate, y: center.y + yCoordinate)
-    }
-}
-
-struct PieChart_Previews: PreviewProvider {
-    static var previews: some View {
-        PieChart(overview: MonthOverview(categories: ["Transport": 50.00, "Food": 50.00, "Clothes": 50.00], spendings: 150.00, savings: 100.00, month: "Jan"))
     }
 }

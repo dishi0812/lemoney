@@ -49,7 +49,7 @@ struct HomeView: View {
                                 .cornerRadius(13)
                                 .padding(.bottom, 10)
                             Rectangle()
-                                .fill(.green)
+                                .fill(Color("AccentColor"))
                                 .frame(width: 350 - (totalSpendings/userSettings["budgetGoal"]!*350) < 0 ? 0 : 350 - (totalSpendings/userSettings["budgetGoal"]!*350), height: 25)
                                 .cornerRadius(13)
                                 .padding(.bottom, 10)
@@ -192,7 +192,7 @@ struct HomeView: View {
                                             .frame(width: 325, height: 18)
                                             .cornerRadius(20)
                                         Rectangle()
-                                            .fill(.green)
+                                            .fill(Color("AccentColor"))
                                             .frame(width: progressWidth(itemValue: wishlistItem.price), height: 18)
                                             .cornerRadius(20)
                                     }
