@@ -16,12 +16,12 @@ struct SetupView: View {
     var isFirstLaunch: Bool
     
     @Environment(\.dismiss) var dismiss
-    
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         if (pageNum == 2) {
             ZStack {
-                Color(.systemGray6)
+                Color(colorScheme == .dark ? .black : .systemGray6)
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack(alignment: .leading) {
@@ -37,7 +37,7 @@ struct SetupView: View {
                     VStack {
                         HStack {
                             Text("Monthly Income")
-                                .fontWeight(.medium)
+                                .fontWeight(.medium).foregroundColor(Color(colorScheme == .dark ? .white : .black))
                             
                             Spacer()
                             HStack {
@@ -45,14 +45,14 @@ struct SetupView: View {
                                     .padding(.leading, 3)
                             }
                             .frame(width: 93, height: 30)
-                            .background(Color(.systemGray6))
+                            .background(Color(colorScheme == .dark ? .black : .systemGray6))
                             .fontWeight(.bold)
                             .cornerRadius(8)
                         }
                         
                         HStack {
                             Text("Current Balance")
-                                .fontWeight(.medium)
+                                .fontWeight(.medium).foregroundColor(Color(colorScheme == .dark ? .white : .black))
                             
                             Spacer()
                             HStack {
@@ -60,7 +60,7 @@ struct SetupView: View {
                                     .padding(.leading, 3)
                             }
                             .frame(width: 93, height: 30)
-                            .background(Color(.systemGray6))
+                            .background(Color(colorScheme == .dark ? .black : .systemGray6))
                             .fontWeight(.bold)
                             .cornerRadius(8)
                         }
@@ -68,7 +68,7 @@ struct SetupView: View {
                         
                         HStack {
                             Text("Savings Goal")
-                                .fontWeight(.medium)
+                                .fontWeight(.medium).foregroundColor(Color(colorScheme == .dark ? .white : .black))
                             
                             Spacer()
                             HStack {
@@ -83,14 +83,14 @@ struct SetupView: View {
                                     .padding(.leading, 3)
                             }
                             .frame(width: 93, height: 30)
-                            .background(Color(.systemGray6))
+                            .background(Color(colorScheme == .dark ? .black : .systemGray6))
                             .fontWeight(.bold)
                             .cornerRadius(8)
                         }
                         
                     }
                     .padding(12)
-                    .background(.white)
+                    .background(Color(colorScheme == .dark ? .systemGray6 : .white))
                     .cornerRadius(12)
                     
                     
@@ -117,14 +117,15 @@ struct SetupView: View {
                                             .padding(.horizontal, 4)
                                     }
                                     .frame(width: 93, height: 30)
-                                    .background(Color(.systemGray6))
+                                    .background(Color(colorScheme == .dark ? .black : .systemGray6))
                                     .fontWeight(.bold)
                                     .cornerRadius(8)
                                 }
                             }
                         }
                         .padding(12)
-                        .background(.white)
+                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
+                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
                         .cornerRadius(12)
                     }
                     .padding(.top, 40)
@@ -194,3 +195,4 @@ struct SetupView: View {
         }
     }
 }
+
