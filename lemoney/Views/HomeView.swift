@@ -19,7 +19,6 @@ struct HomeView: View {
     var savings: Double {
         userSettings["income"]! - totalSpendings
     }
-    
     @Environment(\.colorScheme) var colorScheme
     
     func progressWidth(itemValue: Double) -> Double {
@@ -88,7 +87,7 @@ struct HomeView: View {
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
                                     .fontWeight(.medium)
-                                    .foregroundColor(Color(colorScheme == .dark ? .white : .systemGray3))
+                                    .foregroundColor(Color(.systemGray3))
                             }
                             .padding(10)
                         }
@@ -125,6 +124,7 @@ struct HomeView: View {
                                     .font(.title3)
                                     .fontWeight(.medium)
                                     .foregroundColor(Color(colorScheme == .dark ? .white : .systemGray3))
+                                
                             }
                             .padding(10)
                         }
@@ -141,19 +141,23 @@ struct HomeView: View {
                     List {
                         Section {
                             ForEach(needsList) { wishlistItem in
-                                VStack(alignment: .leading) {
-                                    HStack {
-                                        Text(wishlistItem.name)
-                                        Spacer()
-                                        Text("$\(String(format: "%.2f", wishlistItem.price))")
+                                NavigationLink {
+                                    NeedDetailsView()
+                                } label: {
+                                    VStack(alignment: .leading) {
+                                        HStack {
+                                            Text(wishlistItem.name)
+                                            Spacer()
+                                            Text("$\(String(format: "%.2f", wishlistItem.price))")
+                                        }
+                                        .fontWeight(.semibold)
+                                        HStack {
+                                            Text(wishlistItem.date.formatted(.dateTime.day().month().year()))
+                                            Spacer()
+                                            Text(categories.first(where: { $0.id == wishlistItem.categoryId })!.name)
+                                        }
+                                        .fontWeight(.light)
                                     }
-                                    .fontWeight(.semibold)
-                                    HStack {
-                                        Text(wishlistItem.date.formatted(.dateTime.day().month().year()))
-                                        Spacer()
-                                        Text(categories.first(where: { $0.id == wishlistItem.categoryId })!.name)
-                                    }
-                                    .fontWeight(.light)
                                 }
                                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                     Button {

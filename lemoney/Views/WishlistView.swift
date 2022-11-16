@@ -38,21 +38,25 @@ struct WishlistView: View {
                 Section {
                     if (needsList.count > 0) {
                         ForEach(needsList, id: \.id) { need in
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    HStack {
-                                        Text("\(need.name)")
-                                        Spacer()
-                                        Text("$\(String(format: "%.2f", need.price))")
+                            NavigationLink {
+                                NeedDetailsView()
+                            } label: {
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        HStack {
+                                            Text("\(need.name)")
+                                            Spacer()
+                                            Text("$\(String(format: "%.2f", need.price))")
+                                        }
+                                        .fontWeight(.semibold)
+                                        
+                                        HStack {
+                                            Text("\(need.date.formatted(.dateTime.day().month().year()))")
+                                            Spacer()
+                                            Text("\(categories.first(where: {$0.id == need.categoryId})!.name)")
+                                        }
+                                        .fontWeight(.light)
                                     }
-                                    .fontWeight(.semibold)
-                                    
-                                    HStack {
-                                        Text("\(need.date.formatted(.dateTime.day().month().year()))")
-                                        Spacer()
-                                        Text("\(categories.first(where: {$0.id == need.categoryId})!.name)")
-                                    }
-                                    .fontWeight(.light)
                                 }
                             }
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -101,10 +105,9 @@ struct WishlistView: View {
                                 HStack {
                                     Text("\(want.name)")
                                     Spacer()
-                                    Text("$\(String(format: "%.2f", want.price))")
+                                    Text("\(String(format: "%.2f", want.price))")
                                 }
                                 .fontWeight(.semibold)
-                                
                                 ZStack(alignment: .leading) {
                                     Rectangle()
                                         .fill(Color(.systemGray5))
@@ -171,4 +174,3 @@ struct WishlistView: View {
         }
     }
 }
-

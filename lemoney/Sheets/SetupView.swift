@@ -90,7 +90,7 @@ struct SetupView: View {
                         
                     }
                     .padding(12)
-                    .background(Color(colorScheme == .dark ? .black : .white))
+                    .background(Color(colorScheme == .dark ? .systemGray5 : .white))
                     .cornerRadius(12)
                     
                     VStack {
@@ -124,7 +124,7 @@ struct SetupView: View {
                         }
                         .padding(12)
                         .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .black : .white))
+                        .background(Color(colorScheme == .dark ? .systemGray5 : .white))
                         .cornerRadius(12)
                     }
                     .padding(.top, 40)
