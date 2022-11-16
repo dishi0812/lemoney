@@ -20,8 +20,6 @@ struct HomeView: View {
         userSettings["income"]! - totalSpendings
     }
     
-    @Environment(\.colorScheme) var colorScheme
-    
     func progressWidth(itemValue: Double) -> Double {
         let width = savings >= 0 ? (userSettings["balance"]! - savings) / itemValue * 325 : userSettings["balance"]! / itemValue * 325
         if (width > 325) {
@@ -36,7 +34,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(colorScheme == .dark ? .black : .systemGray6)
+                Color(.systemGray6)
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
@@ -88,12 +86,12 @@ struct HomeView: View {
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
                                     .fontWeight(.medium)
-                                    .foregroundColor(Color(colorScheme == .dark ? .white : .systemGray3))
+                                    .foregroundColor(Color(.systemGray3))
                             }
                             .padding(10)
                         }
-                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
+                        .background(.white)
+                        .foregroundColor(.black)
                         .cornerRadius(15)
                         
                         Spacer()
@@ -124,12 +122,12 @@ struct HomeView: View {
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
                                     .fontWeight(.medium)
-                                    .foregroundColor(Color(colorScheme == .dark ? .white : .systemGray3))
+                                    .foregroundColor(Color(.systemGray3))
                             }
                             .padding(10)
                         }
-                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
+                        .foregroundColor(.black)
+                        .background(.white)
                         .cornerRadius(15)
                         
                         Spacer()
@@ -141,19 +139,23 @@ struct HomeView: View {
                     List {
                         Section {
                             ForEach(needsList) { wishlistItem in
-                                VStack(alignment: .leading) {
-                                    HStack {
-                                        Text(wishlistItem.name)
-                                        Spacer()
-                                        Text("$\(String(format: "%.2f", wishlistItem.price))")
+                                NavigationLink {
+                                    NeedDetailsView()
+                                } label: {
+                                    VStack(alignment: .leading) {
+                                        HStack {
+                                            Text(wishlistItem.name)
+                                            Spacer()
+                                            Text("$\(String(format: "%.2f", wishlistItem.price))")
+                                        }
+                                        .fontWeight(.semibold)
+                                        HStack {
+                                            Text(wishlistItem.date.formatted(.dateTime.day().month().year()))
+                                            Spacer()
+                                            Text(categories.first(where: { $0.id == wishlistItem.categoryId })!.name)
+                                        }
+                                        .fontWeight(.light)
                                     }
-                                    .fontWeight(.semibold)
-                                    HStack {
-                                        Text(wishlistItem.date.formatted(.dateTime.day().month().year()))
-                                        Spacer()
-                                        Text(categories.first(where: { $0.id == wishlistItem.categoryId })!.name)
-                                    }
-                                    .fontWeight(.light)
                                 }
                                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                     Button {
