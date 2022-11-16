@@ -7,14 +7,18 @@ struct HomeView: View {
     @Binding var categories: [Category]
     @Binding var wishlist: [WishlistItem]
     
+    var needsList: [WishlistItem] { wishlist.filter { $0.type == .need } }
+    var wantsList: [WishlistItem] { wishlist.filter { $0.type == .want } }
+    
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
     }
     var savings: Double {
         userSettings["income"]! - totalSpendings
     }
+    
     func progressWidth(itemValue: Double) -> Double {
-        let width = (userSettings["balance"]! - savings) / itemValue * 325
+        let width = savings >= 0 ? (userSettings["balance"]! - savings) / itemValue * 325 : userSettings["balance"]! / itemValue * 325
         if (width > 325) {
             return 325
         } else if (width < 0) {
@@ -177,7 +181,7 @@ struct HomeView: View {
                         }
                         
                         Section {
-                            ForEach(wishlist) { wishlistItem in
+                            ForEach(wantsList) { wishlistItem in
                                 VStack {
                                     HStack {
                                         Text(wishlistItem.name)

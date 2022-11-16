@@ -9,6 +9,7 @@ struct WishlistView: View {
     
     var needsList: [WishlistItem] { wishlist.filter { $0.type == .need } }
     var wantsList: [WishlistItem] { wishlist.filter { $0.type == .want } }
+    
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
     }
@@ -21,7 +22,7 @@ struct WishlistView: View {
     @State var deleteId = UUID()
     
     func progressWidth(itemValue: Double) -> Double {
-        let width = (userSettings["balance"]! - savings) / itemValue * 325
+        let width = savings >= 0 ? (userSettings["balance"]! - savings) / itemValue * 325 : userSettings["balance"]! / itemValue * 325
         if (width > 325) {
             return 325
         } else if (width < 0) {
