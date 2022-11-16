@@ -135,35 +135,21 @@ struct HomeView: View {
                     // wishlist
                     List {
                         Section {
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text("Premium Soy Sauce")
-                                    Spacer()
-                                    Text("$123.00")
+                            ForEach(needsList) { wishlistItem in
+                                VStack(alignment: .leading) {
+                                    HStack {
+                                        Text(wishlistItem.name)
+                                        Spacer()
+                                        Text("$\(String(format: "%.2f", wishlistItem.price))")
+                                    }
+                                    .fontWeight(.semibold)
+                                    HStack {
+                                        Text(wishlistItem.date.formatted(.dateTime.day().month().year()))
+                                        Spacer()
+                                        Text(categories.first(where: { $0.id == wishlistItem.categoryId })!.name)
+                                    }
+                                    .fontWeight(.light)
                                 }
-                                .fontWeight(.semibold)
-                                
-                                HStack {
-                                    Text("2 Nov 2022")
-                                    Spacer()
-                                    Text("Food")
-                                }
-                                .fontWeight(.light)
-                            }
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text("Defective Sidewalk")
-                                    Spacer()
-                                    Text("$280.00")
-                                }
-                                .fontWeight(.semibold)
-                                
-                                HStack {
-                                    Text("13 Nov 2022")
-                                    Spacer()
-                                    Text("Transport")
-                                }
-                                .fontWeight(.light)
                             }
                         } header: {
                             Text("Remember to Buy")
