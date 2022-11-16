@@ -2,6 +2,9 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @State var needBoughtAlertShown = false
+    @State var wishlistItemId = UUID()
+
     @Binding var userSettings: [String:Double]
     @Binding var overviews: [MonthOverview]
     @Binding var categories: [Category]
@@ -16,8 +19,6 @@ struct HomeView: View {
     var savings: Double {
         userSettings["income"]! - totalSpendings
     }
-    
-    @Environment(\.colorScheme) var colorScheme
     
     func progressWidth(itemValue: Double) -> Double {
         let width = savings >= 0 ? (userSettings["balance"]! - savings) / itemValue * 325 : userSettings["balance"]! / itemValue * 325
@@ -85,12 +86,12 @@ struct HomeView: View {
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
                                     .fontWeight(.medium)
-                                    .foregroundColor(Color(colorScheme == .dark ? .white : .systemGray3))
+                                    .foregroundColor(Color(.systemGray3))
                             }
                             .padding(10)
                         }
-                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
+                        .background(.white)
+                        .foregroundColor(.black)
                         .cornerRadius(15)
                         
                         Spacer()
@@ -117,15 +118,16 @@ struct HomeView: View {
                                     Text("$\(String(format: "%.2f", totalSpendings))").fontWeight(.bold)
                                     Text("Spent").fontWeight(.semibold)
                                 }
+                                
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
                                     .fontWeight(.medium)
-                                    .foregroundColor(Color(colorScheme == .dark ? .white : .systemGray3))
+                                    .foregroundColor(Color(.systemGray3))
                             }
                             .padding(10)
                         }
-                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
+                        .foregroundColor(.black)
+                        .background(.white)
                         .cornerRadius(15)
                         
                         Spacer()
@@ -151,6 +153,15 @@ struct HomeView: View {
                                     }
                                     .fontWeight(.light)
                                 }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    Button {
+                                        wishlistItemId = wishlistItem.id
+                                        needBoughtAlertShown = true
+                                    } label: {
+                                        Image(systemName: "checkmark")
+                                    }
+                                    .tint(.green)
+                                }
                             }
                         } header: {
                             Text("Remember to Buy")
@@ -158,15 +169,6 @@ struct HomeView: View {
                                 .textCase(.none)
                                 .fontWeight(.bold)
                         }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button {
-                                
-                            } label: {
-                                Image(systemName: "checkmark")
-                            }
-                            .tint(.green)
-                        }
-                        
                         Section {
                             ForEach(wantsList) { wishlistItem in
                                 VStack {
@@ -196,14 +198,6 @@ struct HomeView: View {
                                 .textCase(.none)
                                 .fontWeight(.bold)
                         }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button {
-                                
-                            } label: {
-                                Image(systemName: "checkmark")
-                            }
-                            .tint(.green)
-                        }
                     }
                     .padding(.top, -15)
                 }
@@ -228,6 +222,18 @@ struct HomeView: View {
                 }
             }
         }
+        .alert("Do you want to use your previous months' savings or your current budget to purchase this item?", isPresented: $needBoughtAlertShown) {
+            Button("Previous Savings") {
+                userSettings["balance"] = userSettings["balance"]! - needsList.first(where: {$0.id == wishlistItemId})!.price
+                wishlist = wishlist.filter {$0.id != wishlistItemId}
+            }
+            Button("Current Budget") {
+                userSettings["budgetGoal"] = userSettings["budgetGoal"]! - needsList.first(where: { $0.id == wishlistItemId })!.price
+                wishlist = wishlist.filter {$0.id != wishlistItemId}
+            }
+            Button("Cancel", role: .cancel) {
+                
+            }
+        }
     }
 }
-
