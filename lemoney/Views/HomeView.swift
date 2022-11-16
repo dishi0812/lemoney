@@ -33,7 +33,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(colorScheme == .dark ? .black : .systemGray6)
+                Color(.systemGray6)
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {

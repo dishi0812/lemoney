@@ -21,7 +21,7 @@ struct SetupView: View {
     var body: some View {
         if (pageNum == 2) {
             ZStack {
-                Color(colorScheme == .dark ? .black : .systemGray6)
+                Color(.systemGray6)
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack(alignment: .leading) {
@@ -45,7 +45,7 @@ struct SetupView: View {
                                     .padding(.leading, 3)
                             }
                             .frame(width: 93, height: 30)
-                            .background(Color(colorScheme == .dark ? .black : .systemGray6))
+                            .background(Color(.systemGray6))
                             .fontWeight(.bold)
                             .cornerRadius(8)
                         }
@@ -60,7 +60,7 @@ struct SetupView: View {
                                     .padding(.leading, 3)
                             }
                             .frame(width: 93, height: 30)
-                            .background(Color(colorScheme == .dark ? .black : .systemGray6))
+                            .background(Color(.systemGray6))
                             .fontWeight(.bold)
                             .cornerRadius(8)
                         }
@@ -83,16 +83,15 @@ struct SetupView: View {
                                     .padding(.leading, 3)
                             }
                             .frame(width: 93, height: 30)
-                            .background(Color(colorScheme == .dark ? .black : .systemGray6))
+                            .background(Color(.systemGray6))
                             .fontWeight(.bold)
                             .cornerRadius(8)
                         }
                         
                     }
                     .padding(12)
-                    .background(Color(colorScheme == .dark ? .systemGray6 : .white))
+                    .background(Color(colorScheme == .dark ? .black : .white))
                     .cornerRadius(12)
-                    
                     
                     VStack {
                         VStack {
@@ -117,7 +116,7 @@ struct SetupView: View {
                                             .padding(.horizontal, 4)
                                     }
                                     .frame(width: 93, height: 30)
-                                    .background(Color(colorScheme == .dark ? .black : .systemGray6))
+                                    .background(Color(.systemGray6))
                                     .fontWeight(.bold)
                                     .cornerRadius(8)
                                 }
@@ -125,7 +124,7 @@ struct SetupView: View {
                         }
                         .padding(12)
                         .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
+                        .background(Color(colorScheme == .dark ? .black : .white))
                         .cornerRadius(12)
                     }
                     .padding(.top, 40)
