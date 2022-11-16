@@ -78,7 +78,7 @@ struct WishlistView: View {
                     }
                 } header: {
                     HStack {
-                        Text("Needs").foregroundColor(.black)
+                        Text("Needs")
                             .font(.title2)
                             .textCase(.none)
                             .fontWeight(.bold)
@@ -140,7 +140,7 @@ struct WishlistView: View {
                     }
                 } header: {
                     HStack {
-                        Text("Wants").foregroundColor(.black)
+                        Text("Wants")
                             .font(.title2)
                             .textCase(.none)
                             .fontWeight(.bold)

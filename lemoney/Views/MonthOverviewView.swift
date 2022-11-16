@@ -18,6 +18,7 @@ struct MonthOverviewView: View {
     }
     
     @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         
@@ -47,12 +48,12 @@ struct MonthOverviewView: View {
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
                                     .fontWeight(.medium)
-                                    .foregroundColor(Color(.systemGray3))
+                                    .foregroundColor(Color(colorScheme == .dark ? .white : .systemGray3))
                             }
                             .padding(10)
                         }
-                        .background(.white)
-                        .foregroundColor(.black)
+                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
+                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
                         .cornerRadius(15)
                         
                         Spacer()
@@ -83,12 +84,12 @@ struct MonthOverviewView: View {
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
                                     .fontWeight(.medium)
-                                    .foregroundColor(Color(.systemGray3))
+                                    .foregroundColor(Color(colorScheme == .dark ? .white : .systemGray3))
                             }
                             .padding(10)
                         }
-                        .foregroundColor(.black)
-                        .background(.white)
+                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
+                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
                         .cornerRadius(15)
                         
                         Spacer()

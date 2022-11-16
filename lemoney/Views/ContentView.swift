@@ -33,7 +33,8 @@ struct ContentView: View {
     @State var wishlist: [WishlistItem] = []
     
     @AppStorage("prevLaunchDate") var prevDate: Date = Date()
-    
+
+    @Environment(\.colorScheme) var colorScheme
     
     var totalSpendings: Double {
         categoryManager.categories.reduce(0) { $0 + $1.spendings }
