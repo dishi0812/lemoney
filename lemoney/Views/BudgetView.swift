@@ -7,7 +7,7 @@ struct BudgetView: View {
     @State var selectedCategory = Int()
     
     @State var addExpenseSheetShown = false
-    @State var addCategorySheetShown = false
+//    @State var addCategorySheetShown = false
     @State var categoryId = UUID()
     @State var deleteAlertShown = false
     
@@ -16,83 +16,38 @@ struct BudgetView: View {
             List {
                 Section {
                     ForEach($categories) { $category in
-                        if (!category.isStartingCategory) {
-                            NavigationLink {
-                                ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, userSettings: $userSettings, categories: $categories)
+                        NavigationLink {
+                            ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, userSettings: $userSettings, categories: $categories)
+                        } label: {
+                            HStack {
+                                Text(category.name)
+                                Spacer()
+                                
+                                if (category.spendings > category.budget) {
+                                    Text("$\(String(format: "%.2f", category.spendings - category.budget))")
+                                        .padding(5)
+                                        .background(.red)
+                                        .cornerRadius(14)
+                                        .foregroundColor(.white)
+                                        .fontWeight(.semibold)
+                                } else {
+                                    Text("$\(String(format: "%.2f", category.budget - category.spendings))")
+                                        .padding(5)
+                                        .background(Color("AccentColor"))
+                                        .cornerRadius(14)
+                                        .foregroundColor(.white)
+                                        .fontWeight(.semibold)
+                                }
+                            }
+                        }
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button {
+                                selectedCategory = categories.firstIndex(where: {$0.id == category.id})!
+                                addExpenseSheetShown = true
                             } label: {
-                                HStack {
-                                    Text(category.name)
-                                    Spacer()
-                                    
-                                    if (category.budget - category.spendings <= 0.00) {
-                                        Text("$\(String(format: "%.2f", category.spendings - category.budget))")
-                                            .padding(5)
-                                            .background(.red)
-                                            .cornerRadius(14)
-                                            .foregroundColor(.white)
-                                            .fontWeight(.semibold)
-                                    } else {
-                                        Text("$\(String(format: "%.2f", category.budget - category.spendings))")
-                                            .padding(5)
-                                            .background(Color("AccentColor"))
-                                            .cornerRadius(14)
-                                            .foregroundColor(.white)
-                                            .fontWeight(.semibold)
-                                    }
-                                }
+                                Image(systemName: "plus")
                             }
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button {
-                                    selectedCategory = categories.firstIndex(where: {$0.id == category.id})!
-                                    addExpenseSheetShown = true
-                                } label: {
-                                    Image(systemName: "plus")
-                                }
-                                .tint(.green)
-                            }
-                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                                Button {
-                                    categoryId = category.id
-                                    deleteAlertShown = true
-                                } label: {
-                                    Image(systemName: "trash")
-                                }
-                                .tint(.red)
-                            }
-                        } else {
-                            NavigationLink {
-                                ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, userSettings: $userSettings, categories: $categories)
-                            } label: {
-                                HStack {
-                                    Text(category.name)
-                                    Spacer()
-                                    
-                                    if (category.budget - category.spendings <= 0.00) {
-                                        Text("$\(String(format: "%.2f", category.spendings - category.budget))")
-                                            .padding(5)
-                                            .background(.red)
-                                            .cornerRadius(14)
-                                            .foregroundColor(.white)
-                                            .fontWeight(.semibold)
-                                    } else {
-                                        Text("$\(String(format: "%.2f", category.budget - category.spendings))")
-                                            .padding(5)
-                                            .background(Color("AccentColor"))
-                                            .cornerRadius(14)
-                                            .foregroundColor(.white)
-                                            .fontWeight(.semibold)
-                                    }
-                                }
-                            }
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button {
-                                    selectedCategory = categories.firstIndex(where: {$0.id == category.id})!
-                                    addExpenseSheetShown = true
-                                } label: {
-                                    Image(systemName: "plus")
-                                }
-                                .tint(.green)
-                            }
+                            .tint(.green)
                         }
                     }
                     .onMove { indices, newOffset in
@@ -109,7 +64,7 @@ struct BudgetView: View {
                             Text("-$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
                                 .fontWeight(.bold)
                                 .padding(5)
-                                .background(.red)
+                                .background(Color("AccentColor"))
                                 .cornerRadius(14)
                                 .foregroundColor(.white)
                                 .fontWeight(.semibold)
@@ -128,16 +83,13 @@ struct BudgetView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
-                        Button {
-                            selectedCategory = 0
-                            addExpenseSheetShown = true
-                        } label: {
-                            Text("Expense")
-                        }
-                        Button {
-                            addCategorySheetShown = true
-                        } label: {
-                            Text("Category")
+                        ForEach(categories) { category in
+                            Button {
+                                selectedCategory = categories.firstIndex(where: {$0.id == category.id})!
+                                addExpenseSheetShown = true
+                            } label: {
+                                Text("\(category.name)")
+                            }
                         }
                     } label: {
                         Image(systemName: "plus")
@@ -152,9 +104,9 @@ struct BudgetView: View {
         .sheet(isPresented: $addExpenseSheetShown) {
             AddExpenseSheet(categoryIndex: selectedCategory, userSettings: $userSettings, categories: $categories)
         }
-        .sheet(isPresented: $addCategorySheetShown) {
-            AddCategorySheet(userSettings: $userSettings, categories: $categories)
-        }
+//        .sheet(isPresented: $addCategorySheetShown) {
+//            AddCategorySheet(userSettings: $userSettings, categories: $categories)
+//        }
         .alert("Are you sure you want to delete this category?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
                 categories = categories.filter {$0.id != categoryId}

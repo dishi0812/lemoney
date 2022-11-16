@@ -72,7 +72,7 @@ struct HomeView: View {
                         Spacer()
                         
                         NavigationLink {
-                            SavingsChartView(savings: overviews)
+                            SavingsChartView(overviews: overviews)
                         } label: {
                             HStack {
                                 Image(systemName: "dollarsign.arrow.circlepath")

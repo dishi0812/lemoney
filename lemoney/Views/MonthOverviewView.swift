@@ -32,7 +32,7 @@ struct MonthOverviewView: View {
                         Spacer()
                         
                         NavigationLink {
-                            SavingsChartView(savings: overviews)
+                            SavingsChartView(overviews: overviews)
                         } label: {
                             HStack {
                                 Image(systemName: "dollarsign.arrow.circlepath")
@@ -95,13 +95,54 @@ struct MonthOverviewView: View {
                         Spacer()
                     }
                     .padding(15)
-                    .padding(.bottom, -20)
+                    .padding(.bottom, -10)
                     
                     
                     VStack {
-                        PieChart(overview: overviews[overviews.count - 1], keys: keys)
-                            .frame(width: 350, height: 350)
-                            .padding(.vertical, 20)
+                        List {
+                            Section {
+                                VStack {
+                                    PieChart(overview: overviews[overviews.count - 1], keys: keys)
+                                        .frame(width: 340, height: 340)
+                                    
+                                    VStack {
+                                        Text("Swipe Up for Details")
+                                            .font(.caption)
+                                            .padding(.bottom, 5)
+                                        Image(systemName: "chevron.down")
+                                            .font(.subheadline)
+                                    }
+                                    .opacity(0.5)
+                                }
+                            }
+                            Section {
+                                ForEach(categories, id: \.id) { category in
+                                    let isOverBudget = category.spendings > category.budget
+                                    HStack {
+                                        Text(category.name)
+                                        Spacer()
+                                        Text("$\(String(format: "%.2f", category.spendings))")
+                                            .fontWeight(.bold)
+                                            .padding(5)
+                                            .background(isOverBudget ? .red : Color("AccentColor"))
+                                            .cornerRadius(14)
+                                            .foregroundColor(.white)
+                                            .fontWeight(.semibold)
+                                    }
+                                }
+                            }
+                            Section {
+                                HStack {
+                                    Text("Total Spendings")
+                                        .fontWeight(.bold)
+                                    Spacer()
+                                    Text("$\(String(format: "%.2f", overviews[overviews.count-1].spendings))")
+                                        .fontWeight(.black)
+                                }
+                            }
+                        }
+                        
+                        Spacer()
                         
                         if (overviews[overviews.count - 1].spendings > userSettings["savingsGoal"]!) {
                             Text("You have overspent this month!")
@@ -115,15 +156,13 @@ struct MonthOverviewView: View {
                         } label: {
                             Text("Update Goals")
                                 .padding(12)
-                                .background(.green)
+                                .background(Color("AccentColor"))
                                 .foregroundColor(.white)
                                 .fontWeight(.bold)
                                 .font(.headline)
                                 .cornerRadius(25)
                         }
                     }
-                    
-                    Spacer()
                     
                     Button {
                         userSettings["balance"]! += userSettings["income"]!
@@ -135,14 +174,14 @@ struct MonthOverviewView: View {
                         Text("Continue")
                             .frame(width: 320)
                             .padding(12)
-                            .background(.green)
+                            .background(Color("AccentColor"))
                             .foregroundColor(.white)
                             .fontWeight(.bold)
                             .font(.headline)
                             .cornerRadius(10)
                     }
-                    .padding(.top, 35)
-                    .navigationTitle("Month Overview (\(month.formatted(.dateTime.month())))")
+                    .padding(.top, 5)
+                    .navigationTitle("Month Overview")
                 }
                 .interactiveDismissDisabled()
             }

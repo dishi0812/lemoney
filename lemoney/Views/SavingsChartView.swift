@@ -10,11 +10,11 @@ import Charts
 
 struct SavingsChartView: View {
     
-    @State var savings: [MonthOverview]
+    @State var overviews: [MonthOverview]
     @State var type = 0
     @State var monthDistribution = 0
     
-    var keys: [String] { Array(savings[monthDistribution].categories.keys) }
+    var keys: [String] { Array(overviews[monthDistribution].categories.keys) }
     
     var body: some View {
         ZStack {
@@ -39,7 +39,7 @@ struct SavingsChartView: View {
                 if (type == 0) {
                     List {
                         Chart {
-                            ForEach(savings) { overview in
+                            ForEach(overviews) { overview in
                                 BarMark(
                                     x: .value("Month", overview.month),
                                     y: .value("Savings", overview.savings)
@@ -51,23 +51,43 @@ struct SavingsChartView: View {
                         .padding(12)
                     }
                 } else if (type == 1) {
-                    
                     List {
-                        Picker("Month", selection: $monthDistribution) {
-                            ForEach(0..<savings.count) { i in
-                                Text("\(savings[i].month)")
+                        Section {
+                            Picker("Month", selection: $monthDistribution) {
+                                ForEach(0..<overviews.count) { i in
+                                    Text("\(overviews[i].month)")
+                                }
+                            }
+                            
+                            PieChart(overview: overviews[monthDistribution], keys: keys)
+                                .frame(width: 330, height: 330)
+                        }
+                        Section {
+                            ForEach(Array(overviews[monthDistribution].categories.keys), id: \.self) { key in
+                                HStack {
+                                    Text(key)
+                                    Spacer()
+                                    Text("$\(String(format: "%.2f", overviews[monthDistribution].categories[key]!))")
+                                        .fontWeight(.bold)
+                                }
                             }
                         }
-                        
-                        PieChart(overview: savings[monthDistribution], keys: keys)
-                            .frame(width: 330, height: 330)
+                        Section {
+                            HStack {
+                                Text("Total Spendings")
+                                    .fontWeight(.bold)
+                                Spacer()
+                                Text("$\(String(format: "%.2f", overviews[monthDistribution].spendings))")
+                                    .fontWeight(.black)
+                            }
+                        }
                     }
                 }
             }
         }
         .navigationTitle("Savings")
         .onAppear {
-            monthDistribution = savings.count - 1
+            monthDistribution = overviews.count - 1
         }
     }
 }
