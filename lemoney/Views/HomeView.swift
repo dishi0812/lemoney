@@ -20,6 +20,8 @@ struct HomeView: View {
         userSettings["income"]! - totalSpendings
     }
     
+    @Environment(\.colorScheme) var colorScheme
+    
     func progressWidth(itemValue: Double) -> Double {
         let width = savings >= 0 ? (userSettings["balance"]! - savings) / itemValue * 325 : userSettings["balance"]! / itemValue * 325
         if (width > 325) {
@@ -34,7 +36,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(.systemGray6)
+                Color(colorScheme == .dark ? .black : .systemGray6)
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
@@ -86,12 +88,12 @@ struct HomeView: View {
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
                                     .fontWeight(.medium)
-                                    .foregroundColor(Color(.systemGray3))
+                                    .foregroundColor(Color(colorScheme == .dark ? .white : .systemGray3))
                             }
                             .padding(10)
                         }
-                        .background(.white)
-                        .foregroundColor(.black)
+                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
+                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
                         .cornerRadius(15)
                         
                         Spacer()
@@ -122,12 +124,12 @@ struct HomeView: View {
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
                                     .fontWeight(.medium)
-                                    .foregroundColor(Color(.systemGray3))
+                                    .foregroundColor(Color(colorScheme == .dark ? .white : .systemGray3))
                             }
                             .padding(10)
                         }
-                        .foregroundColor(.black)
-                        .background(.white)
+                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
+                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
                         .cornerRadius(15)
                         
                         Spacer()
