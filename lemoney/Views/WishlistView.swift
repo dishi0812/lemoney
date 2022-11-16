@@ -55,15 +55,6 @@ struct WishlistView: View {
                                     .fontWeight(.light)
                                 }
                             }
-                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                                Button {
-                                    deleteId = need.id
-                                    deleteAlertShown = true
-                                } label: {
-                                    Image(systemName: "trash")
-                                }
-                                .tint(.red)
-                            }
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button {
                                     
@@ -71,6 +62,15 @@ struct WishlistView: View {
                                     Image(systemName: "checkmark")
                                 }
                                 .tint(.green)
+                            }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                    deleteId = need.id
+                                    deleteAlertShown = true
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                                .tint(.red)
                             }
                         }
                     } else {
@@ -104,7 +104,7 @@ struct WishlistView: View {
                                     Text("\(String(format: "%.2f", want.price))")
                                 }
                                 .fontWeight(.semibold)
-
+                                
                                 ZStack(alignment: .leading) {
                                     Rectangle()
                                         .fill(Color(.systemGray5))
@@ -117,7 +117,15 @@ struct WishlistView: View {
                                 }
                                 .padding(.top, -7)
                             }
-                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                    
+                                } label: {
+                                    Image(systemName: "checkmark")
+                                }
+                                .tint(.green)
+                            }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button {
                                     deleteId = want.id
                                     deleteAlertShown = true
@@ -125,14 +133,6 @@ struct WishlistView: View {
                                     Image(systemName: "trash")
                                 }
                                 .tint(.red)
-                            }
-                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                                Button {
-                                    
-                                } label: {
-                                    Image(systemName: "checkmark")
-                                }
-                                .tint(.green)
                             }
                         }
                     } else {
