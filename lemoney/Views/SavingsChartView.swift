@@ -14,6 +14,9 @@ struct SavingsChartView: View {
     @State var type = 0
     @State var monthDistribution = 0
     
+    let savings: Double
+    let savingsThisMonth: Double
+    
     var keys: [String] { Array(overviews[monthDistribution].categories.keys) }
     
     var body: some View {
@@ -38,18 +41,41 @@ struct SavingsChartView: View {
             
                 if (type == 0) {
                     List {
-                        Chart {
-                            ForEach(overviews) { overview in
-                                BarMark(
-                                    x: .value("Month", overview.month),
-                                    y: .value("Savings", overview.savings)
-                                )
-                                .annotation { Text("$\(String(format: "%.2f", overview.savings))").font(.caption) }
+                        Section {
+                            Chart {
+                                ForEach(overviews) { overview in
+                                    BarMark(
+                                        x: .value("Month", overview.month),
+                                        y: .value("Savings", overview.savings)
+                                    )
+                                    .annotation { Text("$\(String(format: "%.2f", overview.savings))").font(.caption) }
+                                }
+                            }
+                            .frame(height: 300)
+                            .padding(12)
+                        }
+                        
+                        Section {
+                            HStack {
+                                Text("Current Savings")
+                                    .fontWeight(.bold)
+                                Spacer()
+                                Text("$\(String(format: "%.2f", savings))")
+                                    .fontWeight(.black)
                             }
                         }
-                        .frame(height: 300)
-                        .padding(12)
+                        Section {
+                            HStack {
+                                Text("Savings This Month")
+                                    .fontWeight(.bold)
+                                Spacer()
+                                Text("$\(String(format: "%.2f", savingsThisMonth))")
+                                    .fontWeight(.black)
+                            }
+                        }
                     }
+                    .scrollContentBackground(.hidden)
+                    .background(Color(.systemGray6))
                 } else if (type == 1) {
                     List {
                         Section {
@@ -64,11 +90,13 @@ struct SavingsChartView: View {
                         }
                         Section {
                             ForEach(Array(overviews[monthDistribution].categories.keys), id: \.self) { key in
-                                HStack {
-                                    Text(key)
-                                    Spacer()
-                                    Text("$\(String(format: "%.2f", overviews[monthDistribution].categories[key]!))")
-                                        .fontWeight(.bold)
+                                if (key != "Savings") {
+                                    HStack {
+                                        Text(key)
+                                        Spacer()
+                                        Text("$\(String(format: "%.2f", overviews[monthDistribution].categories[key]!))")
+                                            .fontWeight(.bold)
+                                    }
                                 }
                             }
                         }
@@ -82,6 +110,8 @@ struct SavingsChartView: View {
                             }
                         }
                     }
+                    .scrollContentBackground(.hidden)
+                    .background(Color(.systemGray6))
                 }
             }
         }

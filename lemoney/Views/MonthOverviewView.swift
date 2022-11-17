@@ -32,7 +32,7 @@ struct MonthOverviewView: View {
                         Spacer()
                         
                         NavigationLink {
-                            SavingsChartView(overviews: overviews)
+                            SavingsChartView(overviews: overviews, savings: savings >= 0 ? (userSettings["balance"]! - savings) : userSettings["balance"]!, savingsThisMonth: savings)
                         } label: {
                             HStack {
                                 Image(systemName: "dollarsign.arrow.circlepath")
@@ -53,7 +53,7 @@ struct MonthOverviewView: View {
                             .padding(10)
                         }
                         .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
+                        .background(Color(colorScheme == .dark ? .systemGray5 : .white))
                         .cornerRadius(15)
                         
                         Spacer()
@@ -89,7 +89,7 @@ struct MonthOverviewView: View {
                             .padding(10)
                         }
                         .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
+                        .background(Color(colorScheme == .dark ? .systemGray5 : .white))
                         .cornerRadius(15)
                         
                         Spacer()

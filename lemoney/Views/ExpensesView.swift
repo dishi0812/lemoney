@@ -10,6 +10,8 @@ struct ExpensesView: View {
     
     @State var addExpenseSheetShown = false
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         VStack {
             HStack {
@@ -48,12 +50,16 @@ struct ExpensesView: View {
                             }
                             .tint(.red)
                         }
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray6) : .white)
                     }
                 } else {
                     Text("No Expenses")
                         .font(.subheadline)
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray6) : .white)
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(colorScheme == .dark ? Color(.systemGray6) : .white)
             .navigationTitle(categories[category].name)
             .listStyle(.plain)
             .toolbar {
@@ -83,5 +89,6 @@ struct ExpensesView: View {
         .onAppear {
             categories[category].expenses.sort(by: {$0.date.timeIntervalSinceNow > $1.date.timeIntervalSinceNow})
         }
+        .background(colorScheme == .dark ? Color(.systemGray6) : .white)
     }
 }

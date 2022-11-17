@@ -19,6 +19,9 @@ struct TotalExpenseView: View {
     
     var allExpenses: [Expense] { categories.reduce([]) {$0 + $1.expenses}.sorted(by: { $0.date.timeIntervalSince1970 > $1.date.timeIntervalSince1970 }) }
     
+    
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         VStack {
             HStack {
@@ -63,6 +66,7 @@ struct TotalExpenseView: View {
                                 }
                                 .tint(.red)
                             }
+                            .listRowBackground(colorScheme == .dark ? Color(.systemGray6) : .white)
                         }
                     } else {
                         ForEach(allExpenses, id: \.id) { expense in
@@ -83,13 +87,17 @@ struct TotalExpenseView: View {
                                         .opacity(0.8)
                                 }
                             }
+                            .listRowBackground(colorScheme == .dark ? Color(.systemGray6) : .white)
                         }
                     }
                 } else {
                     Text("No Expenses")
                         .font(.subheadline)
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray6) : .white)
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(colorScheme == .dark ? Color(.systemGray6) : .white)
             .navigationTitle("All Expenses")
             .listStyle(.plain)
             .toolbar {
@@ -108,6 +116,7 @@ struct TotalExpenseView: View {
                 }
             }
         }
+        .background(colorScheme == .dark ? Color(.systemGray6) : .white)
         .sheet(isPresented: $addExpenseSheetShown) {
             AddExpenseSheet(categoryIndex: 0, userSettings: $userSettings , categories: $categories)
         }

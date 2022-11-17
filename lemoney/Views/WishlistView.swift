@@ -32,6 +32,8 @@ struct WishlistView: View {
         }
     }
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         NavigationView {
             List {
@@ -59,6 +61,7 @@ struct WishlistView: View {
                                     }
                                 }
                             }
+                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button {
                                     
@@ -96,6 +99,7 @@ struct WishlistView: View {
                         }
                     }
                 }
+                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                 
                 
                 Section {
@@ -120,6 +124,7 @@ struct WishlistView: View {
                                 }
                                 .padding(.top, -7)
                             }
+                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button {
                                     
@@ -157,20 +162,23 @@ struct WishlistView: View {
                         }
                     }
                 }
+                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
             }
+            .scrollContentBackground(.hidden)
+            .background(Color(.systemGray6))
             .navigationTitle("Wishlist")
-        }
-        .sheet(isPresented: $addItemSheetShown) {
-            CreateWishlistSheet(categories: categories, wishlist: $wishlist, type: type)
-        }
-        .alert("Are you sure you want to delete this item?", isPresented: $deleteAlertShown) {
-            Button("Delete", role: .destructive) {
-                wishlist = wishlist.filter {$0.id != deleteId}
+            .sheet(isPresented: $addItemSheetShown) {
+                CreateWishlistSheet(categories: categories, wishlist: $wishlist, type: type)
             }
-            Button("Cancel", role: .cancel) {}
-        }
-        .onAppear {
-            wishlist = wishlist.sorted(by: {$0.date.timeIntervalSince1970 < $1.date.timeIntervalSince1970})
+            .alert("Are you sure you want to delete this item?", isPresented: $deleteAlertShown) {
+                Button("Delete", role: .destructive) {
+                    wishlist = wishlist.filter {$0.id != deleteId}
+                }
+                Button("Cancel", role: .cancel) {}
+            }
+            .onAppear {
+                wishlist = wishlist.sorted(by: {$0.date.timeIntervalSince1970 < $1.date.timeIntervalSince1970})
+            }
         }
     }
 }

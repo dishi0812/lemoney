@@ -21,6 +21,7 @@ struct ContentView: View {
         "savingsGoal": 400.00,
         "balance": 2000.00
     ]
+    
     @State var overviews = [
         MonthOverview(categories: ["Transport": 50.00, "Food": 50.00, "Savings": 100.00, "Clothes": 60.00, "Stationery": 80.00, "Entertainment": 90.00], savings: 100.00, month: "Jan"),
         MonthOverview(categories: ["Transport": 25.00, "Food": 75.00, "Savings": 160.00, "Clothes": 90.00, "Stationery": 40.00, "Entertainment": 120.00], savings: 160.00, month: "Feb"),

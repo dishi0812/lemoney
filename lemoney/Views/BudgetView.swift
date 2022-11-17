@@ -11,8 +11,11 @@ struct BudgetView: View {
     @State var categoryId = UUID()
     @State var deleteAlertShown = false
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         NavigationView {
+            
             List {
                 Section {
                     ForEach($categories) { $category in
@@ -40,6 +43,7 @@ struct BudgetView: View {
                                 }
                             }
                         }
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button {
                                 selectedCategory = categories.firstIndex(where: {$0.id == category.id})!
@@ -78,6 +82,7 @@ struct BudgetView: View {
                                 .fontWeight(.semibold)
                         }
                     }
+                    .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                 }
             }
             .toolbar {
@@ -99,19 +104,21 @@ struct BudgetView: View {
                     EditButton()
                 }
             }
-            .navigationTitle("Budget")
-        }
-        .sheet(isPresented: $addExpenseSheetShown) {
-            AddExpenseSheet(categoryIndex: selectedCategory, userSettings: $userSettings, categories: $categories)
-        }
-//        .sheet(isPresented: $addCategorySheetShown) {
-//            AddCategorySheet(userSettings: $userSettings, categories: $categories)
-//        }
-        .alert("Are you sure you want to delete this category?", isPresented: $deleteAlertShown) {
-            Button("Delete", role: .destructive) {
-                categories = categories.filter {$0.id != categoryId}
+            .sheet(isPresented: $addExpenseSheetShown) {
+                AddExpenseSheet(categoryIndex: selectedCategory, userSettings: $userSettings, categories: $categories)
             }
-            Button("Cancel", role: .cancel) {}
+            //        .sheet(isPresented: $addCategorySheetShown) {
+            //            AddCategorySheet(userSettings: $userSettings, categories: $categories)
+            //        }
+            .alert("Are you sure you want to delete this category?", isPresented: $deleteAlertShown) {
+                Button("Delete", role: .destructive) {
+                    categories = categories.filter {$0.id != categoryId}
+                }
+                Button("Cancel", role: .cancel) {}
+            }
+            .scrollContentBackground(.hidden)
+            .background(Color(.systemGray6))
+            .navigationTitle("Budget")
         }
     }
 }

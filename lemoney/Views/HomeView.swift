@@ -35,7 +35,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(colorScheme == .dark ? .black : .systemGray6)
+                Color(.systemGray6)
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
@@ -71,7 +71,7 @@ struct HomeView: View {
                         Spacer()
                         
                         NavigationLink {
-                            SavingsChartView(overviews: overviews)
+                            SavingsChartView(overviews: overviews, savings: savings >= 0 ? (userSettings["balance"]! - savings) : userSettings["balance"]!, savingsThisMonth: savings)
                         } label: {
                             HStack {
                                 Image(systemName: "dollarsign.arrow.circlepath")
@@ -92,7 +92,7 @@ struct HomeView: View {
                             .padding(10)
                         }
                         .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
+                        .background(Color(colorScheme == .dark ? .systemGray5 : .white))
                         .cornerRadius(15)
                         
                         Spacer()
@@ -129,7 +129,7 @@ struct HomeView: View {
                             .padding(10)
                         }
                         .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .systemGray6 : .white))
+                        .background(Color(colorScheme == .dark ? .systemGray5 : .white))
                         .cornerRadius(15)
                         
                         Spacer()
@@ -159,6 +159,7 @@ struct HomeView: View {
                                         .fontWeight(.light)
                                     }
                                 }
+                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                     Button {
                                         wishlistItemId = wishlistItem.id
@@ -187,7 +188,7 @@ struct HomeView: View {
 
                                     ZStack(alignment: .leading) {
                                         Rectangle()
-                                            .fill(Color(.systemGray5))
+                                            .fill(Color(.systemGray4))
                                             .frame(width: 325, height: 18)
                                             .cornerRadius(20)
                                         Rectangle()
@@ -197,6 +198,7 @@ struct HomeView: View {
                                     }
                                     .padding(.top, -7)
                                 }
+                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                             }
                         } header: {
                             Text("Wants")
@@ -205,6 +207,7 @@ struct HomeView: View {
                                 .fontWeight(.bold)
                         }
                     }
+                    .scrollContentBackground(.hidden)
                     .padding(.top, -15)
                 }
                 .navigationTitle("Home")
@@ -233,8 +236,8 @@ struct HomeView: View {
                 userSettings["balance"] = userSettings["balance"]! - needsList.first(where: {$0.id == wishlistItemId})!.price
                 wishlist = wishlist.filter {$0.id != wishlistItemId}
             }
-            Button("Current Budget") {
-                userSettings["budgetGoal"] = userSettings["budgetGoal"]! - needsList.first(where: { $0.id == wishlistItemId })!.price
+            Button("Current") {
+                // TODO: add expense to the category
                 wishlist = wishlist.filter {$0.id != wishlistItemId}
             }
             Button("Cancel", role: .cancel) {
