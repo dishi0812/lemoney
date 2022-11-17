@@ -80,7 +80,7 @@ struct ContentView: View {
         }
         .onChange(of: scenePhase) { newPhase in
             if (newPhase == .active) {
-                if (prevDate.formatted(.dateTime.second()) != Date().formatted(.dateTime.second())) {
+                if (prevDate.formatted(.dateTime.month()) != Date().formatted(.dateTime.month()) || prevDate.formatted(.dateTime.year()) != Date().formatted(.dateTime.year())) {
                     prevDate = Date()
                     var categoriesDict: [String:Double] = [:]
                     for category in categoryManager.categories {

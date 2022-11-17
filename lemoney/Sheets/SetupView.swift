@@ -166,11 +166,66 @@ struct SetupView: View {
                 Text("Welcome to Lemoney")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .padding(.top, 50)
+                    .padding(.top, 70)
+                    .padding(.bottom, 50)
                 
-                Image("Logo").resizable().clipShape(Circle()).padding().frame(width: 256, height: 256)
-                Text("An app bountiful of features helping people manage their finances. Never will you, with Lemoney, ever:\n\n• Have to sell a kidney\n• Declare bankruptcy\n• Forget what to buy").padding()
+//                Image("Logo").resizable().clipShape(Circle()).padding().frame(width: 150, height: 150)
+//                    .padding(.vertical, -15)
+                    
+                HStack {
+                    Spacer()
+                    Image(systemName: "dollarsign.circle")
+                        .foregroundColor(Color("AccentColor"))
+                        .font(.system(size: 45))
+                    VStack(alignment: .leading) {
+                        Text("Budget Management")
+                            .fontWeight(.bold)
+                        Text("Set budget goals to prevent overspending to meet your budget and savings goals.")
+                            .fontWeight(.medium)
+                            .opacity(0.4)
+                    }
+                    .frame(width: 275)
+                    Spacer()
+                }
+                .padding(15)
                 
+                HStack {
+                    Spacer()
+                    Image(systemName: "list.star")
+                        .foregroundColor(Color("AccentColor"))
+                        .font(.system(size: 45))
+                    VStack(alignment: .leading) {
+                        Text("Wishlist")
+                            .fontWeight(.bold)
+                        Text("Create a list of your wants to save up for. Set aside enough money for your needs.")
+                            .fontWeight(.medium)
+                            .opacity(0.4)
+                    }
+                    .frame(width: 275)
+                    Spacer()
+                }
+                .padding(15)
+                
+                HStack {
+                    Spacer()
+                    Image(systemName: "chart.pie")
+                        .foregroundColor(Color("AccentColor"))
+                        .font(.system(size: 45))
+                    
+                    VStack(alignment: .leading) {
+                        Text("Statistics")
+                            .fontWeight(.bold)
+                        Text("Find out about your spending habits and distributions in order to better plan your budget.")
+                            .fontWeight(.medium)
+                            .opacity(0.4)
+                    }
+                    .frame(width: 275)
+                    Spacer()
+                }
+                .padding(15)
+                
+                
+            
                 Spacer()
                 
                 Button {

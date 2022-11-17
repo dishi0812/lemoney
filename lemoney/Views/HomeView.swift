@@ -123,7 +123,7 @@ struct HomeView: View {
                                 Image(systemName: "chevron.right")
                                     .font(.title3)
                                     .fontWeight(.medium)
-                                    .foregroundColor(Color(colorScheme == .dark ? .white : .systemGray3))
+                                    .foregroundColor(Color(.systemGray3))
                                 
                             }
                             .padding(10)

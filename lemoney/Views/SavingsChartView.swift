@@ -19,6 +19,8 @@ struct SavingsChartView: View {
     
     var keys: [String] { Array(overviews[monthDistribution].categories.keys) }
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         ZStack {
             Color(.systemGray6)
@@ -51,6 +53,7 @@ struct SavingsChartView: View {
                                     .annotation { Text("$\(String(format: "%.2f", overview.savings))").font(.caption) }
                                 }
                             }
+                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
                             .frame(height: 300)
                             .padding(12)
                         }
@@ -63,6 +66,7 @@ struct SavingsChartView: View {
                                 Text("$\(String(format: "%.2f", savings))")
                                     .fontWeight(.black)
                             }
+                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
                         }
                         Section {
                             HStack {
@@ -72,6 +76,7 @@ struct SavingsChartView: View {
                                 Text("$\(String(format: "%.2f", savingsThisMonth))")
                                     .fontWeight(.black)
                             }
+                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
                         }
                     }
                     .scrollContentBackground(.hidden)
@@ -84,9 +89,11 @@ struct SavingsChartView: View {
                                     Text("\(overviews[i].month)")
                                 }
                             }
+                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
                             
                             PieChart(overview: overviews[monthDistribution], keys: keys)
                                 .frame(width: 330, height: 330)
+                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
                         }
                         Section {
                             ForEach(Array(overviews[monthDistribution].categories.keys), id: \.self) { key in
@@ -97,6 +104,7 @@ struct SavingsChartView: View {
                                         Text("$\(String(format: "%.2f", overviews[monthDistribution].categories[key]!))")
                                             .fontWeight(.bold)
                                     }
+                                    .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
                                 }
                             }
                         }
@@ -108,6 +116,7 @@ struct SavingsChartView: View {
                                 Text("$\(String(format: "%.2f", overviews[monthDistribution].spendings))")
                                     .fontWeight(.black)
                             }
+                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
                         }
                     }
                     .scrollContentBackground(.hidden)
