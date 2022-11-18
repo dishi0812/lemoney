@@ -171,61 +171,57 @@ struct SetupView: View {
                 
 //                Image("Logo").resizable().clipShape(Circle()).padding().frame(width: 150, height: 150)
 //                    .padding(.vertical, -15)
-                    
                 HStack {
-                    Spacer()
-                    Image(systemName: "dollarsign.circle")
-                        .foregroundColor(Color("AccentColor"))
-                        .font(.system(size: 45))
-                    VStack(alignment: .leading) {
-                        Text("Budget Management")
-                            .fontWeight(.bold)
-                        Text("Set budget goals to prevent overspending to meet your savings goals.")
-                            .fontWeight(.medium)
-                            .opacity(0.4)
+//                    VStack(alignment: .leading) {
+//                    }
+                    VStack(alignment: .leading, spacing: 25) {
+                        HStack(alignment: .top) {
+                            Image(systemName: "dollarsign.circle")
+                                .foregroundColor(Color("AccentColor"))
+                                .font(.system(size: 45))
+
+                            VStack(alignment: .leading) {
+                                Text("Budget Management")
+                                    .fontWeight(.bold)
+                                Text("Set budget goals to meet your savings targets.")
+                                    .fontWeight(.medium)
+                                    .opacity(0.4)
+                            }
+                        }
+                        HStack(alignment: .top) {
+                            Image(systemName: "list.star")
+                                .foregroundColor(Color("AccentColor"))
+                                .font(.system(size: 45))
+//                                .padding(.top, 60)
+
+                            VStack(alignment: .leading) {
+                                Text("Wishlist")
+                                    .fontWeight(.bold)
+//                                    .padding(.top, 25)
+                                Text("Save up for items in your needs and wants list.")
+                                    .fontWeight(.medium)
+                                    .opacity(0.4)
+                            }
+                        }
+                        HStack(alignment: .top) {
+                            Image(systemName: "chart.pie")
+                                .foregroundColor(Color("AccentColor"))
+                                .font(.system(size: 45))
+//                                .padding(.top, 60)
+
+                            VStack(alignment: .leading) {
+                                Text("Statistics")
+                                    .fontWeight(.bold)
+//                                    .padding(.top, 25)
+                                Text("Track your spendings with charts and graphs.")
+                                    .fontWeight(.medium)
+                                    .opacity(0.4)
+                            }
+                        }
                     }
-                    .frame(width: 275)
-                    Spacer()
                 }
-                .padding(15)
+
                 
-                HStack {
-                    Spacer()
-                    Image(systemName: "list.star")
-                        .foregroundColor(Color("AccentColor"))
-                        .font(.system(size: 45))
-                    VStack(alignment: .leading) {
-                        Text("Wishlist")
-                            .fontWeight(.bold)
-                        Text("Create a list of your wants to save up for. Set aside enough money for your needs.")
-                            .fontWeight(.medium)
-                            .opacity(0.4)
-                    }
-                    .frame(width: 275)
-                    Spacer()
-                }
-                .padding(15)
-                
-                HStack {
-                    Spacer()
-                    Image(systemName: "chart.pie")
-                        .foregroundColor(Color("AccentColor"))
-                        .font(.system(size: 45))
-                    
-                    VStack(alignment: .leading) {
-                        Text("Statistics")
-                            .fontWeight(.bold)
-                        Text("Find out about your spending habits and distributions in order to better plan your budget.")
-                            .fontWeight(.medium)
-                            .opacity(0.4)
-                    }
-                    .frame(width: 275)
-                    Spacer()
-                }
-                .padding(15)
-                
-                
-            
                 Spacer()
                 
                 Button {
@@ -249,4 +245,3 @@ struct SetupView: View {
         }
     }
 }
-
