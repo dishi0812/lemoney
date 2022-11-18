@@ -1,6 +1,15 @@
 import SwiftUI
 
 struct WishlistView: View {
+    
+    @State var needBoughtAlertShown = false
+    @State var wishlistItemId = UUID()
+    var item: WishlistItem {
+        needsList.first(where: {$0.id == wishlistItemId})!
+    }
+    
+    
+    
     @State var categories: [Category]
     @State var addItemSheetShown = false
     
@@ -41,7 +50,7 @@ struct WishlistView: View {
                     if (needsList.count > 0) {
                         ForEach(needsList, id: \.id) { need in
                             NavigationLink {
-                                NeedDetailsView(wishlist: $wishlist)
+                                NeedDetailsView(wishlist: $wishlist, item: need, categories: $categories, userSettings: $userSettings)
                             } label: {
                                 HStack {
                                     VStack(alignment: .leading) {

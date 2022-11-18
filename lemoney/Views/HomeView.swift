@@ -4,6 +4,9 @@ struct HomeView: View {
     
     @State var needBoughtAlertShown = false
     @State var wishlistItemId = UUID()
+    var item: WishlistItem {
+        needsList.first(where: {$0.id == wishlistItemId})!
+    }
     
     @State var type = Int()
     @State var addItemSheetShown = false
@@ -146,7 +149,7 @@ struct HomeView: View {
                             if (needsList.count > 0) {
                                 ForEach(needsList) { wishlistItem in
                                     NavigationLink {
-                                        NeedDetailsView(wishlist: $wishlist)
+                                        NeedDetailsView(wishlist: $wishlist, item: wishlistItem, categories: $categories, userSettings: $userSettings)
                                     } label: {
                                         VStack(alignment: .leading) {
                                             HStack {
@@ -284,8 +287,9 @@ struct HomeView: View {
                 userSettings["balance"] = userSettings["balance"]! - needsList.first(where: {$0.id == wishlistItemId})!.price
                 wishlist = wishlist.filter {$0.id != wishlistItemId}
             }
-            Button("Current Balance") {
-                // TODO: add expense to the category
+            Button("Current Budget") {
+                let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
+                categories[categoryIndex].expenses.append(Expense(name: "Wishlist: \(item.name)", price: item.price, date: Date(), categoryId: item.categoryId))
                 wishlist = wishlist.filter {$0.id != wishlistItemId}
             }
             Button("Cancel", role: .cancel) {

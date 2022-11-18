@@ -12,4 +12,5 @@ struct WishlistItem: Identifiable {
     var price: Double
     var date: Date
     var categoryId: UUID
+    var amtSetAside: Double = 0
 }
