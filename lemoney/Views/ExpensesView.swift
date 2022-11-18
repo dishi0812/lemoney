@@ -20,6 +20,7 @@ struct ExpensesView: View {
                 Spacer()
                 Text("Left: $\(String(format: "%.2f", categories[category].budget - categories[category].spendings))")
                     .fontWeight(.semibold)
+                    .foregroundColor(categories[category].budget - categories[category].spendings < 0 ? Color(.red) : .accentColor)
             }
             .multilineTextAlignment(.center)
             .padding(.horizontal, 40)
