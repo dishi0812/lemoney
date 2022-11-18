@@ -15,62 +15,69 @@ struct AddExpenseSheet: View {
     
     var body: some View {
         NavigationView {
-            Form {
-                // inputs
-                Section {
-                    Picker("Category", selection: $categoryIndex) {
-                        ForEach(0 ..< categories.count) { i in
-                            Text("\(categories[i].name)")
+            ZStack {
+                Color(.systemGray6)
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    Form {
+                        // inputs
+                        Section {
+                            Picker("Category", selection: $categoryIndex) {
+                                ForEach(0 ..< categories.count) { i in
+                                    Text("\(categories[i].name)")
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            TextField("Name", text: $expenseName)
+                            
+                            TextField("Price", value: $expensePrice, formatter: CurrencyFormatter())
+                                .keyboardType(.decimalPad)
                         }
                     }
-                    .pickerStyle(.menu)
-                    TextField("Name", text: $expenseName)
-                    
-                    TextField("Price", value: $expensePrice, formatter: CurrencyFormatter())
-                        .keyboardType(.decimalPad)
-                }
-            }
-            .navigationTitle("New Expense")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        func handleSubmit() -> Void {
-                            if (expenseName == "" || expensePrice <= 0) {
-                                // alert
-                                notFilledAlert = true
-                                return
+                    .navigationTitle("New Expense")
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                func handleSubmit() -> Void {
+                                    if (expenseName == "" || expensePrice <= 0) {
+                                        // alert
+                                        notFilledAlert = true
+                                        return
+                                    }
+                                    if (expensePrice <= 0.00) {
+                                        // alert
+                                        invalidValueAlert = true
+                                        return
+                                    }
+                                    if (expenseName != "" && expensePrice > 0.00) {
+                                        // add expense
+                                        categories[categoryIndex].expenses.append(Expense(name: expenseName, price: expensePrice, date: Date(), categoryId: categories[categoryIndex].id))
+                                        userSettings["balance"]! -= expensePrice
+                                        dismiss()
+                                    }
+                                }
+                                
+                                handleSubmit()
+                            } label: {
+                                Text("Done")
                             }
-                            if (expensePrice <= 0.00) {
-                                // alert
-                                invalidValueAlert = true
-                                return
-                            }
-                            if (expenseName != "" && expensePrice > 0.00) {
-                                // add expense
-                                categories[categoryIndex].expenses.append(Expense(name: expenseName, price: expensePrice, date: Date(), categoryId: categories[categoryIndex].id))
-                                userSettings["balance"]! -= expensePrice
+                        }
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button {
                                 dismiss()
+                            } label: {
+                                Text("Cancel")
                             }
                         }
-                        
-                        handleSubmit()
-                    } label: {
-                        Text("Done")
+                    }
+                    .alert("Please fill in all the blanks", isPresented: $notFilledAlert) {
+                        Button("OK", role: .cancel) {}
+                    }
+                    .alert("Please fill in the 'Price' input with valid values", isPresented: $invalidValueAlert) {
+                        Button("OK", role: .cancel) {}
                     }
                 }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Cancel")
-                    }
-                }
-            }
-            .alert("Please fill in all the blanks", isPresented: $notFilledAlert) {
-                Button("OK", role: .cancel) {}
-            }
-            .alert("Please fill in the 'Price' input with valid values", isPresented: $invalidValueAlert) {
-                Button("OK", role: .cancel) {}
             }
         }
     }

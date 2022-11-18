@@ -52,10 +52,10 @@ struct NeedDetailsView: View {
                                 .font(.title)
                                 .fontWeight(.medium)
                             VStack {
-                                Text("\(daysLeft)")
+                                Text("\(abs(daysLeft))")
                                     .font(.system(size: 45))
                                     .fontWeight(.bold)
-                                Text("days left")
+                                Text(daysLeft < 0 ? "days late" : "days left")
                                     .font(.headline)
                                     .fontWeight(.medium)
                                 
