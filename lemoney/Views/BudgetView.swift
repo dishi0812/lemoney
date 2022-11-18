@@ -68,7 +68,7 @@ struct BudgetView: View {
                             Text("-$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
                                 .fontWeight(.bold)
                                 .padding(5)
-                                .background(Color("AccentColor"))
+                                .background(.red)
                                 .cornerRadius(14)
                                 .foregroundColor(.white)
                                 .fontWeight(.semibold)

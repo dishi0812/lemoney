@@ -4,6 +4,9 @@ struct HomeView: View {
     
     @State var needBoughtAlertShown = false
     @State var wishlistItemId = UUID()
+    
+    @State var type = Int()
+    @State var addItemSheetShown = false
 
     @Binding var userSettings: [String:Double]
     @Binding var overviews: [MonthOverview]
@@ -140,34 +143,50 @@ struct HomeView: View {
                     // wishlist
                     List {
                         Section {
-                            ForEach(needsList) { wishlistItem in
-                                NavigationLink {
-                                    NeedDetailsView()
-                                } label: {
-                                    VStack(alignment: .leading) {
-                                        HStack {
-                                            Text(wishlistItem.name)
-                                            Spacer()
-                                            Text("$\(String(format: "%.2f", wishlistItem.price))")
+                            if (needsList.count > 0) {
+                                ForEach(needsList) { wishlistItem in
+                                    NavigationLink {
+                                        NeedDetailsView(wishlist: $wishlist)
+                                    } label: {
+                                        VStack(alignment: .leading) {
+                                            HStack {
+                                                Text(wishlistItem.name)
+                                                Spacer()
+                                                Text("$\(String(format: "%.2f", wishlistItem.price))")
+                                            }
+                                            .fontWeight(.semibold)
+                                            HStack {
+                                                Text(wishlistItem.date.formatted(.dateTime.day().month().year()))
+                                                Spacer()
+                                                Text(categories.first(where: { $0.id == wishlistItem.categoryId })!.name)
+                                            }
+                                            .fontWeight(.light)
                                         }
-                                        .fontWeight(.semibold)
-                                        HStack {
-                                            Text(wishlistItem.date.formatted(.dateTime.day().month().year()))
-                                            Spacer()
-                                            Text(categories.first(where: { $0.id == wishlistItem.categoryId })!.name)
+                                    }
+                                    .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                        Button {
+                                            wishlistItemId = wishlistItem.id
+                                            needBoughtAlertShown = true
+                                        } label: {
+                                            Image(systemName: "checkmark")
                                         }
-                                        .fontWeight(.light)
+                                        .tint(.green)
                                     }
                                 }
+                            } else {
+                                HStack {
+                                    Text("No Needs")
+                                }
                                 .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
-                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                .swipeActions(edge: .trailing) {
                                     Button {
-                                        wishlistItemId = wishlistItem.id
-                                        needBoughtAlertShown = true
+                                        type = 0
+                                        addItemSheetShown = true
                                     } label: {
-                                        Image(systemName: "checkmark")
+                                        Image(systemName: "plus")
                                     }
-                                    .tint(.green)
+                                    .tint(Color("AccentColor"))
                                 }
                             }
                         } header: {
@@ -175,36 +194,62 @@ struct HomeView: View {
                                 .font(.title3)
                                 .textCase(.none)
                                 .fontWeight(.bold)
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
+                        } footer: {
+                            if (needsList.count <= 0) {
+                                Text("Swipe left to add a need")
+                            }
                         }
                         Section {
-                            ForEach(wantsList) { wishlistItem in
-                                VStack {
-                                    HStack {
-                                        Text(wishlistItem.name)
-                                        Spacer()
-                                        Text("$\(String(format: "%.2f", wishlistItem.price))")
-                                    }
-                                    .fontWeight(.semibold)
+                            if (wantsList.count > 0) {
+                                ForEach(wantsList) { wishlistItem in
+                                    VStack {
+                                        HStack {
+                                            Text(wishlistItem.name)
+                                            Spacer()
+                                            Text("$\(String(format: "%.2f", wishlistItem.price))")
+                                        }
+                                        .fontWeight(.semibold)
 
-                                    ZStack(alignment: .leading) {
-                                        Rectangle()
-                                            .fill(Color(.systemGray4))
-                                            .frame(width: 325, height: 18)
-                                            .cornerRadius(20)
-                                        Rectangle()
-                                            .fill(Color("AccentColor"))
-                                            .frame(width: progressWidth(itemValue: wishlistItem.price), height: 18)
-                                            .cornerRadius(20)
+                                        ZStack(alignment: .leading) {
+                                            Rectangle()
+                                                .fill(Color(.systemGray4))
+                                                .frame(width: 325, height: 18)
+                                                .cornerRadius(20)
+                                            Rectangle()
+                                                .fill(Color("AccentColor"))
+                                                .frame(width: progressWidth(itemValue: wishlistItem.price), height: 18)
+                                                .cornerRadius(20)
+                                        }
+                                        .padding(.top, -7)
                                     }
-                                    .padding(.top, -7)
+                                    .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
+                                }
+                            } else {
+                                HStack {
+                                    Text("No Wants")
                                 }
                                 .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
+                                .swipeActions(edge: .trailing) {
+                                    Button {
+                                        type = 1
+                                        addItemSheetShown = true
+                                    } label: {
+                                        Image(systemName: "plus")
+                                    }
+                                    .tint(Color("AccentColor"))
+                                }
                             }
                         } header: {
                             Text("Wants")
                                 .font(.title3)
                                 .textCase(.none)
                                 .fontWeight(.bold)
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
+                        } footer: {
+                            if (wantsList.count <= 0) {
+                                Text("Swipe left to add a want")
+                            }
                         }
                     }
                     .scrollContentBackground(.hidden)
@@ -231,12 +276,15 @@ struct HomeView: View {
                 }
             }
         }
+        .sheet(isPresented: $addItemSheetShown) {
+            CreateWishlistSheet(categories: categories, wishlist: $wishlist, type: type)
+        }
         .alert("Do you want to use your previous months' savings or your current budget to purchase this item?", isPresented: $needBoughtAlertShown) {
             Button("Previous Savings") {
                 userSettings["balance"] = userSettings["balance"]! - needsList.first(where: {$0.id == wishlistItemId})!.price
                 wishlist = wishlist.filter {$0.id != wishlistItemId}
             }
-            Button("Current") {
+            Button("Current Balance") {
                 // TODO: add expense to the category
                 wishlist = wishlist.filter {$0.id != wishlistItemId}
             }

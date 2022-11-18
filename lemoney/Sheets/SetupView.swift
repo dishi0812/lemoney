@@ -180,7 +180,7 @@ struct SetupView: View {
                     VStack(alignment: .leading) {
                         Text("Budget Management")
                             .fontWeight(.bold)
-                        Text("Set budget goals to prevent overspending to meet your budget and savings goals.")
+                        Text("Set budget goals to prevent overspending to meet your savings goals.")
                             .fontWeight(.medium)
                             .opacity(0.4)
                     }

@@ -8,13 +8,10 @@
 import SwiftUI
 
 struct NeedDetailsView: View {
+    
+    @Binding var wishlist: [WishlistItem]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct NeedDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NeedDetailsView()
+        Text("NeedDetailsView")
     }
 }

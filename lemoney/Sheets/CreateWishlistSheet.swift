@@ -67,9 +67,7 @@ struct CreateWishlistSheet: View {
                                 TextField("Price", value: $price, formatter: CurrencyFormatter())
                             }
                             
-                            if (type == 1) {
-                                DatePicker("Date Wanted", selection: $date, displayedComponents: [.date])
-                            } else {
+                            if (type == 0) {
                                 DatePicker("Date Needed", selection: $date, displayedComponents: [.date])
                             }
                         }
@@ -79,7 +77,7 @@ struct CreateWishlistSheet: View {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button {
                                 if (name != "" && price > 0.00) {
-                                    wishlist.append(WishlistItem(type: type == 0 ? .need : .want, name: name, price: price, date: date, categoryId: categories[categoryIndex].id))
+                                    wishlist.append(WishlistItem(type: type == 0 ? .need : .want, name: name, price: price, date: type == 0 ? date : Date(), categoryId: categories[categoryIndex].id))
                                     
                                     wishlist = wishlist.sorted(by: {$0.date.timeIntervalSince1970 < $1.date.timeIntervalSince1970})
                                     
@@ -88,12 +86,7 @@ struct CreateWishlistSheet: View {
                                     notFilledAlert = true
                                 }
                             } label: {
-                                HStack {
-                                    Image(systemName: "plus")
-                                        .padding(.trailing, -5)
-                                        .font(.subheadline)
-                                    Text("Add")
-                                }
+                                Text("Done")
                             }
                         }
                         ToolbarItem(placement: .navigationBarLeading) {

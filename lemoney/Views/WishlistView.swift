@@ -41,7 +41,7 @@ struct WishlistView: View {
                     if (needsList.count > 0) {
                         ForEach(needsList, id: \.id) { need in
                             NavigationLink {
-                                NeedDetailsView()
+                                NeedDetailsView(wishlist: $wishlist)
                             } label: {
                                 HStack {
                                     VStack(alignment: .leading) {
@@ -89,6 +89,7 @@ struct WishlistView: View {
                             .font(.title2)
                             .textCase(.none)
                             .fontWeight(.bold)
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
                         Spacer()
                         Button {
                             type = 0
@@ -152,6 +153,7 @@ struct WishlistView: View {
                             .font(.title2)
                             .textCase(.none)
                             .fontWeight(.bold)
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
                         Spacer()
                         Button {
                             type = 1

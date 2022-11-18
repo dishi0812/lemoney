@@ -55,12 +55,7 @@ struct AddExpenseSheet: View {
                         
                         handleSubmit()
                     } label: {
-                        HStack {
-                            Image(systemName: "plus")
-                                .padding(.trailing, -5)
-                                .font(.subheadline)
-                            Text("Add")
-                        }
+                        Text("Done")
                     }
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
