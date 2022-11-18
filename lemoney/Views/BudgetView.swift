@@ -27,7 +27,7 @@ struct BudgetView: View {
                                 Spacer()
                                 
                                 if (category.spendings > category.budget) {
-                                    Text("$\(String(format: "%.2f", category.spendings - category.budget))")
+                                    Text("-$\(String(format: "%.2f", category.spendings - category.budget))")
                                         .padding(5)
                                         .background(.red)
                                         .cornerRadius(14)
@@ -64,7 +64,7 @@ struct BudgetView: View {
                             .fontWeight(.bold)
                         Spacer()
                         
-                        if (categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) } < 0.00) {
+                        if (categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) } < 0) {
                             Text("-$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
                                 .fontWeight(.bold)
                                 .padding(5)

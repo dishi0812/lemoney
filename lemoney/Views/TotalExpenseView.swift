@@ -30,6 +30,7 @@ struct TotalExpenseView: View {
                 Spacer()
                 Text("Left: $\(String(format: "%.2f", userSettings["budgetGoal"]! - totalSpendings))")
                     .fontWeight(.semibold)
+                    .foregroundColor(userSettings["budgetGoal"]! - totalSpendings < 0 ? Color(.red) : .accentColor)
             }
             .multilineTextAlignment(.center)
             .padding(.horizontal, 40)
@@ -41,9 +42,9 @@ struct TotalExpenseView: View {
                         ForEach(allExpenses, id: \.id) { expense in
                             VStack(alignment: .trailing) {
                                 HStack {
-                                    Text(expense.name)
+                                    Text(expense.name).fontWeight(.medium)
                                     Spacer()
-                                    Text("$\(String(format: "%.2f", expense.price))")
+                                    Text("$\(String(format: "%.2f", expense.price))").fontWeight(.medium)
                                 }
                                 HStack {
                                     Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
@@ -72,9 +73,9 @@ struct TotalExpenseView: View {
                         ForEach(allExpenses, id: \.id) { expense in
                             VStack(alignment: .trailing) {
                                 HStack {
-                                    Text(expense.name)
+                                    Text(expense.name).fontWeight(.medium)
                                     Spacer()
-                                    Text("$\(String(format: "%.2f", expense.price))")
+                                    Text("$\(String(format: "%.2f", expense.price))").fontWeight(.medium)
                                 }
                                 HStack {
                                     Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
