@@ -24,7 +24,7 @@ struct SetupView: View {
                 Color(.systemGray6)
                     .edgesIgnoringSafeArea(.all)
                 
-                VStack(alignment: .leading) {
+                ScrollView {
                     if (isFirstLaunch) {
                         Text("Setup")
                             .font(.largeTitle)
