@@ -4,8 +4,8 @@ struct HomeView: View {
     
     @State var needBoughtAlertShown = false
     @State var wishlistItemId = UUID()
-    var item: WishlistItem {
-        needsList.first(where: {$0.id == wishlistItemId})!
+    var item: WishlistItem? {
+        needsList.first(where: {$0.id == wishlistItemId}) ?? nil
     }
     
     @State var type = Int()
@@ -27,8 +27,18 @@ struct HomeView: View {
     }
     @Environment(\.colorScheme) var colorScheme
     
-    func progressWidth(itemValue: Double) -> Double {
+    func wantProgressWidth(itemValue: Double) -> Double {
         let width = savings >= 0 ? (userSettings["balance"]! - savings) / itemValue * 325 : userSettings["balance"]! / itemValue * 325
+        if (width > 325) {
+            return 325
+        } else if (width < 0) {
+            return 0
+        } else {
+            return width
+        }
+    }
+    func needProgressWidth(item: WishlistItem) -> Double{
+        let width = item.setAsideAmt >= 0 ? (userSettings["balance"]! - item.setAsideAmt) / item.price * 325 : userSettings["balance"]! / item.price * 325
         if (width > 325) {
             return 325
         } else if (width < 0) {
@@ -164,6 +174,16 @@ struct HomeView: View {
                                                 Text(categories.first(where: { $0.id == wishlistItem.categoryId })!.name)
                                             }
                                             .fontWeight(.light)
+                                            ZStack(alignment: .leading) {
+                                                Rectangle()
+                                                    .fill(Color(.systemGray5))
+                                                    .frame(width: 325, height: 18)
+                                                    .cornerRadius(20)
+                                                Rectangle()
+                                                    .fill(.green)
+                                                    .frame(width: needProgressWidth(itemValue: wishlistItem.price), height: 18)
+                                                    .cornerRadius(20)
+                                            }
                                         }
                                     }
                                     .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
@@ -221,7 +241,7 @@ struct HomeView: View {
                                                 .cornerRadius(20)
                                             Rectangle()
                                                 .fill(Color("AccentColor"))
-                                                .frame(width: progressWidth(itemValue: wishlistItem.price), height: 18)
+                                                .frame(width: wantProgressWidth(itemValue: wishlistItem.price), height: 18)
                                                 .cornerRadius(20)
                                         }
                                         .padding(.top, -7)
@@ -288,8 +308,8 @@ struct HomeView: View {
                 wishlist = wishlist.filter {$0.id != wishlistItemId}
             }
             Button("Current Budget") {
-                let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                categories[categoryIndex].expenses.append(Expense(name: "Wishlist: \(item.name)", price: item.price, date: Date(), categoryId: item.categoryId))
+                let categoryIndex = categories.firstIndex(where: { item!.categoryId == $0.id })!
+                categories[categoryIndex].expenses.append(Expense(name: "Wishlist: \(item!.name)", price: item!.price, date: Date(), categoryId: item!.categoryId))
                 wishlist = wishlist.filter {$0.id != wishlistItemId}
             }
             Button("Cancel", role: .cancel) {

@@ -3,12 +3,6 @@ import SwiftUI
 struct WishlistView: View {
     
     @State var needBoughtAlertShown = false
-    @State var wishlistItemId = UUID()
-    var item: WishlistItem {
-        needsList.first(where: {$0.id == wishlistItemId})!
-    }
-    
-    
     
     @State var categories: [Category]
     @State var addItemSheetShown = false
@@ -30,7 +24,7 @@ struct WishlistView: View {
     @State var deleteAlertShown = false
     @State var deleteId = UUID()
     
-    func progressWidth(itemValue: Double) -> Double {
+    func wantProgressWidth(itemValue: Double) -> Double {
         let width = savings >= 0 ? (userSettings["balance"]! - savings) / itemValue * 325 : userSettings["balance"]! / itemValue * 325
         if (width > 325) {
             return 325
@@ -129,7 +123,7 @@ struct WishlistView: View {
                                         .cornerRadius(20)
                                     Rectangle()
                                         .fill(.green)
-                                        .frame(width: progressWidth(itemValue: want.price), height: 18)
+                                        .frame(width: wantProgressWidth(itemValue: want.price), height: 18)
                                         .cornerRadius(20)
                                 }
                                 .padding(.top, -7)

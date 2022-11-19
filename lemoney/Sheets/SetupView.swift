@@ -220,8 +220,6 @@ struct SetupView: View {
                         }
                     }
                 }
-
-                
                 Spacer()
                 
                 Button {
@@ -245,3 +243,4 @@ struct SetupView: View {
         }
     }
 }
+ 

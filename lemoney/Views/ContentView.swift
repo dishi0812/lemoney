@@ -64,7 +64,7 @@ struct ContentView: View {
                 .tabItem { Label("Wishlist", systemImage: "list.star") }
         }
         .sheet(isPresented: $showSetupSheet) {
-            if (!launchedBefore) {
+            if (launchedBefore) {
                 SetupView(userSettings: $userSettings, categories: $categoryManager.categories, pageNum: 1, isFirstLaunch: true)
             }
         }
@@ -72,7 +72,7 @@ struct ContentView: View {
             MonthOverviewView(month: prevDate, overviews: $overviews, categories: $categoryManager.categories, userSettings: $userSettings)
         }
         .onAppear {
-            if (!launchedBefore) {
+            if (launchedBefore) {
                 UserDefaults.standard.set(true, forKey: "launchedBefore")
                 prevDate = Date()
                 showSetupSheet = true
