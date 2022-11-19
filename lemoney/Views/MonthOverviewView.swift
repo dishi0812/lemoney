@@ -5,7 +5,7 @@ struct MonthOverviewView: View {
     let month: Date
     @Binding var overviews: [MonthOverview]
     @Binding var categories: [Category]
-    @Binding var userSettings: [String:Double]
+    @Binding var userSettings: UserSettings
     
     
     var keys: [String] { Array(overviews[overviews.count - 1].categories.keys) }
@@ -14,7 +14,7 @@ struct MonthOverviewView: View {
         categories.reduce(0) { $0 + $1.spendings }
     }
     var savings: Double {
-        userSettings["income"]! - totalSpendings
+        userSettings.income - totalSpendings
     }
     
     @Environment(\.dismiss) var dismiss
@@ -32,7 +32,7 @@ struct MonthOverviewView: View {
                         Spacer()
                         
                         NavigationLink {
-                            SavingsChartView(overviews: overviews, savings: savings >= 0 ? (userSettings["balance"]! - savings) : userSettings["balance"]!, savingsThisMonth: savings)
+                            SavingsChartView(overviews: overviews, savings: savings >= 0 ? (userSettings.balance - savings) : userSettings.balance, savingsThisMonth: savings)
                         } label: {
                             HStack {
                                 Image(systemName: "dollarsign.arrow.circlepath")
@@ -144,7 +144,7 @@ struct MonthOverviewView: View {
                         
                         Spacer()
                         
-                        if (overviews[overviews.count - 1].spendings > userSettings["savingsGoal"]!) {
+                        if (overviews[overviews.count - 1].spendings > userSettings.savingsGoal) {
                             Text("You have overspent this month!")
                                 .foregroundColor(.red)
                                 .font(.footnote)
@@ -165,7 +165,7 @@ struct MonthOverviewView: View {
                     }
                     
                     Button {
-                        userSettings["balance"]! += userSettings["income"]!
+                        userSettings.balance += userSettings.income
                         for i in 0..<categories.count {
                             categories[i].expenses = []
                         }

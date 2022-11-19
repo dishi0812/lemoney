@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TotalExpenseView: View {
     
-    @Binding var userSettings: [String:Double]
+    @Binding var userSettings: UserSettings
     @Binding var categories: [Category]
     var viewOnly: Bool
     @State var deleteAlertShown = false
@@ -28,9 +28,8 @@ struct TotalExpenseView: View {
                 Text("Spendings: $\(String(format: "%.2f", totalSpendings))")
                     .fontWeight(.semibold)
                 Spacer()
-                Text("Left: $\(String(format: "%.2f", userSettings["budgetGoal"]! - totalSpendings))")
+                Text("Left: $\(String(format: "%.2f", userSettings.budgetGoal - totalSpendings))")
                     .fontWeight(.semibold)
-                    .foregroundColor(userSettings["budgetGoal"]! - totalSpendings < 0 ? Color(.red) : .accentColor)
             }
             .multilineTextAlignment(.center)
             .padding(.horizontal, 40)
@@ -103,7 +102,7 @@ struct TotalExpenseView: View {
             .listStyle(.plain)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Budget: $\(String(format: "%.2f", userSettings["budgetGoal"]!))")
+                    Text("Budget: $\(String(format: "%.2f", userSettings.budgetGoal))")
                         .fontWeight(.semibold)
                 }
                 if (!viewOnly) {
@@ -125,7 +124,7 @@ struct TotalExpenseView: View {
             Button("Delete", role: .destructive) {
                 let categoryIndex = categories.firstIndex(where: {$0.id == categoryId})!
                 let value = categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!.price
-                userSettings["balance"]! += value
+                userSettings.balance += value
                 categories[categoryIndex].expenses = categories[categoryIndex].expenses.filter { $0.id != expenseId }
             }
             Button("Cancel", role: .cancel) {}

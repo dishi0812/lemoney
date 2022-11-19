@@ -15,12 +15,7 @@ extension Date: RawRepresentable {
 
 struct ContentView: View {
     
-    @State var userSettings = [
-        "income": 2000.00,
-        "budgetGoal": 1600.00,
-        "savingsGoal": 400.00,
-        "balance": 2000.00
-    ]
+    @State var userSettings = UserSettings(income: 2000.00, budgetGoal: 1600.00, savingsGoal: 400.00, balance: 2500.00)
     
     @State var overviews = [
         MonthOverview(categories: ["Transport": 50.00, "Food": 50.00, "Savings": 100.00, "Clothes": 60.00, "Stationery": 80.00, "Entertainment": 90.00], savings: 100.00, month: "Jan"),
@@ -30,7 +25,9 @@ struct ContentView: View {
         MonthOverview(categories: ["Transport": 30.00, "Food": 70.00, "Savings": 180.00, "Clothes": 30.00, "Stationery": 135.00, "Entertainment": 38.00], savings: 180.00, month: "May"),
         MonthOverview(categories: ["Transport": 30.00, "Food": 70.00, "Savings": 80.00, "Clothes": 45.00, "Stationery": 23.00, "Entertainment": 8.00], savings: 80.00, month: "Jun")
     ]
+    
     @StateObject var categoryManager = CategoryManager()
+    
     @State var wishlist: [WishlistItem] = []
     
     @AppStorage("prevLaunchDate") var prevDate: Date = Date()
@@ -41,7 +38,7 @@ struct ContentView: View {
         categoryManager.categories.reduce(0) { $0 + $1.spendings }
     }
     var savings: Double {
-        userSettings["income"]! - totalSpendings
+        userSettings.income - totalSpendings
     }
     
     

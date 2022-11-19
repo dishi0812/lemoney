@@ -14,7 +14,7 @@ struct WishlistView: View {
     @State var addItemSheetShown = false
     
     @Binding var wishlist: [WishlistItem]
-    @Binding var userSettings: [String:Double]
+    @Binding var userSettings: UserSettings
     
     var needsList: [WishlistItem] { wishlist.filter { $0.type == .need } }
     var wantsList: [WishlistItem] { wishlist.filter { $0.type == .want } }
@@ -23,7 +23,7 @@ struct WishlistView: View {
         categories.reduce(0) { $0 + $1.spendings }
     }
     var savings: Double {
-        userSettings["income"]! - totalSpendings
+        userSettings.income - totalSpendings
     }
     
     @State var type = 1
@@ -31,7 +31,7 @@ struct WishlistView: View {
     @State var deleteId = UUID()
     
     func progressWidth(itemValue: Double) -> Double {
-        let width = savings >= 0 ? (userSettings["balance"]! - savings) / itemValue * 325 : userSettings["balance"]! / itemValue * 325
+        let width = savings >= 0 ? (userSettings.balance - savings) / itemValue * 325 : userSettings.balance / itemValue * 325
         if (width > 325) {
             return 325
         } else if (width < 0) {
@@ -73,13 +73,21 @@ struct WishlistView: View {
                             .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button {
-                                    
+                                // TODO: set aside from swipe actions
                                 } label: {
-                                    Image(systemName: "checkmark")
+                                    Image(systemName: "arrow.down.app")
+                                }
+                                .tint(Color("\(categories.first(where: { $0.id == need.categoryId })!.name)"))
+                            }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                // TODO: alert + deduct from whatever
+                                } label: {
+                                    Image(systemName: "cart")
                                 }
                                 .tint(.green)
                             }
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            .swipeActions(edge: .trailing) {
                                 Button {
                                     deleteId = need.id
                                     deleteAlertShown = true
@@ -137,9 +145,9 @@ struct WishlistView: View {
                             .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button {
-                                    
+                                // TODO: alert + deduct from balance
                                 } label: {
-                                    Image(systemName: "checkmark")
+                                    Image(systemName: "cart")
                                 }
                                 .tint(.green)
                             }

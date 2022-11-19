@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BudgetView: View {
     
-    @Binding var userSettings: [String:Double]
+    @Binding var userSettings: UserSettings
     @Binding var categories: [Category]
     @State var selectedCategory = Int()
     
@@ -59,27 +59,31 @@ struct BudgetView: View {
                     }
                 }
                 Section {
-                    HStack {
-                        Text("Total")
-                            .fontWeight(.bold)
-                        Spacer()
-                        
-                        if (categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) } < 0) {
-                            Text("-$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
+                    NavigationLink {
+                        TotalExpenseView(userSettings: $userSettings, categories: $categories, viewOnly: false)
+                    } label: {
+                        HStack {
+                            Text("Total")
                                 .fontWeight(.bold)
-                                .padding(5)
-                                .background(.red)
-                                .cornerRadius(14)
-                                .foregroundColor(.white)
-                                .fontWeight(.semibold)
-                        } else {
-                            Text("$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
-                                .fontWeight(.bold)
-                                .padding(5)
-                                .background(Color("AccentColor"))
-                                .cornerRadius(14)
-                                .foregroundColor(.white)
-                                .fontWeight(.semibold)
+                            Spacer()
+                            
+                            if (categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) } < 0) {
+                                Text("-$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
+                                    .fontWeight(.bold)
+                                    .padding(5)
+                                    .background(.red)
+                                    .cornerRadius(14)
+                                    .foregroundColor(.white)
+                                    .fontWeight(.semibold)
+                            } else {
+                                Text("$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
+                                    .fontWeight(.bold)
+                                    .padding(5)
+                                    .background(Color("AccentColor"))
+                                    .cornerRadius(14)
+                                    .foregroundColor(.white)
+                                    .fontWeight(.semibold)
+                            }
                         }
                     }
                     .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)

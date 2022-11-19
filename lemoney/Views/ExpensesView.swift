@@ -3,7 +3,7 @@ import SwiftUI
 struct ExpensesView: View {
     
     var category: Int
-    @Binding var userSettings: [String:Double]
+    @Binding var userSettings: UserSettings
     @Binding var categories: [Category]
     @State var deleteAlertShown = false
     @State var expenseId = UUID()
@@ -20,7 +20,6 @@ struct ExpensesView: View {
                 Spacer()
                 Text("Left: $\(String(format: "%.2f", categories[category].budget - categories[category].spendings))")
                     .fontWeight(.semibold)
-                    .foregroundColor(categories[category].budget - categories[category].spendings < 0 ? Color(.red) : .accentColor)
             }
             .multilineTextAlignment(.center)
             .padding(.horizontal, 40)
@@ -82,7 +81,7 @@ struct ExpensesView: View {
         }
         .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
-                userSettings["balance"]! += categories[category].expenses.first(where: { $0.id == expenseId })!.price
+                userSettings.balance += categories[category].expenses.first(where: { $0.id == expenseId })!.price
                 categories[category].expenses = categories[category].expenses.filter { $0.id != expenseId }
             }
             Button("Cancel", role: .cancel) {}

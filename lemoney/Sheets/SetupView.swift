@@ -9,7 +9,7 @@ extension AnyTransition {
 
 struct SetupView: View {
     
-    @Binding var userSettings: [String:Double]
+    @Binding var userSettings: UserSettings
     @Binding var categories: [Category]
     @State var pageNum: Int
     
@@ -17,6 +17,10 @@ struct SetupView: View {
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
+    
+    func checkBudgetGoals() {
+        
+    }
     
     var body: some View {
         if (pageNum == 2) {
@@ -41,7 +45,7 @@ struct SetupView: View {
                             
                             Spacer()
                             HStack {
-                                TextField("", value: $userSettings["income"], formatter: CurrencyFormatter())
+                                TextField("", value: $userSettings.income, formatter: CurrencyFormatter())
                                     .padding(.leading, 3)
                             }
                             .frame(width: 93, height: 30)
@@ -56,7 +60,7 @@ struct SetupView: View {
                             
                             Spacer()
                             HStack {
-                                TextField("", value: $userSettings["balance"], formatter: CurrencyFormatter())
+                                TextField("", value: $userSettings.balance, formatter: CurrencyFormatter())
                                     .padding(.leading, 3)
                             }
                             .frame(width: 93, height: 30)
@@ -72,13 +76,13 @@ struct SetupView: View {
                             
                             Spacer()
                             HStack {
-                                TextField("", value: $userSettings["savingsGoal"], formatter: CurrencyFormatter())
-                                    .onChange(of: userSettings["savingsGoal"]!) { val in
-                                        userSettings["budgetGoal"]! = userSettings["income"]! - userSettings["savingsGoal"]!
+                                TextField("", value: $userSettings.savingsGoal, formatter: CurrencyFormatter())
+                                    .onChange(of: userSettings.savingsGoal) { val in
+                                        userSettings.budgetGoal = userSettings.income - userSettings.savingsGoal
                                     }
-                                    .onChange(of: userSettings["income"]!) { val in
-                                        userSettings["savingsGoal"]! = val / Double(categories.count)
-                                        userSettings["budgetGoal"]! = userSettings["income"]! - userSettings["savingsGoal"]!
+                                    .onChange(of: userSettings.income) { val in
+                                        userSettings.savingsGoal = val / Double(categories.count)
+                                        userSettings.budgetGoal = userSettings.income - userSettings.savingsGoal
                                     }
                                     .padding(.leading, 3)
                             }
@@ -98,7 +102,7 @@ struct SetupView: View {
                             HStack {
                                 Text("Budget").fontWeight(.bold)
                                 Spacer()
-                                Text("$\(String(format: "%.2f", userSettings["budgetGoal"]!))")
+                                Text("$\(String(format: "%.2f", userSettings.budgetGoal))")
                                     .fontWeight(.black)
                             }
                             .padding(.bottom, 8)
@@ -110,7 +114,7 @@ struct SetupView: View {
                                     Spacer()
                                     HStack {
                                         TextField("", value: $category.budget, formatter: CurrencyFormatter())
-                                            .onChange(of: userSettings["budgetGoal"]!) { value in
+                                            .onChange(of: userSettings.budgetGoal) { value in
                                                 category.budget = Double(value)/5.0
                                             }
                                             .padding(.horizontal, 4)
@@ -134,7 +138,7 @@ struct SetupView: View {
                         HStack {
                             Spacer()
                             Button {
-                                if (userSettings["income"]! > 0.0 && userSettings["balance"]! > 0.0 && userSettings["savingsGoal"]! > 0.0 && userSettings["budgetGoal"]! > 0.0) {
+                                if (userSettings.income > 0.0 && userSettings.balance > 0.0 && userSettings.savingsGoal > 0.0 && userSettings.budgetGoal > 0.0) {
                                     dismiss()
                                 }
                             } label: {

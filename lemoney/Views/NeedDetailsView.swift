@@ -7,7 +7,7 @@ struct NeedDetailsView: View {
     @Binding var wishlist: [WishlistItem]
     var item: WishlistItem
     @Binding var categories: [Category]
-    @Binding var userSettings: [String: Double]
+    @Binding var userSettings: UserSettings
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -15,10 +15,10 @@ struct NeedDetailsView: View {
         categories.reduce(0) { $0 + $1.spendings }
     }
     var savings: Double {
-        userSettings["income"]! - totalSpendings
+        userSettings.income - totalSpendings
     }
     var previousMonthsSavings: Double {
-        savings >= 0 ? (userSettings["balance"]! - savings) : userSettings["balance"]!
+        savings >= 0 ? (userSettings.balance - savings) : userSettings.balance
     }
     
     var daysLeft: Int {
@@ -114,12 +114,23 @@ struct NeedDetailsView: View {
                 
                 if item.price - item.amtSetAside > 0.00 {
                     Menu {
-                        Button("$\(String(format: "%.2f", setAsideAmt))") {
-                            let index = wishlist.firstIndex(where: {$0.id == item.id})!
-                            wishlist[index].amtSetAside += setAsideAmt
+                        Button("Set aside $\(String(format: "%.2f", setAsideAmt)) \(item.price - item.amtSetAside == setAsideAmt ? "and buy now" : "")") {
                             
-                            let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                            categories[categoryIndex].expenses.append(Expense(name: "Set Aside For: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
+                            if (item.price - item.amtSetAside == setAsideAmt) {
+                                let index = wishlist.firstIndex(where: {$0.id == item.id})!
+                                wishlist[index].amtSetAside += setAsideAmt
+                                
+                                let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
+                                categories[categoryIndex].expenses.append(Expense(name: "Wishlist Item Bought: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
+                                
+                                wishlist = wishlist.filter {$0.id != item.id}
+                            } else {
+                                let index = wishlist.firstIndex(where: {$0.id == item.id})!
+                                wishlist[index].amtSetAside += setAsideAmt
+                                
+                                let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
+                                categories[categoryIndex].expenses.append(Expense(name: "Set Aside For: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
+                            }
                         }
                         Button {
                             showSheet = true
@@ -161,7 +172,7 @@ struct NeedDetailsView: View {
         .alert("Do you want to use your previous months' savings or your current budget to purchase this item?", isPresented: $needBoughtAlertShown) {
             if previousMonthsSavings > item.price {
                 Button("Previous Savings") {
-                    userSettings["balance"] = userSettings["balance"]! - wishlist.first(where: {$0.id == item.id})!.price
+                    userSettings.balance = userSettings.balance - wishlist.first(where: {$0.id == item.id})!.price
                     wishlist = wishlist.filter {$0.id != item.id}
                 }
             }

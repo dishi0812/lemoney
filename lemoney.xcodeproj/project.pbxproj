@@ -18,6 +18,8 @@
 		51D8C35229211588002D52F1 /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C35129211588002D52F1 /* Overview.swift */; };
 		51D8C35429212193002D52F1 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C35329212193002D52F1 /* PieChart.swift */; };
 		51D8C3562921D492002D52F1 /* MonthOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C3552921D492002D52F1 /* MonthOverviewView.swift */; };
+		51EF8E0A2928D24E0048729B /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EF8E092928D24E0048729B /* UserSettings.swift */; };
+		51EF8E0C2928D5B10048729B /* WishlistItemsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EF8E0B2928D5B10048729B /* WishlistItemsListView.swift */; };
 		D9A9769E290389CE00038F05 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769D290389CE00038F05 /* HomeView.swift */; };
 		D9A976A0290389D700038F05 /* BudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A9769F290389D700038F05 /* BudgetView.swift */; };
 		D9A976A2290389DD00038F05 /* WishlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A976A1290389DD00038F05 /* WishlistView.swift */; };
@@ -44,6 +46,8 @@
 		51D8C35129211588002D52F1 /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
 		51D8C35329212193002D52F1 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		51D8C3552921D492002D52F1 /* MonthOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthOverviewView.swift; sourceTree = "<group>"; };
+		51EF8E092928D24E0048729B /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		51EF8E0B2928D5B10048729B /* WishlistItemsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistItemsListView.swift; sourceTree = "<group>"; };
 		D9A9769D290389CE00038F05 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D9A9769F290389D700038F05 /* BudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetView.swift; sourceTree = "<group>"; };
 		D9A976A1290389DD00038F05 /* WishlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistView.swift; sourceTree = "<group>"; };
@@ -93,6 +97,7 @@
 				D9A976A929038F4400038F05 /* ExpensesView.swift */,
 				51D8C349291F375A002D52F1 /* TotalExpenseView.swift */,
 				51D8C34F29211441002D52F1 /* SavingsChartView.swift */,
+				51EF8E0B2928D5B10048729B /* WishlistItemsListView.swift */,
 				51D8C35329212193002D52F1 /* PieChart.swift */,
 			);
 			path = Views;
@@ -121,6 +126,7 @@
 				514FFF80291A01740067C365 /* Sheets */,
 				D9E6983929037D5B0018B4C7 /* lemoneyApp.swift */,
 				514FFF7D2917F4680067C365 /* CategoryManager.swift */,
+				51EF8E092928D24E0048729B /* UserSettings.swift */,
 				D9A976A329038BD700038F05 /* Category.swift */,
 				D9A976A729038BF800038F05 /* Expense.swift */,
 				51D8C35129211588002D52F1 /* Overview.swift */,
@@ -220,6 +226,7 @@
 				D9A976A0290389D700038F05 /* BudgetView.swift in Sources */,
 				51D8C35029211441002D52F1 /* SavingsChartView.swift in Sources */,
 				D9A976AA29038F4400038F05 /* ExpensesView.swift in Sources */,
+				51EF8E0C2928D5B10048729B /* WishlistItemsListView.swift in Sources */,
 				51D8C34A291F375A002D52F1 /* TotalExpenseView.swift in Sources */,
 				51D8C35429212193002D52F1 /* PieChart.swift in Sources */,
 				D9CF3F2F290CD3880028C1C0 /* CreateWishlistSheet.swift in Sources */,
@@ -231,6 +238,7 @@
 				514FFF7C2915F3340067C365 /* WishlistItem.swift in Sources */,
 				D9E6983A29037D5B0018B4C7 /* lemoneyApp.swift in Sources */,
 				D9A976A429038BD700038F05 /* Category.swift in Sources */,
+				51EF8E0A2928D24E0048729B /* UserSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
