@@ -113,7 +113,7 @@ struct WishlistView: View {
                                 HStack {
                                     Text("\(want.name)")
                                     Spacer()
-                                    Text("\(String(format: "%.2f", want.price))")
+                                    Text("$\(String(format: "%.2f", want.price))")
                                 }
                                 .fontWeight(.semibold)
                                 ZStack(alignment: .leading) {

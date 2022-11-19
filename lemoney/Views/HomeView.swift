@@ -218,10 +218,6 @@ struct HomeView: View {
                                 .textCase(.none)
                                 .fontWeight(.bold)
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
-                        } footer: {
-                            if (needsList.count <= 0) {
-                                Text("Swipe left to add a need")
-                            }
                         }
                         Section {
                             if (wantsList.count > 0) {
@@ -269,10 +265,6 @@ struct HomeView: View {
                                 .textCase(.none)
                                 .fontWeight(.bold)
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
-                        } footer: {
-                            if (wantsList.count <= 0) {
-                                Text("Swipe left to add a want")
-                            }
                         }
                     }
                     .scrollContentBackground(.hidden)
