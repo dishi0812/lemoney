@@ -28,14 +28,18 @@ struct SetupView: View {
                 Color(.systemGray6)
                     .edgesIgnoringSafeArea(.all)
                 
-                ScrollView {
+                VStack {
                     if (isFirstLaunch) {
-                        Text("Setup")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .multilineTextAlignment(.leading)
-                            .padding(5)
-                            .padding(.top, 40)
+                        HStack {
+                            Text("Setup")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .multilineTextAlignment(.leading)
+                                .padding(5)
+                                .padding(.top, 40)
+                            
+                            Spacer()
+                        }
                     }
                     
                     VStack {
@@ -224,8 +228,6 @@ struct SetupView: View {
                         }
                     }
                 }
-
-                
                 Spacer()
                 
                 Button {
@@ -249,3 +251,4 @@ struct SetupView: View {
         }
     }
 }
+ 
