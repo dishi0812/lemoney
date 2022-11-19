@@ -3,16 +3,18 @@ import SwiftUI
 struct WishlistView: View {
     
     @State var needBoughtAlertShown = false
-    
+    @State var wishlistItemId = UUID()
     @State var categories: [Category]
     @State var addItemSheetShown = false
     
     @Binding var wishlist: [WishlistItem]
     @Binding var userSettings: [String:Double]
     
+    var item: WishlistItem? {
+        needsList.first(where: {$0.id == wishlistItemId}) ?? nil
+    }
     var needsList: [WishlistItem] { wishlist.filter { $0.type == .need } }
     var wantsList: [WishlistItem] { wishlist.filter { $0.type == .want } }
-    
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
     }
@@ -34,6 +36,16 @@ struct WishlistView: View {
             return width
         }
     }
+    func needProgressWidth(item: WishlistItem) -> Double{
+        let width = item.amtSetAside / item.price * 300
+        if (width > 325) {
+            return 325
+        } else if (width < 0) {
+            return 0
+        } else {
+            return width
+        }
+    }
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -42,25 +54,35 @@ struct WishlistView: View {
             List {
                 Section {
                     if (needsList.count > 0) {
-                        ForEach(needsList, id: \.id) { need in
+                        ForEach(needsList, id: \.id) { wishlistItem in
                             NavigationLink {
-                                NeedDetailsView(wishlist: $wishlist, item: need, categories: $categories, userSettings: $userSettings)
+                                NeedDetailsView(wishlist: $wishlist, item: wishlistItem, categories: $categories, userSettings: $userSettings)
                             } label: {
                                 HStack {
                                     VStack(alignment: .leading) {
                                         HStack {
-                                            Text("\(need.name)")
+                                            Text("\(wishlistItem.name)")
                                             Spacer()
-                                            Text("$\(String(format: "%.2f", need.price))")
+                                            Text("$\(String(format: "%.2f", wishlistItem.price))")
                                         }
                                         .fontWeight(.semibold)
                                         
                                         HStack {
-                                            Text("\(need.date.formatted(.dateTime.day().month().year()))")
+                                            Text("\(wishlistItem.date.formatted(.dateTime.day().month().year()))")
                                             Spacer()
-                                            Text("\(categories.first(where: {$0.id == need.categoryId})!.name)")
+                                            Text("\(categories.first(where: {$0.id == wishlistItem.categoryId})!.name)")
                                         }
                                         .fontWeight(.light)
+                                        ZStack(alignment: .leading) {
+                                            Rectangle()
+                                                .fill(Color(.systemGray5))
+                                                .frame(width: 300, height: 18)
+                                                .cornerRadius(20)
+                                            Rectangle()
+                                                .fill(.green)
+                                                .frame(width: needProgressWidth(item: wishlistItem), height: 18)
+                                                .cornerRadius(20)
+                                        }
                                     }
                                 }
                             }
@@ -75,7 +97,7 @@ struct WishlistView: View {
                             }
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button {
-                                    deleteId = need.id
+                                    deleteId = wishlistItem.id
                                     deleteAlertShown = true
                                 } label: {
                                     Image(systemName: "trash")

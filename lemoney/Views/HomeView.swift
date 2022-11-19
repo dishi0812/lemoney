@@ -4,10 +4,6 @@ struct HomeView: View {
     
     @State var needBoughtAlertShown = false
     @State var wishlistItemId = UUID()
-    var item: WishlistItem? {
-        needsList.first(where: {$0.id == wishlistItemId}) ?? nil
-    }
-    
     @State var type = Int()
     @State var addItemSheetShown = false
 
@@ -16,9 +12,11 @@ struct HomeView: View {
     @Binding var categories: [Category]
     @Binding var wishlist: [WishlistItem]
     
+    var item: WishlistItem? {
+        needsList.first(where: {$0.id == wishlistItemId}) ?? nil
+    }
     var needsList: [WishlistItem] { wishlist.filter { $0.type == .need } }
     var wantsList: [WishlistItem] { wishlist.filter { $0.type == .want } }
-    
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
     }
@@ -38,7 +36,7 @@ struct HomeView: View {
         }
     }
     func needProgressWidth(item: WishlistItem) -> Double{
-        let width = item.setAsideAmt >= 0 ? (userSettings["balance"]! - item.setAsideAmt) / item.price * 325 : userSettings["balance"]! / item.price * 325
+        let width = item.amtSetAside / item.price * 300
         if (width > 325) {
             return 325
         } else if (width < 0) {
@@ -177,11 +175,11 @@ struct HomeView: View {
                                             ZStack(alignment: .leading) {
                                                 Rectangle()
                                                     .fill(Color(.systemGray5))
-                                                    .frame(width: 325, height: 18)
+                                                    .frame(width: 300, height: 18)
                                                     .cornerRadius(20)
                                                 Rectangle()
                                                     .fill(.green)
-                                                    .frame(width: needProgressWidth(itemValue: wishlistItem.price), height: 18)
+                                                    .frame(width: needProgressWidth(item: wishlistItem), height: 18)
                                                     .cornerRadius(20)
                                             }
                                         }
