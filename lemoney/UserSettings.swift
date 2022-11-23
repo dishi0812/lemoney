@@ -1,13 +1,6 @@
-//
-//  UserSettings.swift
-//  lemoney
-//
-//  Created by TinkerTanker on 19/11/22.
-//
-
 import Foundation
 
-struct UserSettings {
+struct UserSettings: Codable {
     var income: Double
     var budgetGoal: Double
     var savingsGoal: Double

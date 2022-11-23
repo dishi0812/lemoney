@@ -14,33 +14,19 @@ extension Date: RawRepresentable {
 }
 
 struct ContentView: View {
+    @StateObject var dataManager = AppDataManager()
     
-    @State var userSettings = UserSettings(income: 2000.00, budgetGoal: 1600.00, savingsGoal: 400.00, balance: 2500.00)
-    
-    @State var overviews = [
-        MonthOverview(categories: ["Transport": 50.00, "Food": 50.00, "Savings": 100.00, "Clothes": 60.00, "Stationery": 80.00, "Entertainment": 90.00], savings: 100.00, month: "Jan"),
-        MonthOverview(categories: ["Transport": 25.00, "Food": 75.00, "Savings": 160.00, "Clothes": 90.00, "Stationery": 40.00, "Entertainment": 120.00], savings: 160.00, month: "Feb"),
-        MonthOverview(categories: ["Transport": 100.00, "Food": 0.00, "Savings": 120.00, "Clothes": 25.00, "Stationery": 50.00, "Entertainment": 60.00], savings: 120.00, month: "Mar"),
-        MonthOverview(categories: ["Transport": 90.00, "Food": 10.00, "Savings": 200.00, "Clothes": 53.00, "Stationery": 10.00, "Entertainment": 130.00], savings: 200.00, month: "Apr"),
-        MonthOverview(categories: ["Transport": 30.00, "Food": 70.00, "Savings": 180.00, "Clothes": 30.00, "Stationery": 135.00, "Entertainment": 38.00], savings: 180.00, month: "May"),
-        MonthOverview(categories: ["Transport": 30.00, "Food": 70.00, "Savings": 80.00, "Clothes": 45.00, "Stationery": 23.00, "Entertainment": 8.00], savings: 80.00, month: "Jun")
-    ]
-    
-    @StateObject var categoryManager = CategoryManager()
-    
-    @State var wishlist: [WishlistItem] = []
     
     @AppStorage("prevLaunchDate") var prevDate: Date = Date()
 
     @Environment(\.colorScheme) var colorScheme
     
     var totalSpendings: Double {
-        categoryManager.categories.reduce(0) { $0 + $1.spendings }
+        dataManager.data.categories.reduce(0) { $0 + $1.spendings }
     }
     var savings: Double {
-        userSettings.income - totalSpendings
+        dataManager.data.userSettings.income - totalSpendings
     }
-    
     
     @Environment(\.scenePhase) var scenePhase
     
@@ -51,22 +37,22 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            HomeView(userSettings: $userSettings, overviews: $overviews, categories: $categoryManager.categories, wishlist: $wishlist)
+            HomeView(userSettings: $dataManager.data.userSettings, overviews: $dataManager.data.overviews, categories: $dataManager.data.categories, wishlist: $dataManager.data.wishlist)
                 .tabItem { Label("Home", systemImage: "house.fill") }
             
-            BudgetView(userSettings: $userSettings, categories: $categoryManager.categories)
+            BudgetView(userSettings: $dataManager.data.userSettings, categories: $dataManager.data.categories)
                 .tabItem { Label("Budget", systemImage: "dollarsign.circle.fill") }
             
-            WishlistView(categories: categoryManager.categories, wishlist: $wishlist, userSettings: $userSettings)
+            WishlistView(categories: $dataManager.data.categories, wishlist: $dataManager.data.wishlist, userSettings: $dataManager.data.userSettings)
                 .tabItem { Label("Wishlist", systemImage: "list.star") }
         }
         .sheet(isPresented: $showSetupSheet) {
             if (launchedBefore) {
-                SetupView(userSettings: $userSettings, categories: $categoryManager.categories, pageNum: 1, isFirstLaunch: true)
+                SetupView(userSettings: $dataManager.data.userSettings, categories: $dataManager.data.categories, pageNum: 1, isFirstLaunch: true)
             }
         }
         .sheet(isPresented: $monthOverviewPresented) {
-            MonthOverviewView(month: prevDate, overviews: $overviews, categories: $categoryManager.categories, userSettings: $userSettings)
+            MonthOverviewView(month: prevDate, overviews: $dataManager.data.overviews, categories: $dataManager.data.categories, userSettings: $dataManager.data.userSettings)
         }
         .onAppear {
             if (launchedBefore) {
@@ -80,16 +66,16 @@ struct ContentView: View {
                 if (prevDate.formatted(.dateTime.month()) != Date().formatted(.dateTime.month()) || prevDate.formatted(.dateTime.year()) != Date().formatted(.dateTime.year())) {
                     prevDate = Date()
                     var categoriesDict: [String:Double] = [:]
-                    for category in categoryManager.categories {
+                    for category in dataManager.data.categories {
                         categoriesDict[category.name] = category.spendings
                     }
                     if (savings > 0.00) {
                         categoriesDict["Savings"] = savings
                     }
                     let overview = MonthOverview(categories: categoriesDict, savings: savings, month: prevDate.formatted(.dateTime.month()))
-                    overviews.append(overview)
-                    if (overviews.count > 6) {
-                        overviews.remove(at: 0)
+                    dataManager.data.overviews.append(overview)
+                    if (dataManager.data.overviews.count > 6) {
+                        dataManager.data.overviews.remove(at: 0)
                     }
                     monthOverviewPresented = true
                 }

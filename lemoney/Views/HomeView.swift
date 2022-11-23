@@ -6,9 +6,6 @@ struct HomeView: View {
     @Binding var categories: [Category]
     @Binding var wishlist: [WishlistItem]
     
-    var item: WishlistItem? {
-        needsList.first(where: {$0.id == wishlistItemId}) ?? nil
-    }
     var needsList: [WishlistItem] { wishlist.filter { $0.type == .need } }
     var wantsList: [WishlistItem] { wishlist.filter { $0.type == .want } }
     var totalSpendings: Double {
@@ -29,16 +26,6 @@ struct HomeView: View {
         }
     }
     @Environment(\.colorScheme) var colorScheme
-    func needProgressWidth(item: WishlistItem) -> Double{
-        let width = item.amtSetAside / item.price * 300
-        if (width > 325) {
-            return 325
-        } else if (width < 0) {
-            return 0
-        } else {
-            return width
-        }
-    }
     
     var body: some View {
         NavigationView {
@@ -148,122 +135,8 @@ struct HomeView: View {
                     
                     
                     // wishlist
-                    WishlistListView(location: "home", userSettings: $userSettings, categories: $categories, wishlist: $wishlist)
-                    List {
-                        Section {
-                            if (needsList.count > 0) {
-                                ForEach(needsList) { wishlistItem in
-                                    NavigationLink {
-                                        NeedDetailsView(wishlist: $wishlist, item: wishlistItem, categories: $categories, userSettings: $userSettings)
-                                    } label: {
-                                        VStack(alignment: .leading) {
-                                            HStack {
-                                                Text(wishlistItem.name)
-                                                Spacer()
-                                                Text("$\(String(format: "%.2f", wishlistItem.price))")
-                                            }
-                                            .fontWeight(.semibold)
-                                            HStack {
-                                                Text(wishlistItem.date.formatted(.dateTime.day().month().year()))
-                                                Spacer()
-                                                Text(categories.first(where: { $0.id == wishlistItem.categoryId })!.name)
-                                            }
-                                            .fontWeight(.light)
-                                            ZStack(alignment: .leading) {
-                                                Rectangle()
-                                                    .fill(Color(.systemGray5))
-                                                    .frame(width: 300, height: 18)
-                                                    .cornerRadius(20)
-                                                Rectangle()
-                                                    .fill(.green)
-                                                    .frame(width: needProgressWidth(item: wishlistItem), height: 18)
-                                                    .cornerRadius(20)
-                                            }
-                                        }
-                                    }
-                                    .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
-                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                        Button {
-                                            wishlistItemId = wishlistItem.id
-                                            needBoughtAlertShown = true
-                                        } label: {
-                                            Image(systemName: "checkmark")
-                                        }
-                                        .tint(.green)
-                                    }
-                                }
-                            } else {
-                                HStack {
-                                    Text("No Needs")
-                                }
-                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
-                                .swipeActions(edge: .trailing) {
-                                    Button {
-                                        type = 0
-                                        addItemSheetShown = true
-                                    } label: {
-                                        Image(systemName: "plus")
-                                    }
-                                    .tint(Color("AccentColor"))
-                                }
-                            }
-                        } header: {
-                            Text("Remember to Buy")
-                                .font(.title3)
-                                .textCase(.none)
-                                .fontWeight(.bold)
-                                .foregroundColor(colorScheme == .dark ? .white : .black)
-                        }
-                        Section {
-                            if (wantsList.count > 0) {
-                                ForEach(wantsList) { wishlistItem in
-                                    VStack {
-                                        HStack {
-                                            Text(wishlistItem.name)
-                                            Spacer()
-                                            Text("$\(String(format: "%.2f", wishlistItem.price))")
-                                        }
-                                        .fontWeight(.semibold)
-
-                                        ZStack(alignment: .leading) {
-                                            Rectangle()
-                                                .fill(Color(.systemGray4))
-                                                .frame(width: 325, height: 18)
-                                                .cornerRadius(20)
-                                            Rectangle()
-                                                .fill(Color("AccentColor"))
-                                                .frame(width: wantProgressWidth(itemValue: wishlistItem.price), height: 18)
-                                                .cornerRadius(20)
-                                        }
-                                        .padding(.top, -7)
-                                    }
-                                    .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
-                                }
-                            } else {
-                                HStack {
-                                    Text("No Wants")
-                                }
-                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
-                                .swipeActions(edge: .trailing) {
-                                    Button {
-                                        type = 1
-                                        addItemSheetShown = true
-                                    } label: {
-                                        Image(systemName: "plus")
-                                    }
-                                    .tint(Color("AccentColor"))
-                                }
-                            }
-                        } header: {
-                            Text("Wants")
-                                .font(.title3)
-                                .textCase(.none)
-                                .fontWeight(.bold)
-                                .foregroundColor(colorScheme == .dark ? .white : .black)
-                        }
-                    }
-                    .scrollContentBackground(.hidden)
-                    .padding(.top, -15)
+                    WishlistItemsList(location: "home", userSettings: $userSettings, categories: $categories, wishlist: $wishlist)
+                            .padding(.top, -15)
                 }
                 .navigationTitle("Home")
             }
@@ -285,23 +158,6 @@ struct HomeView: View {
                             .fontWeight(.bold)
                     }
                 }
-            }
-        }
-        .sheet(isPresented: $addItemSheetShown) {
-            CreateWishlistSheet(categories: categories, wishlist: $wishlist, type: type)
-        }
-        .alert("Do you want to use your previous months' savings or your current budget to purchase this item?", isPresented: $needBoughtAlertShown) {
-            Button("Previous Savings") {
-                userSettings["balance"] = userSettings["balance"]! - needsList.first(where: {$0.id == wishlistItemId})!.price
-                wishlist = wishlist.filter {$0.id != wishlistItemId}
-            }
-            Button("Current Budget") {
-                let categoryIndex = categories.firstIndex(where: { item!.categoryId == $0.id })!
-                categories[categoryIndex].expenses.append(Expense(name: "Wishlist: \(item!.name)", price: item!.price, date: Date(), categoryId: item!.categoryId))
-                wishlist = wishlist.filter {$0.id != wishlistItemId}
-            }
-            Button("Cancel", role: .cancel) {
-                
             }
         }
     }

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+
 struct CreateWishlistSheet: View {
     @State var categories: [Category]
     @Binding var wishlist: [WishlistItem]
@@ -16,6 +18,8 @@ struct CreateWishlistSheet: View {
     @State var name = String()
     @State var price = Double()
     @State var date = Date()
+    
+    var formattedDate: String { dateFormatter().string(for: date)! }
     
     @State var notFilledAlert = false
     
@@ -77,9 +81,9 @@ struct CreateWishlistSheet: View {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button {
                                 if (name != "" && price > 0.00) {
-                                    wishlist.append(WishlistItem(type: type == 0 ? .need : .want, name: name, price: price, date: type == 0 ? date : Date(), categoryId: categories[categoryIndex].id))
+                                    wishlist.append(WishlistItem(type: type == 0 ? .need : .want, name: name, price: price, date: type == 0 ? formattedDate : getStringFromDate(Date()), categoryId: categories[categoryIndex].id))
                                     
-                                    wishlist = wishlist.sorted(by: {$0.date.timeIntervalSince1970 < $1.date.timeIntervalSince1970})
+                                    wishlist = wishlist.sorted(by: {getDateFromString($0.date).timeIntervalSince1970 < getDateFromString($1.date).timeIntervalSince1970})
                                     
                                     dismiss()
                                 } else {

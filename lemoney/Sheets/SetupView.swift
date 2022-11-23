@@ -19,7 +19,7 @@ struct SetupView: View {
     @Environment(\.colorScheme) var colorScheme
     
     func checkBudgetGoals() {
-        
+        // TODO: check if individual category goals add up to budgetGoal
     }
     
     var body: some View {
@@ -177,16 +177,12 @@ struct SetupView: View {
                     .padding(.top, 70)
                     .padding(.bottom, 50)
                 
-//                Image("Logo").resizable().clipShape(Circle()).padding().frame(width: 150, height: 150)
-//                    .padding(.vertical, -15)
                 HStack {
-//                    VStack(alignment: .leading) {
-//                    }
-                    VStack(alignment: .leading, spacing: 25) {
-                        HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 40) {
+                        HStack {
                             Image(systemName: "dollarsign.circle")
                                 .foregroundColor(Color("AccentColor"))
-                                .font(.system(size: 45))
+                                .font(.system(size: 40))
 
                             VStack(alignment: .leading) {
                                 Text("Budget Management")
@@ -196,31 +192,27 @@ struct SetupView: View {
                                     .opacity(0.4)
                             }
                         }
-                        HStack(alignment: .top) {
+                        HStack {
                             Image(systemName: "list.star")
                                 .foregroundColor(Color("AccentColor"))
-                                .font(.system(size: 45))
-//                                .padding(.top, 60)
+                                .font(.system(size: 40))
 
                             VStack(alignment: .leading) {
                                 Text("Wishlist")
                                     .fontWeight(.bold)
-//                                    .padding(.top, 25)
                                 Text("Save up for items in your needs and wants list.")
                                     .fontWeight(.medium)
                                     .opacity(0.4)
                             }
                         }
-                        HStack(alignment: .top) {
+                        HStack {
                             Image(systemName: "chart.pie")
                                 .foregroundColor(Color("AccentColor"))
-                                .font(.system(size: 45))
-//                                .padding(.top, 60)
+                                .font(.system(size: 40))
 
                             VStack(alignment: .leading) {
                                 Text("Statistics")
                                     .fontWeight(.bold)
-//                                    .padding(.top, 25)
                                 Text("Track your spendings with charts and graphs.")
                                     .fontWeight(.medium)
                                     .opacity(0.4)
@@ -231,7 +223,7 @@ struct SetupView: View {
                 Spacer()
                 
                 Button {
-                    withAnimation(.easeOut(duration: 0.4)) {
+                    withAnimation(.easeOut(duration: 0.25)) {
                         pageNum = 2
                     }
                 } label: {

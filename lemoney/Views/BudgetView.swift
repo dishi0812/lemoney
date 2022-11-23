@@ -90,6 +90,12 @@ struct BudgetView: View {
                 }
             }
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Balance: $\(String(format: "%.2f", userSettings.balance))")
+                        .font(.title3)
+                        .padding(.top, 10)
+                        .fontWeight(.bold)
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
                         ForEach(categories) { category in

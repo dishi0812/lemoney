@@ -1,16 +1,16 @@
 import Foundation
 
-enum WishlistType {
+enum WishlistType: Codable {
     case need, want
 }
 
-struct WishlistItem: Identifiable {
+struct WishlistItem: Identifiable, Codable {
     var id = UUID()
     
     var type: WishlistType
     var name: String
     var price: Double
-    var date: Date
+    var date: String
     var categoryId: UUID
     var amtSetAside: Double = 0
 }

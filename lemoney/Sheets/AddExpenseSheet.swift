@@ -31,6 +31,7 @@ struct AddExpenseSheet: View {
                             .pickerStyle(.menu)
                             TextField("Name", text: $expenseName)
                             
+                            // TODO: Add dollarsign behind double if there isn't one
                             TextField("Price", value: $expensePrice, formatter: CurrencyFormatter())
                                 .keyboardType(.decimalPad)
                         }

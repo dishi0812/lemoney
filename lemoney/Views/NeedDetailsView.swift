@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct NeedDetailsView: View {
+    
+    // TODO: set aside custom amount sheet (maybe change it to another type of view)
+    
     @State var needBoughtAlertShown = false
     
     
@@ -22,7 +25,11 @@ struct NeedDetailsView: View {
     }
     
     var daysLeft: Int {
-        Calendar.current.dateComponents([.day], from: Date(), to: item.date).day! + 1
+        if Date().formatted(.dateTime.day().month()) == getDateFromString(item.date).formatted(.dateTime.day().month()) {
+            return 1
+        } else {
+            return Calendar.current.dateComponents([.day], from: Date(), to: getDateFromString(item.date)).day! + 2
+        }
     }
     var setAsideAmt: Double {
         (item.price - item.amtSetAside) / (Double(daysLeft))
@@ -121,7 +128,7 @@ struct NeedDetailsView: View {
                                 wishlist[index].amtSetAside += setAsideAmt
                                 
                                 let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                                categories[categoryIndex].expenses.append(Expense(name: "Wishlist Item Bought: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
+                                categories[categoryIndex].expenses.append(Expense(name: "Wishlist: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
                                 
                                 wishlist = wishlist.filter {$0.id != item.id}
                             } else {
@@ -129,7 +136,7 @@ struct NeedDetailsView: View {
                                 wishlist[index].amtSetAside += setAsideAmt
                                 
                                 let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                                categories[categoryIndex].expenses.append(Expense(name: "Set Aside For: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
+                                categories[categoryIndex].expenses.append(Expense(name: "Set Aside: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
                             }
                         }
                         Button {
@@ -180,7 +187,7 @@ struct NeedDetailsView: View {
             Button("Current Budget") {
                 if (item.price - item.amtSetAside > 0.00) {
                     let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                    categories[categoryIndex].expenses.append(Expense(name: "Wishlist Item Bought: \(item.name)", price: (item.price - item.amtSetAside), date: Date(), categoryId: item.categoryId))
+                    categories[categoryIndex].expenses.append(Expense(name: "Wishlist: \(item.name)", price: (item.price - item.amtSetAside), date: Date(), categoryId: item.categoryId))
                 }
                 wishlist = wishlist.filter {$0.id != item.id}
             }
@@ -198,7 +205,7 @@ struct NeedDetailsView: View {
             Button {
                 if (setAsideInput > item.price) { setAsideInput = item.price }
                 let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                categories[categoryIndex].expenses.append(Expense(name: "Set Aside For: \(item.name)", price: setAsideInput, date: Date(), categoryId: item.categoryId))
+                categories[categoryIndex].expenses.append(Expense(name: "Set Aside: \(item.name)", price: setAsideInput, date: Date(), categoryId: item.categoryId))
             } label: {
                 Text("Add")
                     .padding(15)

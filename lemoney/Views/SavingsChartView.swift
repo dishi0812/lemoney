@@ -60,7 +60,7 @@ struct SavingsChartView: View {
                         
                         Section {
                             HStack {
-                                Text("Current Savings")
+                                Text("Previous Months' Savings")
                                     .fontWeight(.bold)
                                 Spacer()
                                 Text("$\(String(format: "%.2f", savings))")

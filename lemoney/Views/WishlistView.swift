@@ -1,20 +1,10 @@
 import SwiftUI
 
 struct WishlistView: View {
-    
-    @State var needBoughtAlertShown = false
-    @State var wishlistItemId = UUID()
-    @State var categories: [Category]
-    @State var addItemSheetShown = false
-    
+    @Binding var categories: [Category]
     @Binding var wishlist: [WishlistItem]
     @Binding var userSettings: UserSettings
     
-    var item: WishlistItem? {
-        needsList.first(where: {$0.id == wishlistItemId}) ?? nil
-    }
-    var needsList: [WishlistItem] { wishlist.filter { $0.type == .need } }
-    var wantsList: [WishlistItem] { wishlist.filter { $0.type == .want } }
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
     }
@@ -22,198 +12,22 @@ struct WishlistView: View {
         userSettings.income - totalSpendings
     }
     
-    @State var type = 1
-    @State var deleteAlertShown = false
-    @State var deleteId = UUID()
-    
-    func wantProgressWidth(itemValue: Double) -> Double {
-        let width = savings >= 0 ? (userSettings["balance"]! - savings) / itemValue * 325 : userSettings["balance"]! / itemValue * 325
-        if (width > 325) {
-            return 325
-        } else if (width < 0) {
-            return 0
-        } else {
-            return width
-        }
-    }
-    func needProgressWidth(item: WishlistItem) -> Double{
-        let width = item.amtSetAside / item.price * 300
-        if (width > 325) {
-            return 325
-        } else if (width < 0) {
-            return 0
-        } else {
-            return width
-        }
-    }
-    
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         NavigationView {
-            List {
-                Section {
-                    if (needsList.count > 0) {
-                        ForEach(needsList, id: \.id) { wishlistItem in
-                            NavigationLink {
-                                NeedDetailsView(wishlist: $wishlist, item: wishlistItem, categories: $categories, userSettings: $userSettings)
-                            } label: {
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        HStack {
-                                            Text("\(wishlistItem.name)")
-                                            Spacer()
-                                            Text("$\(String(format: "%.2f", wishlistItem.price))")
-                                        }
-                                        .fontWeight(.semibold)
-                                        
-                                        HStack {
-                                            Text("\(wishlistItem.date.formatted(.dateTime.day().month().year()))")
-                                            Spacer()
-                                            Text("\(categories.first(where: {$0.id == wishlistItem.categoryId})!.name)")
-                                        }
-                                        .fontWeight(.light)
-                                        ZStack(alignment: .leading) {
-                                            Rectangle()
-                                                .fill(Color(.systemGray5))
-                                                .frame(width: 300, height: 18)
-                                                .cornerRadius(20)
-                                            Rectangle()
-                                                .fill(.green)
-                                                .frame(width: needProgressWidth(item: wishlistItem), height: 18)
-                                                .cornerRadius(20)
-                                        }
-                                    }
-                                }
-                            }
-                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button {
-                                // TODO: set aside from swipe actions
-                                } label: {
-                                    Image(systemName: "arrow.down.app")
-                                }
-                                .tint(Color("\(categories.first(where: { $0.id == need.categoryId })!.name)"))
-                            }
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button {
-                                // TODO: alert + deduct from whatever
-                                } label: {
-                                    Image(systemName: "cart")
-                                }
-                                .tint(.green)
-                            }
-                            .swipeActions(edge: .trailing) {
-                                Button {
-                                    deleteId = wishlistItem.id
-                                    deleteAlertShown = true
-                                } label: {
-                                    Image(systemName: "trash")
-                                }
-                                .tint(.red)
-                            }
-                        }
-                    } else {
-                        Text("No Needs")
-                    }
-                } header: {
-                    HStack {
-                        Text("Needs")
-                            .font(.title2)
-                            .textCase(.none)
+            WishlistItemsList(location: "wishlist", userSettings: $userSettings, categories: $categories, wishlist: $wishlist)
+                .navigationTitle("Wishlist")
+                .scrollContentBackground(.hidden)
+                .background(Color(.systemGray6))
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("Balance: $\(String(format: "%.2f", userSettings.balance))")
+                            .font(.title3)
+                            .padding(.top, 10)
                             .fontWeight(.bold)
-                            .foregroundColor(colorScheme == .dark ? .white : .black)
-                        Spacer()
-                        Button {
-                            type = 0
-                            addItemSheetShown = true
-                        } label: {
-                            Image(systemName: "plus")
-                                .font(.title3)
-                        }
                     }
                 }
-                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
-                
-                
-                Section {
-                    if (wantsList.count > 0) {
-                        ForEach(wantsList, id: \.id) { want in
-                            VStack {
-                                HStack {
-                                    Text("\(want.name)")
-                                    Spacer()
-                                    Text("$\(String(format: "%.2f", want.price))")
-                                }
-                                .fontWeight(.semibold)
-                                ZStack(alignment: .leading) {
-                                    Rectangle()
-                                        .fill(Color(.systemGray5))
-                                        .frame(width: 325, height: 18)
-                                        .cornerRadius(20)
-                                    Rectangle()
-                                        .fill(.green)
-                                        .frame(width: wantProgressWidth(itemValue: want.price), height: 18)
-                                        .cornerRadius(20)
-                                }
-                                .padding(.top, -7)
-                            }
-                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button {
-                                // TODO: alert + deduct from balance
-                                } label: {
-                                    Image(systemName: "cart")
-                                }
-                                .tint(.green)
-                            }
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button {
-                                    deleteId = want.id
-                                    deleteAlertShown = true
-                                } label: {
-                                    Image(systemName: "trash")
-                                }
-                                .tint(.red)
-                            }
-                        }
-                    } else {
-                        Text("No Wants")
-                    }
-                } header: {
-                    HStack {
-                        Text("Wants")
-                            .font(.title2)
-                            .textCase(.none)
-                            .fontWeight(.bold)
-                            .foregroundColor(colorScheme == .dark ? .white : .black)
-                        Spacer()
-                        Button {
-                            type = 1
-                            addItemSheetShown = true
-                        } label: {
-                            Image(systemName: "plus")
-                                .font(.title3)
-                        }
-                    }
-                }
-                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
-            }
-            .scrollContentBackground(.hidden)
-            .background(Color(.systemGray6))
-            .navigationTitle("Wishlist")
-            .sheet(isPresented: $addItemSheetShown) {
-                CreateWishlistSheet(categories: categories, wishlist: $wishlist, type: type)
-            }
-            .alert("Are you sure you want to delete this item?", isPresented: $deleteAlertShown) {
-                Button("Delete", role: .destructive) {
-                    wishlist = wishlist.filter {$0.id != deleteId}
-                }
-                Button("Cancel", role: .cancel) {}
-            }
-            .onAppear {
-                wishlist = wishlist.sorted(by: {$0.date.timeIntervalSince1970 < $1.date.timeIntervalSince1970})
-            }
         }
     }
 }
