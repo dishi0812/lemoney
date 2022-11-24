@@ -11,7 +11,11 @@ struct SetupView: View {
     
     @Binding var userSettings: UserSettings
     @Binding var categories: [Category]
+    
     @State var pageNum: Int
+    @State var savedAlert = false
+    @State var notSavedAlert = false
+    @State var negativeValuesAlert = false
     
     var isFirstLaunch: Bool
     
@@ -21,6 +25,8 @@ struct SetupView: View {
     func checkBudgetGoals() {
         // TODO: check if individual category goals add up to budgetGoal
     }
+    
+//    categories.reduce(0) { $0 + $1.spendings }
     
     var body: some View {
         if (pageNum == 2) {
@@ -32,60 +38,58 @@ struct SetupView: View {
                     
                     Spacer()
                     
-                    if (isFirstLaunch) {
-                        HStack {
-                            Spacer()
-                            Button {
-                                if (userSettings.income > 0.0 && userSettings.balance > 0.0 && userSettings.savingsGoal > 0.0 && userSettings.budgetGoal > 0.0) {
-                                    dismiss()
+                    HStack {
+                        Spacer()
+                        Button {
+                            func checkValues() {
+                                if (userSettings.income < 0.0 && userSettings.balance < 0.0 && userSettings.savingsGoal < 0.0 && userSettings.budgetGoal < 0.0 && categories.reduce(0) { $0 + $1.budget } < 0.0) {
+                                    negativeValuesAlert = true
+                                    return
                                 }
-                            } label: {
-                                Text("Start saving money!")
-                                    .frame(width: 320)
-                                    .padding(12)
-                                    .background(.green)
-                                    .foregroundColor(.white)
-                                    .fontWeight(.bold)
-                                    .font(.headline)
-                                    .cornerRadius(10)
-                                    .multilineTextAlignment(.center)
+                                for category in categories {
+                                    if category.budget < 0.0 {
+                                        negativeValuesAlert = true
+                                        return
+                                    }
+                                }
+                                if (userSettings.budgetGoal == categories.reduce(0) { $0 + $1.budget }) {
+                                    dismiss()
+                                } else {
+                                    notSavedAlert = true
+                                    return
+                                }
                             }
-                            .padding(.bottom, 30)
-                            Spacer()
+                            checkValues()
+                        } label: {
+                            Text("Start saving money!")
+                                .frame(width: 320)
+                                .padding(12)
+                                .background(.green)
+                                .foregroundColor(.white)
+                                .fontWeight(.bold)
+                                .font(.headline)
+                                .cornerRadius(10)
+                                .multilineTextAlignment(.center)
                         }
+                        .padding(.bottom, 30)
+                        Spacer()
                     }
                 } else {
                     SetupList(userSettings: $userSettings, categories: $categories, isFirstLaunch: isFirstLaunch)
-                    
-                    Spacer()
-                    
-                    if (isFirstLaunch) {
-                        HStack {
-                            Spacer()
-                            Button {
-                                if (userSettings.income > 0.0 && userSettings.balance > 0.0 && userSettings.savingsGoal > 0.0 && userSettings.budgetGoal > 0.0) {
-                                    dismiss()
-                                }
-                            } label: {
-                                Text("Start saving money!")
-                                    .frame(width: 320)
-                                    .padding(12)
-                                    .background(.green)
-                                    .foregroundColor(.white)
-                                    .fontWeight(.bold)
-                                    .font(.headline)
-                                    .cornerRadius(10)
-                                    .multilineTextAlignment(.center)
-                            }
-                            .padding(.bottom, 15)
-                            Spacer()
-                        }
-                    }
                 }
             }
             .background(Color(.systemGray6))
             .interactiveDismissDisabled()
             .transition(.backslide)
+            .alert("Please ensure that the total price of the categories corresponds to the budget goal.", isPresented: $notSavedAlert) {
+                Text("OK")
+            }
+            .alert("Saved changes successfully.", isPresented: $savedAlert) {
+                Text("OK")
+            }
+            .alert("Please ensure that none of the expenses are negative values.", isPresented: $negativeValuesAlert) {
+                Text("OK")
+            }
         }
         
         
@@ -170,6 +174,8 @@ struct SetupList: View {
     @Binding var categories: [Category]
     
     var isFirstLaunch: Bool
+    @State var notSavedAlert = false
+    @State var savedAlert = false
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
@@ -268,5 +274,20 @@ struct SetupList: View {
         .scrollContentBackground(.hidden)
         .background(Color(.systemGray6))
         .navigationTitle(isFirstLaunch ? "Setup" : "Profile")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if (!isFirstLaunch) {
+                    Button {
+                        if (userSettings.budgetGoal != categories.reduce(0) { $0 + $1.budget }) {
+                            notSavedAlert = true
+                        } else if (userSettings.income > 0.0 && userSettings.balance > 0.0 && userSettings.savingsGoal > 0.0 && userSettings.budgetGoal > 0.0) {
+                            savedAlert = true
+                        }
+                    } label: {
+                        Text("Save")
+                    }
+                }
+            }
+        }
     }
 }
