@@ -13,6 +13,7 @@
 		517E714B290CC0160088F17E /* AddCategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517E714A290CC0160088F17E /* AddCategorySheet.swift */; };
 		518282402924CAED00990435 /* NeedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5182823F2924CAED00990435 /* NeedDetailsView.swift */; };
 		51A1B5C1292F2E7100314581 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A1B5C0292F2E7100314581 /* EditProfileView.swift */; };
+		51A1B5C3292FBC4700314581 /* EditWishlistItemSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A1B5C2292FBC4700314581 /* EditWishlistItemSheet.swift */; };
 		51D8C348291F346B002D52F1 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C347291F346B002D52F1 /* SetupView.swift */; };
 		51D8C34A291F375A002D52F1 /* TotalExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C349291F375A002D52F1 /* TotalExpenseView.swift */; };
 		51D8C35029211441002D52F1 /* SavingsChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8C34F29211441002D52F1 /* SavingsChartView.swift */; };
@@ -44,6 +45,7 @@
 		517E714A290CC0160088F17E /* AddCategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategorySheet.swift; sourceTree = "<group>"; };
 		5182823F2924CAED00990435 /* NeedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedDetailsView.swift; sourceTree = "<group>"; };
 		51A1B5C0292F2E7100314581 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		51A1B5C2292FBC4700314581 /* EditWishlistItemSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWishlistItemSheet.swift; sourceTree = "<group>"; };
 		51D8C347291F346B002D52F1 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		51D8C349291F375A002D52F1 /* TotalExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalExpenseView.swift; sourceTree = "<group>"; };
 		51D8C34F29211441002D52F1 /* SavingsChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingsChartView.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				517E714A290CC0160088F17E /* AddCategorySheet.swift */,
 				D9CF3F2E290CD3880028C1C0 /* CreateWishlistSheet.swift */,
 				51D8C347291F346B002D52F1 /* SetupView.swift */,
+				51A1B5C2292FBC4700314581 /* EditWishlistItemSheet.swift */,
 				588FA852292F080B00338811 /* EditExpenseSheet.swift */,
 			);
 			path = Sheets;
@@ -246,6 +249,7 @@
 				D9E6983C29037D5B0018B4C7 /* ContentView.swift in Sources */,
 				D9A976A2290389DD00038F05 /* WishlistView.swift in Sources */,
 				518282402924CAED00990435 /* NeedDetailsView.swift in Sources */,
+				51A1B5C3292FBC4700314581 /* EditWishlistItemSheet.swift in Sources */,
 				514FFF7C2915F3340067C365 /* WishlistItem.swift in Sources */,
 				D9E6983A29037D5B0018B4C7 /* lemoneyApp.swift in Sources */,
 				D9A976A429038BD700038F05 /* Category.swift in Sources */,

@@ -1,8 +1,6 @@
 import SwiftUI
 
 struct WishlistItemsList: View {
-
-    // TODO: refund set aside amt on delete
     
     let location: String
     
@@ -35,6 +33,9 @@ struct WishlistItemsList: View {
     
     @State var deleteId = UUID()
     @State var deleteAlertShown = false
+    
+    @State var editSheetShown = false
+    @State var editItem = WishlistItem(type: .need, name: "", price: 0.00, date: "", categoryId: UUID())
     
     func wantProgressWidth(itemValue: Double) -> Double {
         let width = savings >= 0 ? (userSettings.balance - savings) / itemValue * 325 : userSettings.balance / itemValue * 325
@@ -119,17 +120,34 @@ struct WishlistItemsList: View {
                             }
                             .tint(.green)
                         }
-                        .swipeActions(edge: .trailing) {
-                            if (location == "wishlist") {
-                                Button {
-                                    deleteId = need.id
-                                    deleteAlertShown = true
-                                } label: {
-                                    Image(systemName: "trash")
-                                }
-                                .tint(.red)
+                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                            Button {
+                                editItem = need
+                                editSheetShown = true
+                            } label: {
+                                Image(systemName: "pencil")
                             }
+                            .tint(Color(.systemGray3))
                         }
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                deleteId = need.id
+                                deleteAlertShown = true
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                            .tint(.red)
+                        }
+                    }
+                    if (location == "wishlist") {
+                        HStack {
+                            Text("Cost of Needs")
+                                .fontWeight(.semibold)
+                            Spacer()
+                            Text("$\(String(format: "%.2f", needsList.reduce(0) { $0 + ($1.price - $1.amtSetAside) }))")
+                                .fontWeight(.bold)
+                        }
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                     }
                 } else {
                     HStack {
@@ -148,7 +166,7 @@ struct WishlistItemsList: View {
                 }
             } header: {
                 HStack {
-                    Text("Remember to Buy")
+                    Text(location == "home" ? "Remember to Buy" : "Needs")
                         .font(.title3)
                         .textCase(.none)
                         .fontWeight(.bold)
@@ -200,17 +218,34 @@ struct WishlistItemsList: View {
                             }
                             .tint(.green)
                         }
-                        .swipeActions(edge: .trailing) {
-                            if (location == "wishlist") {
-                                Button {
-                                    deleteId = want.id
-                                    deleteAlertShown = true
-                                } label: {
-                                    Image(systemName: "trash")
-                                }
-                                .tint(.red)
+                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                            Button {
+                                editItem = want
+                                editSheetShown = true
+                            } label: {
+                                Image(systemName: "pencil")
                             }
+                            .tint(Color(.systemGray3))
                         }
+                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                            Button {
+                                deleteId = want.id
+                                deleteAlertShown = true
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                            .tint(.red)
+                        }
+                    }
+                    if (location == "wishlist") {
+                        HStack {
+                            Text("Cost of Wants")
+                                .fontWeight(.semibold)
+                            Spacer()
+                            Text("$\(String(format: "%.2f", wantsList.reduce(0) { $0 + $1.price }))")
+                                .fontWeight(.bold)
+                        }
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                     }
                 } else {
                     HStack {
@@ -337,6 +372,10 @@ struct WishlistItemsList: View {
         }
         .sheet(isPresented: $addItemSheetShown) {
             CreateWishlistSheet(categories: categories, wishlist: $wishlist, type: type)
+        }
+        .sheet(isPresented: $editSheetShown) {
+            let typeIndex = editItem.type == .need ? 0 : 1
+            EditWishlistItemSheet(categories: $categories, wishlist: $wishlist, wishlistItemId: editItem.id, type: typeIndex, categoryId: editItem.categoryId, name: editItem.name, price: editItem.price, date: getDateFromString(editItem.date))
         }
     }
 }

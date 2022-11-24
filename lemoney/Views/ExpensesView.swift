@@ -103,9 +103,11 @@ struct ExpensesView: View {
                     let wishlistId = expense.wishlistId
                     if (wishlistId != nil) {
                         // deduct from wishlist's set aside and remove from set aside expenses array
-                        let wishlistIndex = wishlist.firstIndex(where: { $0.id == wishlistId })!
-                        wishlist[wishlistIndex].amtSetAside -= expense.price
-                        wishlist[wishlistIndex].setAsideExpenses = wishlist[wishlistIndex].setAsideExpenses.filter { $0 != expense.id }
+                        let wishlistIndex = try? wishlist.firstIndex(where: { $0.id == wishlistId })
+                        if (wishlistIndex != nil) {
+                            wishlist[wishlistIndex!].amtSetAside -= expense.price
+                            wishlist[wishlistIndex!].setAsideExpenses = wishlist[wishlistIndex!].setAsideExpenses.filter { $0 != expense.id }
+                        }
                     }
                 }
                 

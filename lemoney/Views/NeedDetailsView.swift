@@ -1,9 +1,6 @@
 import SwiftUI
 
 struct NeedDetailsView: View {
-    
-    // TODO: set aside custom amount sheet (maybe change it to another type of view)
-    
     @State var needBoughtAlertShown = false
     
     
