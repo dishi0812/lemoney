@@ -16,6 +16,8 @@ struct WishlistItemsList: View {
     
     @State var type = Int()
     @State var addItemSheetShown = false
+    @State var setAsideAlert = false
+    @State var setAsideAndBuyAlert = false
 
     @Binding var userSettings: UserSettings
     @Binding var categories: [Category]
@@ -94,7 +96,13 @@ struct WishlistItemsList: View {
                         .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button {
-                            // TODO: set aside from swipe actions
+                                wishlistItemId = need.id
+                                let item = item!
+                                if (item.price - item.amtSetAside == (item.price - item.amtSetAside) / Double(item.daysLeft)) {
+                                    setAsideAndBuyAlert = true
+                                } else {
+                                    setAsideAlert = true
+                                }
                             } label: {
                                 Image(systemName: "arrow.down.app")
                             }
@@ -251,16 +259,17 @@ struct WishlistItemsList: View {
         }
         .alert("Purchase this item?", isPresented: $itemBoughtAlertShown) {
             if (item != nil) {
-                if item!.type == .want {
+                let item = item!
+                if item.type == .want {
                     Button("Purchase With Previous Savings") {
-                        userSettings.balance = userSettings.balance - item!.price
+                        userSettings.balance = userSettings.balance - item.price
                         wishlist = wishlist.filter {$0.id != wishlistItemId}
                     }
-                } else if item!.type == .need {
+                } else if item.type == .need {
                     Button("Purchase With Current Budget") {
-                        let categoryIndex = categories.firstIndex(where: { item!.categoryId == $0.id })!
-                        userSettings.balance = userSettings.balance - item!.price
-                        categories[categoryIndex].expenses.append(Expense(name: "Wishlist: \(item!.name)", price: item!.price, date: Date(), categoryId: item!.categoryId))
+                        let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
+                        userSettings.balance = userSettings.balance - (item.price - item.amtSetAside)
+                        categories[categoryIndex].expenses.append(Expense(name: "\(item.type == .need ? "Need Bought" : "Want Bought"): \(item.name)", price: item.price - item.amtSetAside, date: Date(), categoryId: item.categoryId))
                         wishlist = wishlist.filter {$0.id != wishlistItemId}
                     }
                 }
@@ -270,10 +279,50 @@ struct WishlistItemsList: View {
             }
         } message: {
             if (item != nil) {
-                Text("\(item!.name) ($\(String(format: "%.2f", item!.price)))")
+                let item = item!
+                Text("\(item.name) ($\(String(format: "%.2f", item.price - item.amtSetAside)))")
             }
         }
-//        .alert("Set Aside $\(String(format: "%.2f", item.))")
+        .alert("Set Aside Money With Current Budget?", isPresented: $setAsideAlert) {
+            if (item != nil) {
+                let item = item!
+                let setAsideAmt = (item.price - item.amtSetAside) / Double(item.daysLeft)
+                
+                Button("Set Aside") {
+                    let index = wishlist.firstIndex(where: {$0.id == item.id})!
+                    wishlist[index].amtSetAside += setAsideAmt
+                    
+                    let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
+                    categories[categoryIndex].expenses.append(Expense(name: "Set Aside: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            if (item != nil) {
+                Text("\(item!.name) ($\(String(format: "%.2f", (item!.price - item!.amtSetAside) / Double(item!.daysLeft))))")
+            }
+        }
+        .alert("Set Aside Money and Buy Now?", isPresented: $setAsideAndBuyAlert) {
+            if (item != nil) {
+                let item = item!
+                let setAsideAmt = (item.price - item.amtSetAside) / Double(item.daysLeft)
+                
+                Button("Set Aside") {
+                    let index = wishlist.firstIndex(where: {$0.id == item.id})!
+                    wishlist[index].amtSetAside += setAsideAmt
+                    
+                    let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
+                    categories[categoryIndex].expenses.append(Expense(name: "Need Bought: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
+                    
+                    wishlist = wishlist.filter {$0.id != item.id}
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            if (item != nil) {
+                Text("\(item!.name) ($\(String(format: "%.2f", (item!.price - item!.amtSetAside) / Double(item!.daysLeft))))")
+            }
+        }
         .sheet(isPresented: $addItemSheetShown) {
             CreateWishlistSheet(categories: categories, wishlist: $wishlist, type: type)
         }
