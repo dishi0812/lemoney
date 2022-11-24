@@ -150,7 +150,7 @@ struct HomeView: View {
                 ToolbarItem {
                     NavigationLink {
                         // edit profile
-                        SetupView(userSettings: $userSettings, categories: $categories, pageNum: 2, isFirstLaunch: false)
+                        EditProfileView(userSettings: userSettings, categories: categories, BindingUserSettings: $userSettings, BindingCategories: $categories)
                     } label: {
                         Image(systemName: "person.crop.circle")
                             .font(.title3)

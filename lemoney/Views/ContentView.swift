@@ -55,7 +55,7 @@ struct ContentView: View {
             MonthOverviewView(month: prevDate, overviews: $dataManager.data.overviews, categories: $dataManager.data.categories, userSettings: $dataManager.data.userSettings)
         }
         .onAppear {
-            if (launchedBefore) {
+            if (!launchedBefore) {
                 UserDefaults.standard.set(true, forKey: "launchedBefore")
                 prevDate = Date()
                 showSetupSheet = true
@@ -63,7 +63,8 @@ struct ContentView: View {
         }
         .onChange(of: scenePhase) { newPhase in
             if (newPhase == .active) {
-                if (prevDate.formatted(.dateTime.month()) != Date().formatted(.dateTime.month()) || prevDate.formatted(.dateTime.year()) != Date().formatted(.dateTime.year())) {
+                if (prevDate.formatted(.dateTime.second()) != Date().formatted(.dateTime.second())) {
+                    // prevDate.formatted(.dateTime.month()) != Date().formatted(.dateTime.month()) || prevDate.formatted(.dateTime.year()) != Date().formatted(.dateTime.year())
                     prevDate = Date()
                     var categoriesDict: [String:Double] = [:]
                     for category in dataManager.data.categories {

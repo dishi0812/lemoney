@@ -13,7 +13,6 @@ struct SetupView: View {
     @Binding var categories: [Category]
     
     @State var pageNum: Int
-    @State var savedAlert = false
     @State var notSavedAlert = false
     @State var negativeValuesAlert = false
     
@@ -25,8 +24,6 @@ struct SetupView: View {
     func checkBudgetGoals() {
         // TODO: check if individual category goals add up to budgetGoal
     }
-    
-//    categories.reduce(0) { $0 + $1.spendings }
     
     var body: some View {
         if (pageNum == 2) {
@@ -81,14 +78,15 @@ struct SetupView: View {
             .background(Color(.systemGray6))
             .interactiveDismissDisabled()
             .transition(.backslide)
-            .alert("Please ensure that the total price of the categories corresponds to the budget goal.", isPresented: $notSavedAlert) {
+            .alert("Invalid Values", isPresented: $notSavedAlert) {
                 Text("OK")
+            } message: {
+                Text("Ensure that the budget allocated for the categories corresponds to the budget goal.")
             }
-            .alert("Saved changes successfully.", isPresented: $savedAlert) {
+            .alert("Invalid Values", isPresented: $negativeValuesAlert) {
                 Text("OK")
-            }
-            .alert("Please ensure that none of the expenses are negative values.", isPresented: $negativeValuesAlert) {
-                Text("OK")
+            } message: {
+                Text("Please ensure that none of the expenses are negative values.")
             }
         }
         
@@ -273,21 +271,6 @@ struct SetupList: View {
         }
         .scrollContentBackground(.hidden)
         .background(Color(.systemGray6))
-        .navigationTitle(isFirstLaunch ? "Setup" : "Profile")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                if (!isFirstLaunch) {
-                    Button {
-                        if (userSettings.budgetGoal != categories.reduce(0) { $0 + $1.budget }) {
-                            notSavedAlert = true
-                        } else if (userSettings.income > 0.0 && userSettings.balance > 0.0 && userSettings.savingsGoal > 0.0 && userSettings.budgetGoal > 0.0) {
-                            savedAlert = true
-                        }
-                    } label: {
-                        Text("Save")
-                    }
-                }
-            }
-        }
+        .navigationTitle("Setup")
     }
 }
