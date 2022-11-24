@@ -91,7 +91,7 @@ struct ExpensesView: View {
             AddExpenseSheet(categoryIndex: category, userSettings: $userSettings, categories: $categories)
         }
         .sheet(isPresented: $editExpenseSheetShown) {
-            var expense = categories[category].expenses.first(where: {$0.id == expenseId})!
+            let expense = categories[category].expenses.first(where: {$0.id == expenseId})!
             EditExpenseSheet(categoryIndex: category, expenseName: expense.name, expensePrice: expense.price, userSettings: $userSettings, categories: $categories, expenseId: expenseId)
         }
         .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {

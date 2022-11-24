@@ -11,7 +11,7 @@ struct TotalExpenseView: View {
     @State var expenseId = UUID()
     
     @State var addExpenseSheetShown = false
-    
+    @State var editExpenseSheetShown = false
     
     var totalSpendings: Double {
         categories.reduce(0) { $0 + $1.spendings }
@@ -19,6 +19,9 @@ struct TotalExpenseView: View {
     
     var allExpenses: [Expense] { categories.reduce([]) {$0 + $1.expenses}.sorted(by: { $0.date.timeIntervalSince1970 > $1.date.timeIntervalSince1970 }) }
     
+    func categoryIndexFromId(_ id: UUID) -> Int {
+        return categories.firstIndex(where: { $0.id == id })!
+    }
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -65,6 +68,16 @@ struct TotalExpenseView: View {
                                     Image(systemName: "trash")
                                 }
                                 .tint(.red)
+                            }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                    expenseId = expense.id
+                                    categoryId = expense.categoryId
+                                    editExpenseSheetShown = true
+                                } label: {
+                                    Image(systemName: "pencil")
+                                }
+                                .tint(Color(.systemGray3))
                             }
                             .listRowBackground(colorScheme == .dark ? Color(.systemGray6) : .white)
                         }
@@ -119,6 +132,10 @@ struct TotalExpenseView: View {
         .background(colorScheme == .dark ? Color(.systemGray6) : .white)
         .sheet(isPresented: $addExpenseSheetShown) {
             AddExpenseSheet(categoryIndex: 0, userSettings: $userSettings , categories: $categories)
+        }
+        .sheet(isPresented: $editExpenseSheetShown) {
+            let expense = categories[categoryIndexFromId(categoryId)].expenses.first(where: {$0.id == expenseId})!
+            EditExpenseSheet(categoryIndex: categoryIndexFromId(categoryId), expenseName: expense.name, expensePrice: expense.price, userSettings: $userSettings, categories: $categories, expenseId: expenseId)
         }
         .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
