@@ -1,13 +1,15 @@
 import SwiftUI
 
-struct AddExpenseSheet: View {
+struct EditExpenseSheet: View {
     // 'add' mode
-    @State var categoryIndex: Int
-    @State var expenseName = ""
-    @State var expensePrice = Double()
+    let categoryIndex: Int
+    @State var editedCategoryIndex = 0
+    @State var expenseName: String
+    @State var expensePrice: Double
     
     @Binding var userSettings: UserSettings
     @Binding var categories: [Category]
+    var expenseId: UUID
     
     @State var notFilledAlert = false
     @State var invalidValueAlert = false
@@ -23,7 +25,7 @@ struct AddExpenseSheet: View {
                     Form {
                         // inputs
                         Section {
-                            Picker("Category", selection: $categoryIndex) {
+                            Picker("Category", selection: $editedCategoryIndex) {
                                 ForEach(0 ..< categories.count) { i in
                                     Text("\(categories[i].name)")
                                 }
@@ -36,19 +38,28 @@ struct AddExpenseSheet: View {
                                 .keyboardType(.decimalPad)
                         }
                     }
-                    .navigationTitle("New Expense")
+                    .navigationTitle("Edit Expense")
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button {
                                 if (expensePrice <= 0.00) {
                                     // alert
                                     invalidValueAlert = true
-                                } else {
-                                    // add expense
-                                    categories[categoryIndex].expenses.append(Expense(name: expenseName == "" ? categories[categoryIndex].name : expenseName, price: expensePrice, date: Date(), categoryId: categories[categoryIndex].id))
-                                    userSettings.balance -= expensePrice
-                                    dismiss()
+                                    return
                                 }
+
+                                let oldDate = categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!.date
+                                
+                                // delete expense in original category
+                                userSettings.balance += categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!.price
+                                categories[categoryIndex].expenses = categories[categoryIndex].expenses.filter { $0.id != expenseId }
+                                
+                                // add edited expense in original category if left unchanged or category moved into (totally very effective way to edit expense, but it works)
+                                categories[editedCategoryIndex].expenses.append(Expense(name: expenseName != "" ? expenseName : categories[editedCategoryIndex].name, price: expensePrice, date: oldDate, categoryId: categories[editedCategoryIndex].id))
+                                userSettings.balance -= expensePrice
+                                
+                                dismiss()
+                            
                             } label: {
                                 Text("Done")
                             }
@@ -61,10 +72,16 @@ struct AddExpenseSheet: View {
                             }
                         }
                     }
-                    .alert("Please fill in the 'Price' input with positive values", isPresented: $invalidValueAlert) {
+                    .alert("Fill in all the fields!", isPresented: $notFilledAlert) {
+                        Button("OK", role: .cancel) {}
+                    }
+                    .alert("Price value is invalid!", isPresented: $invalidValueAlert) {
                         Button("OK", role: .cancel) {}
                     }
                 }
+            }
+            .onAppear {
+                editedCategoryIndex = categoryIndex
             }
         }
     }
