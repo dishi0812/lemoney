@@ -95,18 +95,20 @@ struct WishlistItemsList: View {
                         }
                         .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button {
-                                wishlistItemId = need.id
-                                let item = item!
-                                if (item.price - item.amtSetAside == (item.price - item.amtSetAside) / Double(item.daysLeft)) {
-                                    setAsideAndBuyAlert = true
-                                } else {
-                                    setAsideAlert = true
+                            if (need.daysLeft >= 0) {
+                                Button {
+                                    wishlistItemId = need.id
+                                    let item = item!
+                                    if (item.price - item.amtSetAside == (item.price - item.amtSetAside) / Double(item.daysLeft)) {
+                                        setAsideAndBuyAlert = true
+                                    } else {
+                                        setAsideAlert = true
+                                    }
+                                } label: {
+                                    Image(systemName: "arrow.down.app")
                                 }
-                            } label: {
-                                Image(systemName: "arrow.down.app")
+                                .tint(Color("\(categories.first(where: { $0.id == need.categoryId })!.name)"))
                             }
-                            .tint(Color("\(categories.first(where: { $0.id == need.categoryId })!.name)"))
                         }
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button {
@@ -249,9 +251,14 @@ struct WishlistItemsList: View {
         .scrollContentBackground(.hidden)
         .alert("Delete this Wishlist Item?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
-                if (wishlist.first(where: { $0.id == deleteId })!.type == .need) {
-                    // TODO: REFUND SET ASIDE AMT
-                    // IDEA: have an array of expenseUUID in wishlistItem & filter expenses?
+                let item = wishlist.first(where: { $0.id == deleteId })!
+                if (item.type == .need) {
+                    // refund expenses
+                    for expenseId in item.setAsideExpenses {
+                        let categoryIndex = categories.firstIndex(where: { $0.id == item.categoryId })!
+                        userSettings.balance += categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!.price
+                        categories[categoryIndex].expenses = categories[categoryIndex].expenses.filter { $0.id != expenseId }
+                    }
                 }
                 wishlist = wishlist.filter { $0.id != deleteId }
             }
@@ -262,13 +269,13 @@ struct WishlistItemsList: View {
                 let item = item!
                 if item.type == .want {
                     Button("Purchase With Previous Savings") {
-                        userSettings.balance = userSettings.balance - item.price
+                        userSettings.balance -= (wishlist.first(where: {$0.id == item.id})!.price - wishlist.first(where: {$0.id == item.id})!.amtSetAside)
                         wishlist = wishlist.filter {$0.id != wishlistItemId}
                     }
                 } else if item.type == .need {
                     Button("Purchase With Current Budget") {
                         let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                        userSettings.balance = userSettings.balance - (item.price - item.amtSetAside)
+                        userSettings.balance -= item.price - item.amtSetAside
                         categories[categoryIndex].expenses.append(Expense(name: "\(item.type == .need ? "Need Bought" : "Want Bought"): \(item.name)", price: item.price - item.amtSetAside, date: Date(), categoryId: item.categoryId))
                         wishlist = wishlist.filter {$0.id != wishlistItemId}
                     }
@@ -292,8 +299,11 @@ struct WishlistItemsList: View {
                     let index = wishlist.firstIndex(where: {$0.id == item.id})!
                     wishlist[index].amtSetAside += setAsideAmt
                     
+                    userSettings.balance -= setAsideAmt
                     let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                    categories[categoryIndex].expenses.append(Expense(name: "Set Aside: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
+                    let id = UUID()
+                    categories[categoryIndex].expenses.append(Expense(id: id, name: "Set Aside: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId, isFromSetAside: true, wishlistId: item.id))
+                    wishlist[index].setAsideExpenses.append(id)
                 }
             }
             Button("Cancel", role: .cancel) {}
@@ -307,12 +317,14 @@ struct WishlistItemsList: View {
                 let item = item!
                 let setAsideAmt = (item.price - item.amtSetAside) / Double(item.daysLeft)
                 
-                Button("Set Aside") {
+                Button("OK") {
                     let index = wishlist.firstIndex(where: {$0.id == item.id})!
                     wishlist[index].amtSetAside += setAsideAmt
                     
+                    userSettings.balance -= setAsideAmt
+                    
                     let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                    categories[categoryIndex].expenses.append(Expense(name: "Need Bought: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
+                    categories[categoryIndex].expenses.append(Expense(name: "Need Bought: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId, isFromSetAside: true, wishlistId: item.id))
                     
                     wishlist = wishlist.filter {$0.id != item.id}
                 }

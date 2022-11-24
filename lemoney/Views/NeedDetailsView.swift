@@ -44,7 +44,7 @@ struct NeedDetailsView: View {
             
             VStack {
                 HStack {
-                    Text("(\(categories.first(where: { item.categoryId == $0.id })!.name), $\(String(format: "%.2f", setAsideAmt)))")
+                    Text("(\(categories.first(where: { item.categoryId == $0.id })!.name), $\(String(format: "%.2f", item.price)))")
                         .padding(.horizontal, 16)
                         .multilineTextAlignment(.leading)
                         .font(.title2)
@@ -75,26 +75,28 @@ struct NeedDetailsView: View {
                     }
                     .padding(7)
                     
-                    ZStack {
-                        VStack {
-                            Text("Save: ")
-                                .font(.title)
-                                .fontWeight(.medium)
+                    if (daysLeft >= 0) {
+                        ZStack {
                             VStack {
-                                Text("$\(String(format: "%.2f", item.price - item.amtSetAside > 0.00 ? setAsideAmt : 0.00))")
-                                    .font(.system(size: 45))
-                                    .fontWeight(.bold)
-                                Text("per day")
-                                    .font(.headline)
+                                Text("Save: ")
+                                    .font(.title)
                                     .fontWeight(.medium)
+                                VStack {
+                                    Text("$\(String(format: "%.2f", item.price - item.amtSetAside > 0.00 ? setAsideAmt : 0.00))")
+                                        .font(.system(size: 45))
+                                        .fontWeight(.bold)
+                                    Text("per day")
+                                        .font(.headline)
+                                        .fontWeight(.medium)
+                                }
                             }
+                            .padding(.horizontal, 20)
+                            .frame(height: 160)
+                            .background(colorScheme == .dark ? Color(.systemGray5) : .white)
+                            .cornerRadius(12)
                         }
-                        .padding(.horizontal, 20)
-                        .frame(height: 160)
-                        .background(colorScheme == .dark ? Color(.systemGray5) : .white)
-                        .cornerRadius(12)
+                        .padding(7)
                     }
-                    .padding(7)
                 }
                 ZStack {
                     VStack {
@@ -119,24 +121,32 @@ struct NeedDetailsView: View {
                 
                 Spacer()
                 
-                if item.price - item.amtSetAside > 0.00 {
+                if item.price - item.amtSetAside > 0.00 && daysLeft >= 0 {
                     Menu {
                         Button("Set aside $\(String(format: "%.2f", setAsideAmt)) \(item.price - item.amtSetAside == setAsideAmt ? "and buy" : "")") {
-                            
                             if (item.price - item.amtSetAside == setAsideAmt) {
                                 let index = wishlist.firstIndex(where: {$0.id == item.id})!
                                 wishlist[index].amtSetAside += setAsideAmt
                                 
                                 let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                                categories[categoryIndex].expenses.append(Expense(name: "Need Bought: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
                                 
+                                let id = UUID()
+                                categories[categoryIndex].expenses.append(Expense(id: id, name: "Need Bought: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId, isFromSetAside: true, wishlistId: wishlist[index].id))
+                                
+                                wishlist[index].setAsideExpenses.append(id)
+                                
+                                userSettings.balance -= setAsideAmt
                                 wishlist = wishlist.filter {$0.id != item.id}
                             } else {
                                 let index = wishlist.firstIndex(where: {$0.id == item.id})!
                                 wishlist[index].amtSetAside += setAsideAmt
                                 
+                                userSettings.balance -= setAsideAmt
                                 let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                                categories[categoryIndex].expenses.append(Expense(name: "Set Aside: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
+                                
+                                let id = UUID()
+                                categories[categoryIndex].expenses.append(Expense(id: id, name: "Set Aside: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId, isFromSetAside: true, wishlistId: wishlist[index].id))
+                                wishlist[index].setAsideExpenses.append(id)
                             }
                         }
                         Button {
@@ -176,18 +186,12 @@ struct NeedDetailsView: View {
             }
             .navigationTitle("\(item.name)")
         }
-        .alert("Do you want to use your previous months' savings or your current budget to purchase this item?", isPresented: $needBoughtAlertShown) {
-            if previousMonthsSavings > item.price {
-                Button("Previous Savings") {
-                    userSettings.balance = userSettings.balance - wishlist.first(where: {$0.id == item.id})!.price
-                    wishlist = wishlist.filter {$0.id != item.id}
-                }
-            }
-            
-            Button("Current Budget") {
+        .alert("Purchase this item?", isPresented: $needBoughtAlertShown) {
+            Button("Purchase with Current Budget") {
                 if (item.price - item.amtSetAside > 0.00) {
                     let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                    categories[categoryIndex].expenses.append(Expense(name: "Wishlist: \(item.name)", price: (item.price - item.amtSetAside), date: Date(), categoryId: item.categoryId))
+                    userSettings.balance -= (wishlist.first(where: {$0.id == item.id})!.price - wishlist.first(where: {$0.id == item.id})!.amtSetAside)
+                    categories[categoryIndex].expenses.append(Expense(name: "Wishlist: \(item.name)", price: (item.price - item.amtSetAside), date: Date(), categoryId: item.categoryId, isFromSetAside: true, wishlistId: item.id))
                 }
                 wishlist = wishlist.filter {$0.id != item.id}
             }
@@ -198,14 +202,17 @@ struct NeedDetailsView: View {
         .onAppear {
             setAsideInput = setAsideAmt
         }
-        .sheet(isPresented: $showSheet) {
+        .alert("Custom Amount", isPresented: $showSheet) {
             TextField("Price", value: $setAsideInput, formatter: CurrencyFormatter())
                 .keyboardType(.decimalPad)
             
             Button {
                 if (setAsideInput > item.price) { setAsideInput = item.price }
                 let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                categories[categoryIndex].expenses.append(Expense(name: "Set Aside: \(item.name)", price: setAsideInput, date: Date(), categoryId: item.categoryId))
+                let id = UUID()
+                categories[categoryIndex].expenses.append(Expense(name: "Set Aside: \(item.name)", price: setAsideInput, date: Date(), categoryId: item.categoryId, isFromSetAside: true, wishlistId: item.id))
+                wishlist[wishlist.firstIndex(where: {$0.id == item.id})!].setAsideExpenses.append(id)
+                userSettings.balance -= setAsideInput
             } label: {
                 Text("Add")
                     .padding(15)
@@ -215,6 +222,7 @@ struct NeedDetailsView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.white)
             }
+            .disabled(setAsideInput > item.price - item.amtSetAside)
         }
     }
 }

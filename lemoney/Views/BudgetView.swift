@@ -4,6 +4,7 @@ struct BudgetView: View {
     
     @Binding var userSettings: UserSettings
     @Binding var categories: [Category]
+    @Binding var wishlist: [WishlistItem]
     @State var selectedCategory = Int()
     
     @State var addExpenseSheetShown = false
@@ -15,12 +16,11 @@ struct BudgetView: View {
     
     var body: some View {
         NavigationView {
-            
             List {
                 Section {
                     ForEach($categories) { $category in
                         NavigationLink {
-                            ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, userSettings: $userSettings, categories: $categories)
+                            ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, userSettings: $userSettings, categories: $categories, wishlist: $wishlist)
                         } label: {
                             HStack {
                                 Text(category.name)
@@ -60,7 +60,7 @@ struct BudgetView: View {
                 }
                 Section {
                     NavigationLink {
-                        TotalExpenseView(userSettings: $userSettings, categories: $categories, viewOnly: false)
+                        TotalExpenseView(userSettings: $userSettings, categories: $categories, wishlist: $wishlist, viewOnly: false)
                     } label: {
                         HStack {
                             Text("Total")

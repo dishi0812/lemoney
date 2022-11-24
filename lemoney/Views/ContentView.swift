@@ -40,7 +40,7 @@ struct ContentView: View {
             HomeView(userSettings: $dataManager.data.userSettings, overviews: $dataManager.data.overviews, categories: $dataManager.data.categories, wishlist: $dataManager.data.wishlist)
                 .tabItem { Label("Home", systemImage: "house.fill") }
             
-            BudgetView(userSettings: $dataManager.data.userSettings, categories: $dataManager.data.categories)
+            BudgetView(userSettings: $dataManager.data.userSettings, categories: $dataManager.data.categories, wishlist: $dataManager.data.wishlist)
                 .tabItem { Label("Budget", systemImage: "dollarsign.circle.fill") }
             
             WishlistView(categories: $dataManager.data.categories, wishlist: $dataManager.data.wishlist, userSettings: $dataManager.data.userSettings)
@@ -52,7 +52,7 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $monthOverviewPresented) {
-            MonthOverviewView(month: prevDate, overviews: $dataManager.data.overviews, categories: $dataManager.data.categories, userSettings: $dataManager.data.userSettings)
+            MonthOverviewView(month: prevDate, overviews: $dataManager.data.overviews, categories: $dataManager.data.categories, userSettings: $dataManager.data.userSettings, wishlist: $dataManager.data.wishlist)
         }
         .onAppear {
             if (!launchedBefore) {
@@ -63,8 +63,8 @@ struct ContentView: View {
         }
         .onChange(of: scenePhase) { newPhase in
             if (newPhase == .active) {
-                if (prevDate.formatted(.dateTime.second()) != Date().formatted(.dateTime.second())) {
-                    // prevDate.formatted(.dateTime.month()) != Date().formatted(.dateTime.month()) || prevDate.formatted(.dateTime.year()) != Date().formatted(.dateTime.year())
+                if (prevDate.formatted(.dateTime.month()) != Date().formatted(.dateTime.month()) || prevDate.formatted(.dateTime.year()) != Date().formatted(.dateTime.year())) {
+//                    FOR TESTING: prevDate.formatted(.dateTime.second()) != Date().formatted(.dateTime.second())
                     prevDate = Date()
                     var categoriesDict: [String:Double] = [:]
                     for category in dataManager.data.categories {

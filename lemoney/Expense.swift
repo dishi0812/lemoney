@@ -7,4 +7,7 @@ struct Expense: Identifiable, Codable {
     var price: Double
     var date: Date
     var categoryId: UUID
+    
+    var isFromSetAside = false
+    var wishlistId: UUID? = nil
 }

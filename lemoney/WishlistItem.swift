@@ -14,6 +14,8 @@ struct WishlistItem: Identifiable, Codable {
     var categoryId: UUID
     var amtSetAside: Double = 0
     
+    var setAsideExpenses: [UUID] = []
+    
     var daysLeft: Int {
         if Date().formatted(.dateTime.day().month()) == getDateFromString(date).formatted(.dateTime.day().month()) {
             return 1

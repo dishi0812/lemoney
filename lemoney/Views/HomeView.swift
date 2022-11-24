@@ -95,7 +95,7 @@ struct HomeView: View {
                         
                         // All Expenses Link
                         NavigationLink {
-                            TotalExpenseView(userSettings: $userSettings, categories: $categories, viewOnly: false)
+                            TotalExpenseView(userSettings: $userSettings, categories: $categories, wishlist: $wishlist, viewOnly: false)
                         } label: {
                             HStack {
                                 ZStack {

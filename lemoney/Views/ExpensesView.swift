@@ -5,6 +5,7 @@ struct ExpensesView: View {
     var category: Int
     @Binding var userSettings: UserSettings
     @Binding var categories: [Category]
+    @Binding var wishlist: [WishlistItem]
     
     @State var deleteAlertShown = false
     @State var expenseId = UUID()
@@ -96,7 +97,19 @@ struct ExpensesView: View {
         }
         .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
-                userSettings.balance += categories[category].expenses.first(where: { $0.id == expenseId })!.price
+                let expense = categories[category].expenses.first(where: { $0.id == expenseId })!
+                
+                if (categories[category].expenses.first(where: { $0.id == expenseId })!.isFromSetAside) {
+                    let wishlistId = expense.wishlistId
+                    if (wishlistId != nil) {
+                        // deduct from wishlist's set aside and remove from set aside expenses array
+                        let wishlistIndex = wishlist.firstIndex(where: { $0.id == wishlistId })!
+                        wishlist[wishlistIndex].amtSetAside -= expense.price
+                        wishlist[wishlistIndex].setAsideExpenses = wishlist[wishlistIndex].setAsideExpenses.filter { $0 != expense.id }
+                    }
+                }
+                
+                userSettings.balance += expense.price
                 categories[category].expenses = categories[category].expenses.filter { $0.id != expenseId }
             }
             Button("Cancel", role: .cancel) {}

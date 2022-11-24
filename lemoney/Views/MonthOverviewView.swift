@@ -6,6 +6,7 @@ struct MonthOverviewView: View {
     @Binding var overviews: [MonthOverview]
     @Binding var categories: [Category]
     @Binding var userSettings: UserSettings
+    @Binding var wishlist: [WishlistItem]
     
     
     var keys: [String] { Array(overviews[overviews.count - 1].categories.keys) }
@@ -59,7 +60,7 @@ struct MonthOverviewView: View {
                         Spacer()
                         
                         NavigationLink {
-                            TotalExpenseView(userSettings: $userSettings, categories: $categories, viewOnly: true)
+                            TotalExpenseView(userSettings: $userSettings, categories: $categories, wishlist: $wishlist, viewOnly: true)
                         } label: {
                             HStack {
                                 ZStack {

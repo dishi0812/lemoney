@@ -49,13 +49,14 @@ struct EditExpenseSheet: View {
                                 }
 
                                 let oldDate = categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!.date
+                                let oldId = categories[categoryIndex].expenses.first(where: {$0.id == expenseId})!.id
                                 
                                 // delete expense in original category
                                 userSettings.balance += categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!.price
                                 categories[categoryIndex].expenses = categories[categoryIndex].expenses.filter { $0.id != expenseId }
                                 
                                 // add edited expense in original category if left unchanged or category moved into (totally very effective way to edit expense, but it works)
-                                categories[editedCategoryIndex].expenses.append(Expense(name: expenseName != "" ? expenseName : categories[editedCategoryIndex].name, price: expensePrice, date: oldDate, categoryId: categories[editedCategoryIndex].id))
+                                categories[editedCategoryIndex].expenses.append(Expense(id: oldId, name: expenseName != "" ? expenseName : categories[editedCategoryIndex].name, price: expensePrice, date: oldDate, categoryId: categories[editedCategoryIndex].id))
                                 userSettings.balance -= expensePrice
                                 
                                 dismiss()
