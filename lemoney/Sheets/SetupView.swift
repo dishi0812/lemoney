@@ -94,77 +94,81 @@ struct SetupView: View {
         
         
         if (pageNum == 1) {
-            VStack {
-                Text("Welcome to Lemoney")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.top, 70)
-                    .padding(.bottom, 50)
-                
-                HStack {
-                    VStack(alignment: .leading, spacing: 40) {
-                        HStack {
-                            Image(systemName: "dollarsign.circle")
-                                .foregroundColor(Color("AccentColor"))
-                                .font(.system(size: 40))
-
-                            VStack(alignment: .leading) {
-                                Text("Budget Management")
-                                    .fontWeight(.bold)
-                                Text("Set budget goals to meet your savings targets.")
-                                    .fontWeight(.medium)
-                                    .opacity(0.4)
-                            }
-                        }
-                        HStack {
-                            Image(systemName: "list.star")
-                                .foregroundColor(Color("AccentColor"))
-                                .font(.system(size: 40))
-
-                            VStack(alignment: .leading) {
-                                Text("Wishlist")
-                                    .fontWeight(.bold)
-                                Text("Save up for items in your needs and wants list.")
-                                    .fontWeight(.medium)
-                                    .opacity(0.4)
-                            }
-                        }
-                        HStack {
-                            Image(systemName: "chart.pie")
-                                .foregroundColor(Color("AccentColor"))
-                                .font(.system(size: 40))
-
-                            VStack(alignment: .leading) {
-                                Text("Statistics")
-                                    .fontWeight(.bold)
-                                Text("Track your spendings with charts and graphs.")
-                                    .fontWeight(.medium)
-                                    .opacity(0.4)
-                            }
-                        }
-                    }
-                }
-                Spacer()
-                
-                Button {
-                    withAnimation(.easeOut(duration: 0.25)) {
-                        pageNum = 2
-                    }
-                } label: {
-                    Text("Setup")
-                        .frame(width: 320)
-                        .padding(12)
-                        .background(.green)
-                        .foregroundColor(.white)
+            ZStack {
+                Color(.systemGray6)
+                    .edgesIgnoringSafeArea(.all)
+                VStack {
+                    Text("Welcome to Lemoney")
+                        .font(.largeTitle)
                         .fontWeight(.bold)
-                        .font(.headline)
-                        .cornerRadius(10)
+                        .padding(.top, 70)
+                        .padding(.bottom, 50)
+                    
+                    HStack {
+                        VStack(alignment: .leading, spacing: 40) {
+                            HStack {
+                                Image(systemName: "dollarsign.circle")
+                                    .foregroundColor(Color("AccentColor"))
+                                    .font(.system(size: 40))
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Budget Management")
+                                        .fontWeight(.bold)
+                                    Text("Set budget goals to meet your savings targets.")
+                                        .fontWeight(.medium)
+                                        .opacity(0.4)
+                                }
+                            }
+                            HStack {
+                                Image(systemName: "list.star")
+                                    .foregroundColor(Color("AccentColor"))
+                                    .font(.system(size: 40))
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Wishlist")
+                                        .fontWeight(.bold)
+                                    Text("Save up for items in your needs and wants list.")
+                                        .fontWeight(.medium)
+                                        .opacity(0.4)
+                                }
+                            }
+                            HStack {
+                                Image(systemName: "chart.pie")
+                                    .foregroundColor(Color("AccentColor"))
+                                    .font(.system(size: 40))
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Statistics")
+                                        .fontWeight(.bold)
+                                    Text("Track your spendings with charts and graphs.")
+                                        .fontWeight(.medium)
+                                        .opacity(0.4)
+                                }
+                            }
+                        }
+                    }
+                    Spacer()
+                    
+                    Button {
+                        withAnimation(.easeOut(duration: 0.25)) {
+                            pageNum = 2
+                        }
+                    } label: {
+                        Text("Setup")
+                            .frame(width: 320)
+                            .padding(12)
+                            .background(.green)
+                            .foregroundColor(.white)
+                            .fontWeight(.bold)
+                            .font(.headline)
+                            .cornerRadius(10)
+                    }
+                    .padding(.bottom, 30)
                 }
-                .padding(.bottom, 30)
+                .background(Color(.systemGray6))
+                .interactiveDismissDisabled()
+                .transition(.backslide)
             }
-            .background(Color(.systemGray6))
-            .interactiveDismissDisabled()
-            .transition(.backslide)
         }
     }
 }
