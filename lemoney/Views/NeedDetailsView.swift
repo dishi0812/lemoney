@@ -121,14 +121,14 @@ struct NeedDetailsView: View {
                 
                 if item.price - item.amtSetAside > 0.00 {
                     Menu {
-                        Button("Set aside $\(String(format: "%.2f", setAsideAmt)) \(item.price - item.amtSetAside == setAsideAmt ? "and buy now" : "")") {
+                        Button("Set aside $\(String(format: "%.2f", setAsideAmt)) \(item.price - item.amtSetAside == setAsideAmt ? "and buy" : "")") {
                             
                             if (item.price - item.amtSetAside == setAsideAmt) {
                                 let index = wishlist.firstIndex(where: {$0.id == item.id})!
                                 wishlist[index].amtSetAside += setAsideAmt
                                 
                                 let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                                categories[categoryIndex].expenses.append(Expense(name: "Wishlist: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
+                                categories[categoryIndex].expenses.append(Expense(name: "Need Bought: \(item.name)", price: setAsideAmt, date: Date(), categoryId: item.categoryId))
                                 
                                 wishlist = wishlist.filter {$0.id != item.id}
                             } else {
