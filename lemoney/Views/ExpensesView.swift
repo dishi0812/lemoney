@@ -5,10 +5,12 @@ struct ExpensesView: View {
     var category: Int
     @Binding var userSettings: UserSettings
     @Binding var categories: [Category]
+    
     @State var deleteAlertShown = false
     @State var expenseId = UUID()
     
     @State var addExpenseSheetShown = false
+    @State var editExpenseSheetShown = false
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -50,6 +52,15 @@ struct ExpensesView: View {
                             }
                             .tint(.red)
                         }
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button {
+                                expenseId = expense.id
+                                editExpenseSheetShown = true
+                            } label: {
+                                Image(systemName: "pencil")
+                            }
+                            .tint(Color(.systemGray3))
+                        }
                         .listRowBackground(colorScheme == .dark ? Color(.systemGray6) : .white)
                     }
                 } else {
@@ -78,6 +89,10 @@ struct ExpensesView: View {
         }
         .sheet(isPresented: $addExpenseSheetShown) {
             AddExpenseSheet(categoryIndex: category, userSettings: $userSettings, categories: $categories)
+        }
+        .sheet(isPresented: $editExpenseSheetShown) {
+            var expense = categories[category].expenses.first(where: {$0.id == expenseId})!
+            EditExpenseSheet(categoryIndex: category, expenseName: expense.name, expensePrice: expense.price, userSettings: $userSettings, categories: $categories, expenseId: expenseId)
         }
         .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
