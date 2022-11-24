@@ -152,7 +152,7 @@ struct MonthOverviewView: View {
                                 .padding(.bottom, -3)
                         }
                         NavigationLink {
-                            SetupView(userSettings: $userSettings, categories: $categories, pageNum: 2, isFirstLaunch: false)
+                            EditProfileView(userSettings: userSettings, categories: categories, BindingUserSettings: $userSettings, BindingCategories: $categories)
                         } label: {
                             Text("Update Goals")
                                 .padding(12)
