@@ -7,7 +7,9 @@ struct WishlistItemsList: View {
     let location: String
     
     @State var itemBoughtAlertShown = false
+    
     @State var wishlistItemId = UUID()
+    
     var item: WishlistItem? {
         wishlist.first(where: {$0.id == wishlistItemId}) ?? nil
     }
@@ -237,7 +239,16 @@ struct WishlistItemsList: View {
             }
         }
         .scrollContentBackground(.hidden)
-        
+        .alert("Delete this Wishlist Item?", isPresented: $deleteAlertShown) {
+            Button("Delete", role: .destructive) {
+                if (wishlist.first(where: { $0.id == deleteId })!.type == .need) {
+                    // TODO: REFUND SET ASIDE AMT
+                    // IDEA: have an array of expenseUUID in wishlistItem & filter expenses?
+                }
+                wishlist = wishlist.filter { $0.id != deleteId }
+            }
+            Button("OK", role: .cancel) {}
+        }
         .alert("Purchase this item?", isPresented: $itemBoughtAlertShown) {
             if (item != nil) {
                 if item!.type == .want {
@@ -248,6 +259,7 @@ struct WishlistItemsList: View {
                 } else if item!.type == .need {
                     Button("Purchase With Current Budget") {
                         let categoryIndex = categories.firstIndex(where: { item!.categoryId == $0.id })!
+                        userSettings.balance = userSettings.balance - item!.price
                         categories[categoryIndex].expenses.append(Expense(name: "Wishlist: \(item!.name)", price: item!.price, date: Date(), categoryId: item!.categoryId))
                         wishlist = wishlist.filter {$0.id != wishlistItemId}
                     }
@@ -261,6 +273,7 @@ struct WishlistItemsList: View {
                 Text("\(item!.name) ($\(String(format: "%.2f", item!.price)))")
             }
         }
+//        .alert("Set Aside $\(String(format: "%.2f", item.))")
         .sheet(isPresented: $addItemSheetShown) {
             CreateWishlistSheet(categories: categories, wishlist: $wishlist, type: type)
         }
