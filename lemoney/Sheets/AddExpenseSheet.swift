@@ -40,26 +40,15 @@ struct AddExpenseSheet: View {
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button {
-                                func handleSubmit() -> Void {
-                                    if (expenseName == "" || expensePrice <= 0) {
-                                        // alert
-                                        notFilledAlert = true
-                                        return
-                                    }
-                                    if (expensePrice <= 0.00) {
-                                        // alert
-                                        invalidValueAlert = true
-                                        return
-                                    }
-                                    if (expenseName != "" && expensePrice > 0.00) {
-                                        // add expense
-                                        categories[categoryIndex].expenses.append(Expense(name: expenseName, price: expensePrice, date: Date(), categoryId: categories[categoryIndex].id))
-                                        userSettings.balance -= expensePrice
-                                        dismiss()
-                                    }
+                                if (expensePrice <= 0.00) {
+                                    // alert
+                                    invalidValueAlert = true
+                                } else {
+                                    // add expense
+                                    categories[categoryIndex].expenses.append(Expense(name: expenseName == "" ? categories[categoryIndex].name : expenseName, price: expensePrice, date: Date(), categoryId: categories[categoryIndex].id))
+                                    userSettings.balance -= expensePrice
+                                    dismiss()
                                 }
-                                
-                                handleSubmit()
                             } label: {
                                 Text("Done")
                             }
@@ -72,10 +61,7 @@ struct AddExpenseSheet: View {
                             }
                         }
                     }
-                    .alert("Please fill in all the blanks", isPresented: $notFilledAlert) {
-                        Button("OK", role: .cancel) {}
-                    }
-                    .alert("Please fill in the 'Price' input with valid values", isPresented: $invalidValueAlert) {
+                    .alert("Please fill in the 'Price' input with positive values", isPresented: $invalidValueAlert) {
                         Button("OK", role: .cancel) {}
                     }
                 }
