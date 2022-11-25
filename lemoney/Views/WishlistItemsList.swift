@@ -210,13 +210,15 @@ struct WishlistItemsList: View {
                         }
                         .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button {
-                                wishlistItemId = want.id
-                                itemBoughtAlertShown = true
-                            } label: {
-                                Image(systemName: "cart")
+                            if (wantProgressWidth(itemValue: want.price) >= 325) {
+                                Button {
+                                    wishlistItemId = want.id
+                                    itemBoughtAlertShown = true
+                                } label: {
+                                    Image(systemName: "cart")
+                                }
+                                .tint(.green)
                             }
-                            .tint(.green)
                         }
                         .swipeActions(edge: .leading, allowsFullSwipe: true) {
                             Button {
