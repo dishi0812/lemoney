@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 func CurrencyFormatter() -> Formatter {
     let numberFormatter = NumberFormatter()
@@ -25,9 +26,7 @@ func getDateFromString(_ string: String) -> Date {
     return dateFormatter().date(from: string)!
 }
 
-
 struct RoundedCorner: Shape {
-
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners
 
