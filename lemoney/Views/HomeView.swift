@@ -1,5 +1,22 @@
 import SwiftUI
 
+struct RoundedCorner: Shape {
+
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
+    }
+}
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape( RoundedCorner(radius: radius, corners: corners) )
+    }
+}
+
 struct HomeView: View {
     @Binding var userSettings: UserSettings
     @Binding var overviews: [MonthOverview]
@@ -53,14 +70,12 @@ struct HomeView: View {
                             Rectangle()
                                 .fill(Color(.systemGray5))
                                 .frame(width: 325, height: 25)
-                                .cornerRadius(13)
-                                .padding(.bottom, 10)
                             Rectangle()
                                 .fill(Color("AccentColor"))
                                 .frame(width: totalBudget(), height: 25)
-                                .cornerRadius(13)
-                                .padding(.bottom, 10)
+                                .cornerRadius(25, corners: [.topRight, .bottomRight])
                         }
+                        .cornerRadius(13)
                     }
                     .padding(.bottom, -20)
                     .padding(.top, -5)

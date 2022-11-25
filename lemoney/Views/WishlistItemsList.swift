@@ -86,12 +86,12 @@ struct WishlistItemsList: View {
                                     Rectangle()
                                         .fill(Color(.systemGray4))
                                         .frame(width: 300, height: 18)
-                                        .cornerRadius(20)
                                     Rectangle()
                                         .fill(.green)
                                         .frame(width: needProgressWidth(item: need), height: 18)
-                                        .cornerRadius(20)
+                                        .cornerRadius(25, corners: [.topRight, .bottomRight])
                                 }
+                                .cornerRadius(13)
                             }
                         }
                         .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
@@ -200,12 +200,12 @@ struct WishlistItemsList: View {
                                 Rectangle()
                                     .fill(Color(.systemGray4))
                                     .frame(width: 325, height: 18)
-                                    .cornerRadius(20)
                                 Rectangle()
                                     .fill(Color("AccentColor"))
                                     .frame(width: wantProgressWidth(itemValue: want.price), height: 18)
-                                    .cornerRadius(20)
+                                    .cornerRadius(25, corners: [.topRight, .bottomRight])
                             }
+                            .cornerRadius(13)
                             .padding(.top, -7)
                         }
                         .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
