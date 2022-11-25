@@ -17,7 +17,7 @@ struct SavingsChartView: View {
     var body: some View {
         ZStack {
             Color(.systemGray6)
-                .edgesIgnoringSafeArea(.all)
+                .edgesIgnoringSafeArea(.top)
             
             if (overviews.count > 0) {
                 VStack {
@@ -83,7 +83,7 @@ struct SavingsChartView: View {
                                     }
                                 }
                                 .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
-                                
+
                                 HStack {
                                     Spacer()
                                     PieChart(overview: overviews[monthDistribution], keys: keys)
