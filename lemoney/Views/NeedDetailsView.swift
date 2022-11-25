@@ -41,7 +41,7 @@ struct NeedDetailsView: View {
             
             VStack {
                 HStack {
-                    Text("\(categories.first(where: { item.categoryId == $0.id })!.name), $\(String(format: "%.2f", item.price))")
+                    Text("\(categories.first(where: { item.categoryId == $0.id })!.name), \(CurrencyFormatter().string(for: item.price)!)")
                         .padding(.horizontal, 16)
                         .multilineTextAlignment(.leading)
                         .font(.title2)
@@ -79,7 +79,7 @@ struct NeedDetailsView: View {
                                     .font(.title)
                                     .fontWeight(.medium)
                                 VStack {
-                                    Text("$\(String(format: "%.2f", item.price - item.amtSetAside > 0.00 ? setAsideAmt : 0.00))")
+                                    Text("\(CurrencyFormatter().string(for: item.price - item.amtSetAside > 0.00 ? setAsideAmt : 0.00)!)")
                                         .font(.system(size: 45))
                                         .fontWeight(.bold)
                                     Text("per day")
@@ -101,7 +101,7 @@ struct NeedDetailsView: View {
                             .font(.title)
                             .fontWeight(.medium)
                         VStack {
-                            Text("$\(String(format: "%.2f", item.price - item.amtSetAside))")
+                            Text("\(CurrencyFormatter().string(for: item.price - item.amtSetAside)!)")
                                 .font(.system(size: 45))
                                 .fontWeight(.bold)
                             Text("more")
@@ -120,7 +120,7 @@ struct NeedDetailsView: View {
                 
                 if item.price - item.amtSetAside > 0.00 && daysLeft >= 0 {
                     Menu {
-                        Button("Set aside $\(String(format: "%.2f", setAsideAmt)) \(item.price - item.amtSetAside == setAsideAmt ? "and buy" : "")") {
+                        Button("Set aside \(CurrencyFormatter().string(for: setAsideAmt)!) \(item.price - item.amtSetAside == setAsideAmt ? "and buy" : "")") {
                             if (item.price - item.amtSetAside == setAsideAmt) {
                                 let index = wishlist.firstIndex(where: {$0.id == item.id})!
                                 wishlist[index].amtSetAside += setAsideAmt
