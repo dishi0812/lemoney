@@ -4,18 +4,18 @@ import SwiftUI
 class AppDataManager: ObservableObject {
     @Published var data: AppData = AppData(
         categories: [
-            Category(name: "Transport", expenses: [], budget: 320.00, isStartingCategory: true),
-            Category(name: "Food", expenses: [], budget: 320.00, isStartingCategory: true),
-            Category(name: "Clothes", expenses: [], budget: 320.00, isStartingCategory: true),
-            Category(name: "Entertainment", expenses: [], budget: 320.00, isStartingCategory: true),
-            Category(name: "Stationery", expenses: [], budget: 320.00, isStartingCategory: true)
+            Category(name: "Transport", expenses: [], budget: 120.00, isStartingCategory: true),
+            Category(name: "Food", expenses: [], budget: 120.00, isStartingCategory: true),
+            Category(name: "Clothes", expenses: [], budget: 120.00, isStartingCategory: true),
+            Category(name: "Entertainment", expenses: [], budget: 120.00, isStartingCategory: true),
+            Category(name: "Stationery", expenses: [], budget: 120.00, isStartingCategory: true)
         ],
         wishlist: [],
         userSettings: UserSettings(
-            income: 2000.00,
-            budgetGoal: 1600.00,
-            savingsGoal: 400.00,
-            balance: 2500.00
+            income: 800.00,
+            budgetGoal: 600.00,
+            savingsGoal: 200.00,
+            balance: 1000.00
         ),
         overviews: [
 //            MonthOverview(categories: ["Transport": 50.00, "Food": 50.00, "Savings": 100.00, "Clothes": 60.00, "Stationery": 80.00, "Entertainment": 90.00], savings: 100.00, month: "Jan"),
@@ -33,18 +33,18 @@ class AppDataManager: ObservableObject {
     
     let sampleData: AppData = AppData(
         categories: [
-            Category(name: "Transport", expenses: [], budget: 320.00, isStartingCategory: true),
-            Category(name: "Food", expenses: [], budget: 320.00, isStartingCategory: true),
-            Category(name: "Clothes", expenses: [], budget: 320.00, isStartingCategory: true),
-            Category(name: "Entertainment", expenses: [], budget: 320.00, isStartingCategory: true),
-            Category(name: "Stationery", expenses: [], budget: 320.00, isStartingCategory: true)
+            Category(name: "Transport", expenses: [], budget: 120.00, isStartingCategory: true),
+            Category(name: "Food", expenses: [], budget: 120.00, isStartingCategory: true),
+            Category(name: "Clothes", expenses: [], budget: 120.00, isStartingCategory: true),
+            Category(name: "Entertainment", expenses: [], budget: 120.00, isStartingCategory: true),
+            Category(name: "Stationery", expenses: [], budget: 120.00, isStartingCategory: true)
         ],
         wishlist: [],
         userSettings: UserSettings(
-            income: 2000.00,
-            budgetGoal: 1600.00,
-            savingsGoal: 400.00,
-            balance: 2500.00
+            income: 800.00,
+            budgetGoal: 600.00,
+            savingsGoal: 200.00,
+            balance: 1000.00
         ),
         overviews: [
 //            MonthOverview(categories: ["Transport": 50.00, "Food": 50.00, "Savings": 100.00, "Clothes": 60.00, "Stationery": 80.00, "Entertainment": 90.00], savings: 100.00, month: "Jan"),
