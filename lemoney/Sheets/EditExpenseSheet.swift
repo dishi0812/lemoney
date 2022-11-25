@@ -42,7 +42,7 @@ struct EditExpenseSheet: View {
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button {
-                                if (expensePrice <= 0.00) {
+                                if (expensePrice < 0.01) {
                                     // alert
                                     invalidValueAlert = true
                                     return

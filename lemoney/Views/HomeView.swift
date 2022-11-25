@@ -16,13 +16,17 @@ struct HomeView: View {
     }
     
     func totalBudget() -> Double {
-        let val = 325 - totalSpendings / userSettings.budgetGoal * 325
-        if val < 0 {
-            return 0
-        } else if val > 325 {
+        if (userSettings.budgetGoal <= 0.01) {
             return 325
         } else {
-            return val
+            let val = 325 - totalSpendings / userSettings.budgetGoal * 325
+            if val < 0 {
+                return 0
+            } else if val > 325 {
+                return 325
+            } else {
+                return val
+            }
         }
     }
     @Environment(\.colorScheme) var colorScheme

@@ -41,7 +41,7 @@ struct NeedDetailsView: View {
             
             VStack {
                 HStack {
-                    Text("(\(categories.first(where: { item.categoryId == $0.id })!.name), \(                                Text("\(CurrencyFormatter().string(for: Double(item.price))!)")))")
+                    Text("\(categories.first(where: { item.categoryId == $0.id })!.name), $\(String(format: "%.2f", item.price))")
                         .padding(.horizontal, 16)
                         .multilineTextAlignment(.leading)
                         .font(.title2)
@@ -52,7 +52,7 @@ struct NeedDetailsView: View {
                 HStack {
                     ZStack {
                         VStack {
-                            Text("Time")
+                            Text("Time:")
                                 .font(.title)
                                 .fontWeight(.medium)
                             VStack {
@@ -75,11 +75,11 @@ struct NeedDetailsView: View {
                     if (daysLeft >= 0) {
                         ZStack {
                             VStack {
-                                Text("Save")
+                                Text("Save: ")
                                     .font(.title)
                                     .fontWeight(.medium)
                                 VStack {
-                                    Text("\(CurrencyFormatter().string(for: Double(item.price - item.amtSetAside > 0.00 ? setAsideAmt : 0.00))!)")
+                                    Text("$\(String(format: "%.2f", item.price - item.amtSetAside > 0.00 ? setAsideAmt : 0.00))")
                                         .font(.system(size: 45))
                                         .fontWeight(.bold)
                                     Text("per day")
@@ -97,11 +97,11 @@ struct NeedDetailsView: View {
                 }
                 ZStack {
                     VStack {
-                        Text("You need")
+                        Text("You need:")
                             .font(.title)
                             .fontWeight(.medium)
                         VStack {
-                            Text("\(CurrencyFormatter().string(for: Double(item.price - item.amtSetAside))!)")
+                            Text("$\(String(format: "%.2f", item.price - item.amtSetAside))")
                                 .font(.system(size: 45))
                                 .fontWeight(.bold)
                             Text("more")
@@ -120,7 +120,7 @@ struct NeedDetailsView: View {
                 
                 if item.price - item.amtSetAside > 0.00 && daysLeft >= 0 {
                     Menu {
-                        Button("Set aside \(CurrencyFormatter().string(for: Double(setAsideAmt))!) \(item.price - item.amtSetAside == setAsideAmt ? "and buy" : "")") {
+                        Button("Set aside $\(String(format: "%.2f", setAsideAmt)) \(item.price - item.amtSetAside == setAsideAmt ? "and buy" : "")") {
                             if (item.price - item.amtSetAside == setAsideAmt) {
                                 let index = wishlist.firstIndex(where: {$0.id == item.id})!
                                 wishlist[index].amtSetAside += setAsideAmt
@@ -205,11 +205,14 @@ struct NeedDetailsView: View {
             
             Button {
                 if (setAsideInput > item.price) { setAsideInput = item.price }
-                let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                let id = UUID()
-                categories[categoryIndex].expenses.append(Expense(name: "Set Aside: \(item.name)", price: setAsideInput, date: Date(), categoryId: item.categoryId, isFromSetAside: true, wishlistId: item.id))
-                wishlist[wishlist.firstIndex(where: {$0.id == item.id})!].setAsideExpenses.append(id)
-                userSettings.balance -= setAsideInput
+                if (setAsideInput >= 0.01 && setAsideInput <= item.price) {
+                    let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
+                    let id = UUID()
+                    categories[categoryIndex].expenses.append(Expense(name: "Set Aside: \(item.name)", price: setAsideInput, date: Date(), categoryId: item.categoryId, isFromSetAside: true, wishlistId: item.id))
+                    wishlist[wishlist.firstIndex(where: {$0.id == item.id})!].amtSetAside += setAsideInput
+                    wishlist[wishlist.firstIndex(where: {$0.id == item.id})!].setAsideExpenses.append(id)
+                    userSettings.balance -= setAsideInput
+                }
             } label: {
                 Text("Add")
                     .padding(15)
@@ -219,7 +222,6 @@ struct NeedDetailsView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.white)
             }
-            .disabled(setAsideInput > item.price - item.amtSetAside)
         }
     }
 }

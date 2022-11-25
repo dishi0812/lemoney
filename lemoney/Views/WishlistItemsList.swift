@@ -122,21 +122,21 @@ struct WishlistItemsList: View {
                         }
                         .swipeActions(edge: .leading, allowsFullSwipe: true) {
                             Button {
-                                editItem = need
-                                editSheetShown = true
-                            } label: {
-                                Image(systemName: "pencil")
-                            }
-                            .tint(Color(.systemGray3))
-                        }
-                        .swipeActions(edge: .leading) {
-                            Button {
                                 deleteId = need.id
                                 deleteAlertShown = true
                             } label: {
                                 Image(systemName: "trash")
                             }
                             .tint(.red)
+                        }
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                editItem = need
+                                editSheetShown = true
+                            } label: {
+                                Image(systemName: "pencil")
+                            }
+                            .tint(Color(.systemGray3))
                         }
                     }
                     if (location == "wishlist") {
@@ -220,21 +220,21 @@ struct WishlistItemsList: View {
                         }
                         .swipeActions(edge: .leading, allowsFullSwipe: true) {
                             Button {
-                                editItem = want
-                                editSheetShown = true
-                            } label: {
-                                Image(systemName: "pencil")
-                            }
-                            .tint(Color(.systemGray3))
-                        }
-                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                            Button {
                                 deleteId = want.id
                                 deleteAlertShown = true
                             } label: {
                                 Image(systemName: "trash")
                             }
                             .tint(.red)
+                        }
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                editItem = want
+                                editSheetShown = true
+                            } label: {
+                                Image(systemName: "pencil")
+                            }
+                            .tint(Color(.systemGray3))
                         }
                     }
                     if (location == "wishlist") {
@@ -297,7 +297,7 @@ struct WishlistItemsList: View {
                 }
                 wishlist = wishlist.filter { $0.id != deleteId }
             }
-            Button("OK", role: .cancel) {}
+            Button("Cancel", role: .cancel) {}
         }
         .alert("Purchase this item?", isPresented: $itemBoughtAlertShown) {
             if (item != nil) {
