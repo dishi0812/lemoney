@@ -15,7 +15,8 @@ struct HomeView: View {
         userSettings.income - totalSpendings
     }
     
-    func totalBudget() -> Double {
+    // for budget progress bar
+    var totalBudget: Double {
         if (userSettings.budgetGoal <= 0.01) {
             return 325
         } else {
@@ -33,115 +34,111 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                Color(.systemGray6)
-                    .edgesIgnoringSafeArea(.all)
+            VStack {
                 
-                VStack {
+                // budget progress bar
+                VStack(alignment: .leading) {
+                    Text("BUDGET")
+                        .font(.footnote)
+                        .fontWeight(.medium)
+                        .opacity(0.45)
+                        .padding(.leading, 6)
+                        .padding(.bottom, -7)
+                        .padding(.top, 8)
                     
-                    // budget progress bar
-                    VStack(alignment: .leading) {
-                        Text("BUDGET")
-                            .font(.footnote)
-                            .fontWeight(.medium)
-                            .opacity(0.45)
-                            .padding(.leading, 6)
-                            .padding(.bottom, -7)
-                            .padding(.top, 8)
-                        
-                        ZStack(alignment: .leading) {
-                            Rectangle()
-                                .fill(Color(.systemGray5))
-                                .frame(width: 325, height: 25)
-                            Rectangle()
-                                .fill(Color("AccentColor"))
-                                .frame(width: totalBudget(), height: 25)
-                                .cornerRadius(25, corners: [.topRight, .bottomRight])
-                        }
-                        .cornerRadius(13)
+                    ZStack(alignment: .leading) {
+                        Rectangle()
+                            .fill(Color(.systemGray5))
+                            .frame(width: 325, height: 25)
+                        Rectangle()
+                            .fill(Color("AccentColor"))
+                            .frame(width: totalBudget, height: 25)
+                            .cornerRadius(25, corners: [.topRight, .bottomRight])
                     }
-                    .padding(.bottom, -10)
-                    .padding(.top, -5)
+                    .cornerRadius(13)
+                }
+                .padding(.bottom, -10)
+                .padding(.top, -5)
+                
+                // navigation links
+                HStack {
+                    Spacer()
                     
-                    // navigation links
-                    HStack {
-                        Spacer()
-                        
-                        // Savings Link
-                        NavigationLink {
-                            SavingsChartView(overviews: overviews, savings: savings >= 0 ? (userSettings.balance - savings) : userSettings.balance, savingsThisMonth: savings)
-                        } label: {
-                            HStack {
-                                Image(systemName: "dollarsign.arrow.circlepath")
+                    // Savings Link
+                    NavigationLink {
+                        SavingsChartView(overviews: overviews, savings: savings >= 0 ? (userSettings.balance - savings) : userSettings.balance, savingsThisMonth: savings)
+                    } label: {
+                        HStack {
+                            Image(systemName: "dollarsign.arrow.circlepath")
+                                .font(.title)
+                                .padding(.trailing, -3)
+                                .padding(.leading, -5)
+                            
+                            VStack {
+                                Text("\(CurrencyFormatter().string(for: Double(savings))!)").fontWeight(.bold)
+                                Text("Savings").fontWeight(.semibold)
+                            }
+                            
+                            Image(systemName: "chevron.right")
+                                .font(.title3)
+                                .fontWeight(.medium)
+                                .foregroundColor(Color(.systemGray3))
+                        }
+                        .padding(10)
+                    }
+                    .foregroundColor(Color(colorScheme == .dark ? .white : .black))
+                    .background(Color(colorScheme == .dark ? .systemGray5 : .white))
+                    .cornerRadius(15)
+                    
+                    Spacer()
+                    
+                    // All Expenses Link
+                    NavigationLink {
+                        TotalExpenseView(userSettings: $userSettings, categories: $categories, wishlist: $wishlist, viewOnly: false)
+                    } label: {
+                        HStack {
+                            ZStack {
+                                Image(systemName: "dollarsign.circle")
                                     .font(.title)
                                     .padding(.trailing, -3)
                                     .padding(.leading, -5)
                                 
-                                VStack {
-                                    Text("\(CurrencyFormatter().string(for: Double(savings))!)").fontWeight(.bold)
-                                    Text("Savings").fontWeight(.semibold)
-                                }
-                                
-                                Image(systemName: "chevron.right")
+                                Image(systemName: "arrow.down")
                                     .font(.title3)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(Color(.systemGray3))
+                                    .fontWeight(.bold)
+                                    .padding(.top, 20)
+                                    .padding(.leading, 15)
+                                    .padding(.trailing, -3)
                             }
-                            .padding(10)
-                        }
-                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .systemGray5 : .white))
-                        .cornerRadius(15)
-                        
-                        Spacer()
-                        
-                        // All Expenses Link
-                        NavigationLink {
-                            TotalExpenseView(userSettings: $userSettings, categories: $categories, wishlist: $wishlist, viewOnly: false)
-                        } label: {
-                            HStack {
-                                ZStack {
-                                    Image(systemName: "dollarsign.circle")
-                                        .font(.title)
-                                        .padding(.trailing, -3)
-                                        .padding(.leading, -5)
-                                    
-                                    Image(systemName: "arrow.down")
-                                        .font(.title3)
-                                        .fontWeight(.bold)
-                                        .padding(.top, 20)
-                                        .padding(.leading, 15)
-                                        .padding(.trailing, -3)
-                                }
-                                
-                                VStack {
-                                    Text("\(CurrencyFormatter().string(for: Double(totalSpendings))!)").fontWeight(.bold)
-                                    Text("Spent").fontWeight(.semibold)
-                                }
-                                
-                                Image(systemName: "chevron.right")
-                                    .font(.title3)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(Color(.systemGray3))
-                                
+                            
+                            VStack {
+                                Text("\(CurrencyFormatter().string(for: Double(totalSpendings))!)").fontWeight(.bold)
+                                Text("Spent").fontWeight(.semibold)
                             }
-                            .padding(10)
+                            
+                            Image(systemName: "chevron.right")
+                                .font(.title3)
+                                .fontWeight(.medium)
+                                .foregroundColor(Color(.systemGray3))
+                            
                         }
-                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
-                        .background(Color(colorScheme == .dark ? .systemGray5 : .white))
-                        .cornerRadius(15)
-                        
-                        Spacer()
+                        .padding(10)
                     }
-                    .padding(15)
+                    .foregroundColor(Color(colorScheme == .dark ? .white : .black))
+                    .background(Color(colorScheme == .dark ? .systemGray5 : .white))
+                    .cornerRadius(15)
                     
-                    
-                    // wishlist
-                    WishlistItemsList(location: "home", userSettings: $userSettings, categories: $categories, wishlist: $wishlist)
-                            .padding(.top, -15)
+                    Spacer()
                 }
-                .navigationTitle("Home")
+                .padding(15)
+                
+                
+                // wishlist
+                WishlistItemsList(location: "home", userSettings: $userSettings, categories: $categories, wishlist: $wishlist)
+                        .padding(.top, -15)
             }
+            .background(Color(.systemGray6))
+            .navigationTitle("Home")
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Balance: \(CurrencyFormatter().string(for: Double(userSettings.balance))!)")

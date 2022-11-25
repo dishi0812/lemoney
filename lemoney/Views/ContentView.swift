@@ -17,9 +17,9 @@ struct ContentView: View {
     @StateObject var dataManager = AppDataManager()
     
     
+    @AppStorage("launchedBefore") var launchedBefore = false
     @AppStorage("prevLaunchDate") var prevDate: Date = Date()
 
-    @Environment(\.colorScheme) var colorScheme
     
     var totalSpendings: Double {
         dataManager.data.categories.reduce(0) { $0 + $1.spendings }
@@ -28,12 +28,11 @@ struct ContentView: View {
         dataManager.data.userSettings.income - totalSpendings
     }
     
-    @Environment(\.scenePhase) var scenePhase
-    
     @State var showSetupSheet = false
     @State var monthOverviewPresented = false
     
-    @AppStorage("launchedBefore") var launchedBefore = false
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.scenePhase) var scenePhase
     
     var body: some View {
         TabView {
@@ -46,13 +45,11 @@ struct ContentView: View {
             WishlistView(categories: $dataManager.data.categories, wishlist: $dataManager.data.wishlist, userSettings: $dataManager.data.userSettings)
                 .tabItem { Label("Wishlist", systemImage: "list.star") }
         }
+        // setup
         .sheet(isPresented: $showSetupSheet) {
             if (launchedBefore) {
                 SetupView(userSettings: $dataManager.data.userSettings, categories: $dataManager.data.categories, pageNum: 1, isFirstLaunch: true)
             }
-        }
-        .sheet(isPresented: $monthOverviewPresented) {
-            MonthOverviewView(month: prevDate, overviews: $dataManager.data.overviews, categories: $dataManager.data.categories, userSettings: $dataManager.data.userSettings, wishlist: $dataManager.data.wishlist)
         }
         .onAppear {
             if (!launchedBefore) {
@@ -61,6 +58,7 @@ struct ContentView: View {
                 showSetupSheet = true
             }
         }
+        // overview
         .onChange(of: scenePhase) { newPhase in
             if (newPhase == .active) {
                 if (prevDate.formatted(.dateTime.month()) != Date().formatted(.dateTime.month()) || prevDate.formatted(.dateTime.year()) != Date().formatted(.dateTime.year())) {
@@ -81,6 +79,9 @@ struct ContentView: View {
                     monthOverviewPresented = true
                 }
             }
+        }
+        .sheet(isPresented: $monthOverviewPresented) {
+            MonthOverviewView(month: prevDate, overviews: $dataManager.data.overviews, categories: $dataManager.data.categories, userSettings: $dataManager.data.userSettings, wishlist: $dataManager.data.wishlist)
         }
     }
 }

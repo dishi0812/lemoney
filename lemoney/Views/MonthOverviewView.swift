@@ -22,7 +22,6 @@ struct MonthOverviewView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        
         NavigationView {
             ZStack {
                 Color(.systemGray6)
@@ -184,6 +183,7 @@ struct MonthOverviewView: View {
                     .padding(.top, 5)
                     .navigationTitle("Month Overview")
                 }
+                .background(Color(.systemGray6))
                 .interactiveDismissDisabled()
             }
         }

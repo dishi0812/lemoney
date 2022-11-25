@@ -15,134 +15,134 @@ struct SavingsChartView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        ZStack {
-            Color(.systemGray6)
-                .edgesIgnoringSafeArea(.top)
-            
-            if (overviews.count > 0) {
-                VStack {
-                    Picker("Type", selection: $type) {
-                        ForEach(0..<2) { i in
-                            if (i == 0) {
-                                Text("Savings")
-                                    .font(.subheadline)
-                            } else {
-                                Text("Distribution")
-                                    .font(.subheadline)
-                            }
+        if (overviews.count > 0) {
+            // charts
+            VStack {
+                Picker("Type", selection: $type) {
+                    ForEach(0..<2) { i in
+                        if (i == 0) {
+                            Text("Savings")
+                                .font(.subheadline)
+                        } else {
+                            Text("Distribution")
+                                .font(.subheadline)
                         }
                     }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .frame(width: 300)
-                    
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .frame(width: 300)
+                
+                List {
                     if (type == 0) {
-                        List {
-                            Section {
-                                Chart {
-                                    ForEach(overviews) { overview in
-                                        BarMark(
-                                            x: .value("Month", overview.month),
-                                            y: .value("Savings", overview.savings)
-                                        )
-                                        .annotation { Text("\(CurrencyFormatter().string(for: Double(overview.savings))!)").font(.caption) }
-                                    }
+                        // bar chart
+                        Section {
+                            Chart {
+                                ForEach(overviews) { overview in
+                                    BarMark(
+                                        x: .value("Month", overview.month),
+                                        y: .value("Savings", overview.savings)
+                                    )
+                                    .annotation { Text("\(CurrencyFormatter().string(for: Double(overview.savings))!)").font(.caption) }
                                 }
-                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
-                                .frame(height: 300)
-                                .padding(12)
+                            }
+                            .frame(height: 300)
+                            .padding(12)
+                        }
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                        
+                        Section {
+                            HStack {
+                                Text("Previous Months' Savings")
+                                    .fontWeight(.bold)
+                                Spacer()
+                                Text("\(CurrencyFormatter().string(for: Double(savings))!)")
+                                    .fontWeight(.black)
+                            }
+                        }
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                        Section {
+                            HStack {
+                                Text("Savings This Month")
+                                    .fontWeight(.bold)
+                                Spacer()
+                                Text("\(CurrencyFormatter().string(for: Double(savingsThisMonth))!)")
+                                    .fontWeight(.black)
+                            }
+                        }
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                    } else if (type == 1) {
+                        // pie chart
+                        Section {
+                            Picker("Month", selection: $monthDistribution) {
+                                ForEach(0..<overviews.count) { i in
+                                    Text("\(overviews[i].month)")
+                                }
                             }
                             
-                            Section {
-                                HStack {
-                                    Text("Previous Months' Savings")
-                                        .fontWeight(.bold)
-                                    Spacer()
-                                    Text("\(CurrencyFormatter().string(for: Double(savings))!)")                                        .fontWeight(.black)
-                                }
-                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
-                            }
-                            Section {
-                                HStack {
-                                    Text("Savings This Month")
-                                        .fontWeight(.bold)
-                                    Spacer()
-                                    Text("\(CurrencyFormatter().string(for: Double(savingsThisMonth))!)")
-                                        .fontWeight(.black)
-                                }
-                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                            HStack {
+                                Spacer()
+                                PieChart(overview: overviews[monthDistribution], keys: keys)
+                                    .frame(width: 330, height: 330)
+                                    .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                                Spacer()
                             }
                         }
-                        .scrollContentBackground(.hidden)
-                        .background(Color(.systemGray6))
-                    } else if (type == 1) {
-                        List {
-                            Section {
-                                Picker("Month", selection: $monthDistribution) {
-                                    ForEach(0..<overviews.count) { i in
-                                        Text("\(overviews[i].month)")
-                                    }
-                                }
-                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
-
-                                HStack {
-                                    Spacer()
-                                    PieChart(overview: overviews[monthDistribution], keys: keys)
-                                        .frame(width: 330, height: 330)
-                                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
-                                    Spacer()
-                                }
-                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
-                            }
-                            Section {
-                                ForEach(Array(overviews[monthDistribution].categories.keys), id: \.self) { key in
-                                    if (key != "Savings") {
-                                        HStack {
-                                            Text(key)
-                                            Spacer()
-                                            Text("\(CurrencyFormatter().string(for: Double(overviews[monthDistribution].categories[key]!))!)")
-                                                .fontWeight(.bold)
-                                        }
-                                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                        Section {
+                            ForEach(Array(overviews[monthDistribution].categories.keys), id: \.self) { key in
+                                if (key != "Savings") {
+                                    HStack {
+                                        Text(key)
+                                        Spacer()
+                                        Text("\(CurrencyFormatter().string(for: Double(overviews[monthDistribution].categories[key]!))!)")
+                                            .fontWeight(.bold)
                                     }
                                 }
                             }
-                            Section {
-                                HStack {
-                                    Text("Total Spendings")
-                                        .fontWeight(.bold)
-                                    Spacer()
-                                    Text("\(CurrencyFormatter().string(for: Double(overviews[monthDistribution].spendings))!)")
-                                        .fontWeight(.black)
-                                }
-                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                        }
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                        Section {
+                            HStack {
+                                Text("Total Spendings")
+                                    .fontWeight(.bold)
+                                Spacer()
+                                Text("\(CurrencyFormatter().string(for: Double(overviews[monthDistribution].spendings))!)")
+                                    .fontWeight(.black)
                             }
                         }
-                        .scrollContentBackground(.hidden)
-                        .background(Color(.systemGray6))
+                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
                     }
                 }
-            } else {
-                VStack {
-                    Spacer()
-                    VStack {
-                        Text("No Data Available")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .padding(.bottom, 8)
-                        Text("Wait until next month to see the overview.")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                    }
-                    .padding(15)
-                    .background(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
-                    .cornerRadius(12)
-                    Spacer()
-                }
+                .scrollContentBackground(.hidden)
             }
-        }
-        .navigationTitle("Savings")
-        .onAppear {
-            monthDistribution = overviews.count - 1
+            .background(Color(.systemGray6))
+            .navigationTitle("Savings")
+            .onAppear {
+                monthDistribution = overviews.count - 1
+            }
+        } else {
+            // no overviews
+            VStack {
+                Spacer()
+                VStack {
+                    Text("No Data Available")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .padding(.bottom, 8)
+                    Text("Wait until next month to see the overview.")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                }
+                .padding(15)
+                .background(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                .cornerRadius(12)
+                Spacer()
+            }
+            .background(Color(.systemGray6))
+            .navigationTitle("Savings")
+            .onAppear {
+                monthDistribution = overviews.count - 1
+            }
         }
     }
 }

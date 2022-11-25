@@ -9,6 +9,7 @@ struct BudgetView: View {
     
     @State var addExpenseSheetShown = false
 //    @State var addCategorySheetShown = false
+    
     @State var categoryId = UUID()
     @State var deleteAlertShown = false
     
@@ -18,6 +19,7 @@ struct BudgetView: View {
         NavigationView {
             List {
                 Section {
+                    // categories list
                     ForEach($categories) { $category in
                         NavigationLink {
                             ExpensesView(category: categories.firstIndex(where: {$0.name == category.name})!, userSettings: $userSettings, categories: $categories, wishlist: $wishlist)
@@ -58,6 +60,7 @@ struct BudgetView: View {
                         categories.move(fromOffsets: indices, toOffset: newOffset)
                     }
                 }
+                // Total
                 Section {
                     NavigationLink {
                         TotalExpenseView(userSettings: $userSettings, categories: $categories, wishlist: $wishlist, viewOnly: false)
@@ -67,8 +70,8 @@ struct BudgetView: View {
                                 .fontWeight(.bold)
                             Spacer()
                             
-                            if (categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) } < 0) {
-                                Text("-\(CurrencyFormatter().string(for: Double(abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))!)")
+                            if (categories.reduce(0) { $0 + ($1.budget - $1.spendings) } < 0.00) {
+                                Text("\(CurrencyFormatter().string(for: Double(categories.reduce(0) { $0 + ($1.budget - $1.spendings) }))!)")
                                     .fontWeight(.bold)
                                     .padding(5)
                                     .background(.red)
@@ -76,7 +79,7 @@ struct BudgetView: View {
                                     .foregroundColor(.white)
                                     .fontWeight(.semibold)
                             } else {
-                                Text("\(CurrencyFormatter().string(for: Double(abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))!)")
+                                Text("\(CurrencyFormatter().string(for: Double(categories.reduce(0) { $0 + ($1.budget - $1.spendings) }))!)")
                                     .fontWeight(.bold)
                                     .padding(5)
                                     .background(Color("AccentColor"))
@@ -120,6 +123,8 @@ struct BudgetView: View {
             //        .sheet(isPresented: $addCategorySheetShown) {
             //            AddCategorySheet(userSettings: $userSettings, categories: $categories)
             //        }
+            
+            // delete alert
             .alert("Are you sure you want to delete this category?", isPresented: $deleteAlertShown) {
                 Button("Delete", role: .destructive) {
                     categories = categories.filter {$0.id != categoryId}

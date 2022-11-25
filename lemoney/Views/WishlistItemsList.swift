@@ -99,7 +99,6 @@ struct WishlistItemsList: View {
                                 }
                             }
                         }
-                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             if (need.daysLeft >= 0) {
                                 Button {
@@ -152,13 +151,11 @@ struct WishlistItemsList: View {
                             Text("\(CurrencyFormatter().string(for: Double(needsList.reduce(0) { $0 + ($1.price - $1.amtSetAside) }))!)")
                                 .fontWeight(.bold)
                         }
-                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                     }
                 } else {
                     HStack {
                         Text("No Needs")
                     }
-                    .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                     .swipeActions(edge: .trailing) {
                         Button {
                             type = 0
@@ -189,6 +186,8 @@ struct WishlistItemsList: View {
                     }
                 }
             }
+            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
+            
             Section {
                 if (wantsList.count > 0) {
                     ForEach(wantsList) { want in
@@ -213,7 +212,6 @@ struct WishlistItemsList: View {
                             .cornerRadius(13)
                             .padding(.top, -7)
                         }
-                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             if (wantProgressWidth(itemValue: want.price) >= 325) {
                                 Button {
@@ -252,13 +250,11 @@ struct WishlistItemsList: View {
                             Text("\(CurrencyFormatter().string(for: Double(wantsList.reduce(0) { $0 + $1.price }))!)")
                                 .fontWeight(.bold)
                         }
-                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                     }
                 } else {
                     HStack {
                         Text("No Wants")
                     }
-                    .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                     .swipeActions(edge: .trailing) {
                         Button {
                             type = 1
@@ -289,8 +285,10 @@ struct WishlistItemsList: View {
                     }
                 }
             }
+            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
         }
         .scrollContentBackground(.hidden)
+        .background(Color(.systemGray6))
         .alert("Delete this Wishlist Item?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
                 let item = wishlist.first(where: { $0.id == deleteId })!
