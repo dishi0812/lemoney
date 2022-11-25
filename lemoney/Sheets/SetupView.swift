@@ -246,7 +246,7 @@ struct SetupList: View {
                 HStack {
                     Text("Budget").fontWeight(.bold)
                     Spacer()
-                    Text("$\(String(format: "%.2f", userSettings.budgetGoal))")
+                    Text("\(CurrencyFormatter().string(for: Double(userSettings.budgetGoal))!)")
                         .fontWeight(.black)
                 }
                 ForEach($categories) { $category in

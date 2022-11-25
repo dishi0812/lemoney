@@ -27,14 +27,14 @@ struct BudgetView: View {
                                 Spacer()
                                 
                                 if (category.spendings > category.budget) {
-                                    Text("-$\(String(format: "%.2f", category.spendings - category.budget))")
+                                    Text("-\(CurrencyFormatter().string(for: Double(category.spendings - category.budget))!)")
                                         .padding(5)
                                         .background(.red)
                                         .cornerRadius(14)
                                         .foregroundColor(.white)
                                         .fontWeight(.semibold)
                                 } else {
-                                    Text("$\(String(format: "%.2f", category.budget - category.spendings))")
+                                    Text("\(CurrencyFormatter().string(for: Double(category.budget - category.spendings))!)")
                                         .padding(5)
                                         .background(Color("AccentColor"))
                                         .cornerRadius(14)
@@ -68,7 +68,7 @@ struct BudgetView: View {
                             Spacer()
                             
                             if (categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) } < 0) {
-                                Text("-$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
+                                Text("-\(CurrencyFormatter().string(for: Double(abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))!)")
                                     .fontWeight(.bold)
                                     .padding(5)
                                     .background(.red)
@@ -76,7 +76,7 @@ struct BudgetView: View {
                                     .foregroundColor(.white)
                                     .fontWeight(.semibold)
                             } else {
-                                Text("$\(String(format: "%.2f", abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))")
+                                Text("\(CurrencyFormatter().string(for: Double(abs(categories.reduce(0) { Double($0) + ($1.budget - $1.spendings) })))!)")
                                     .fontWeight(.bold)
                                     .padding(5)
                                     .background(Color("AccentColor"))
@@ -91,7 +91,7 @@ struct BudgetView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Balance: $\(String(format: "%.2f", userSettings.balance))")
+                    Text("Balance: \(CurrencyFormatter().string(for: Double(userSettings.balance))!)")
                         .font(.title3)
                         .padding(.top, 10)
                         .fontWeight(.bold)

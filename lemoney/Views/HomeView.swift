@@ -76,7 +76,7 @@ struct HomeView: View {
                                     .padding(.leading, -5)
                                 
                                 VStack {
-                                    Text("$\(String(format: "%.2f", savings))").fontWeight(.bold)
+                                    Text("\(CurrencyFormatter().string(for: Double(savings))!)").fontWeight(.bold)
                                     Text("Savings").fontWeight(.semibold)
                                 }
                                 
@@ -113,7 +113,7 @@ struct HomeView: View {
                                 }
                                 
                                 VStack {
-                                    Text("$\(String(format: "%.2f", totalSpendings))").fontWeight(.bold)
+                                    Text("\(CurrencyFormatter().string(for: Double(totalSpendings))!)").fontWeight(.bold)
                                     Text("Spent").fontWeight(.semibold)
                                 }
                                 
@@ -142,7 +142,7 @@ struct HomeView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Balance: $\(String(format: "%.2f", userSettings.balance))")
+                    Text("Balance: \(CurrencyFormatter().string(for: Double(userSettings.balance))!)")
                         .font(.title3)
                         .padding(.top, 10)
                         .fontWeight(.bold)

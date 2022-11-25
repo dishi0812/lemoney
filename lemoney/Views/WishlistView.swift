@@ -22,7 +22,7 @@ struct WishlistView: View {
                 .background(Color(.systemGray6))
                 .toolbar {
                     ToolbarItem(placement: .principal) {
-                        Text("Balance: $\(String(format: "%.2f", userSettings.balance))")
+                        Text("Balance: \(CurrencyFormatter().string(for: userSettings.balance)!)")
                             .font(.title3)
                             .padding(.top, 10)
                             .fontWeight(.bold)

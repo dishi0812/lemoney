@@ -18,10 +18,10 @@ struct ExpensesView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Spendings: $\(String(format: "%.2f", categories[category].spendings))")
+                Text("Spendings: \(CurrencyFormatter().string(for: Double(categories[category].spendings))!)")
                     .fontWeight(.semibold)
                 Spacer()
-                Text("Left: $\(String(format: "%.2f", categories[category].budget - categories[category].spendings))")
+                Text("Left: \(CurrencyFormatter().string(for: Double(categories[category].budget - categories[category].spendings))!)")
                     .fontWeight(.semibold)
             }
             .multilineTextAlignment(.center)
@@ -40,7 +40,7 @@ struct ExpensesView: View {
                                     .fontWeight(.light)
                             }
                             Spacer()
-                            Text("$\(String(format: "%.2f", expense.price))")
+                            Text("\(CurrencyFormatter().string(for: Double(expense.price))!)")
                                 .font(.title2)
                                 .fontWeight(.medium)
                         }
@@ -76,7 +76,7 @@ struct ExpensesView: View {
             .listStyle(.plain)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Budget: $\(String(format: "%.2f", categories[category].budget))")
+                    Text("Budget: \(CurrencyFormatter().string(for: Double(categories[category].budget))!)")
                         .fontWeight(.semibold)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {

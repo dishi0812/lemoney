@@ -73,7 +73,7 @@ struct WishlistItemsList: View {
                                 HStack {
                                     Text(need.name)
                                     Spacer()
-                                    Text("$\(String(format: "%.2f", need.price))")
+                                    Text("\(CurrencyFormatter().string(for: Double(need.price))!)")
                                 }
                                 .fontWeight(.semibold)
                                 HStack {
@@ -144,7 +144,7 @@ struct WishlistItemsList: View {
                             Text("Cost of Needs")
                                 .fontWeight(.semibold)
                             Spacer()
-                            Text("$\(String(format: "%.2f", needsList.reduce(0) { $0 + ($1.price - $1.amtSetAside) }))")
+                            Text("\(CurrencyFormatter().string(for: Double(needsList.reduce(0) { $0 + ($1.price - $1.amtSetAside) }))!)")
                                 .fontWeight(.bold)
                         }
                         .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
@@ -192,7 +192,7 @@ struct WishlistItemsList: View {
                             HStack {
                                 Text(want.name)
                                 Spacer()
-                                Text("$\(String(format: "%.2f", want.price))")
+                                Text("\(CurrencyFormatter().string(for: Double(want.price))!)")
                             }
                             .fontWeight(.semibold)
 
@@ -242,7 +242,7 @@ struct WishlistItemsList: View {
                             Text("Cost of Wants")
                                 .fontWeight(.semibold)
                             Spacer()
-                            Text("$\(String(format: "%.2f", wantsList.reduce(0) { $0 + $1.price }))")
+                            Text("\(CurrencyFormatter().string(for: Double(wantsList.reduce(0) { $0 + $1.price }))!)")
                                 .fontWeight(.bold)
                         }
                         .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
@@ -322,7 +322,7 @@ struct WishlistItemsList: View {
         } message: {
             if (item != nil) {
                 let item = item!
-                Text("\(item.name) ($\(String(format: "%.2f", item.price - item.amtSetAside)))")
+                Text("\(item.name) (\(CurrencyFormatter().string(for: Double(item.price - item.amtSetAside))!))")
             }
         }
         .alert("Set Aside Money With Current Budget?", isPresented: $setAsideAlert) {
@@ -344,7 +344,7 @@ struct WishlistItemsList: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             if (item != nil) {
-                Text("\(item!.name) ($\(String(format: "%.2f", (item!.price - item!.amtSetAside) / Double(item!.daysLeft))))")
+                Text("\(item!.name) (\(CurrencyFormatter().string(for: Double((item!.price - item!.amtSetAside) / Double(item!.daysLeft)))!))")
             }
         }
         .alert("Set Aside Money and Buy Now?", isPresented: $setAsideAndBuyAlert) {
@@ -367,7 +367,7 @@ struct WishlistItemsList: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             if (item != nil) {
-                Text("\(item!.name) ($\(String(format: "%.2f", (item!.price - item!.amtSetAside) / Double(item!.daysLeft))))")
+                Text("\(item!.name) \(CurrencyFormatter().string(for: Double( (item!.price - item!.amtSetAside) / Double(item!.daysLeft)))!)")
             }
         }
         .sheet(isPresented: $addItemSheetShown) {

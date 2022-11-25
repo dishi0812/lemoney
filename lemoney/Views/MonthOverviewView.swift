@@ -42,7 +42,7 @@ struct MonthOverviewView: View {
                                     .padding(.leading, -5)
                                 
                                 VStack {
-                                    Text("$\(String(format: "%.2f", savings))").fontWeight(.bold)
+                                    Text("\(CurrencyFormatter().string(for: savings)!)").fontWeight(.bold)
                                     Text("Savings").fontWeight(.semibold)
                                 }
                                 
@@ -78,7 +78,7 @@ struct MonthOverviewView: View {
                                 }
                                 
                                 VStack {
-                                    Text("$\(String(format: "%.2f", totalSpendings))").fontWeight(.bold)
+                                    Text("\(CurrencyFormatter().string(for: totalSpendings)!)").fontWeight(.bold)
                                     Text("Spent").fontWeight(.semibold)
                                 }
                                 
@@ -122,7 +122,7 @@ struct MonthOverviewView: View {
                                     HStack {
                                         Text(category.name)
                                         Spacer()
-                                        Text("$\(String(format: "%.2f", category.spendings))")
+                                        Text("\(CurrencyFormatter().string(for: category.spendings)!)")
                                             .fontWeight(.bold)
                                             .padding(5)
                                             .background(isOverBudget ? .red : Color("AccentColor"))
@@ -137,7 +137,7 @@ struct MonthOverviewView: View {
                                     Text("Total Spendings")
                                         .fontWeight(.bold)
                                     Spacer()
-                                    Text("$\(String(format: "%.2f", overviews[overviews.count-1].spendings))")
+                                    Text("\(CurrencyFormatter().string(for: overviews[overviews.count-1].spendings)!)")
                                         .fontWeight(.black)
                                 }
                             }

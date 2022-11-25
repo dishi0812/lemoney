@@ -50,7 +50,7 @@ struct SavingsChartView: View {
                                         x: .value("Month", overview.month),
                                         y: .value("Savings", overview.savings)
                                     )
-                                    .annotation { Text("$\(String(format: "%.2f", overview.savings))").font(.caption) }
+                                    .annotation { Text("\(CurrencyFormatter().string(for: Double(overview.savings))!)").font(.caption) }
                                 }
                             }
                             .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
@@ -63,7 +63,7 @@ struct SavingsChartView: View {
                                 Text("Previous Months' Savings")
                                     .fontWeight(.bold)
                                 Spacer()
-                                Text("$\(String(format: "%.2f", savings))")
+                                Text("\(CurrencyFormatter().string(for: Double(savings))!)")
                                     .fontWeight(.black)
                             }
                             .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
@@ -73,7 +73,7 @@ struct SavingsChartView: View {
                                 Text("Savings This Month")
                                     .fontWeight(.bold)
                                 Spacer()
-                                Text("$\(String(format: "%.2f", savingsThisMonth))")
+                                Text("\(CurrencyFormatter().string(for: Double(savingsThisMonth))!)")
                                     .fontWeight(.black)
                             }
                             .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
@@ -101,7 +101,7 @@ struct SavingsChartView: View {
                                     HStack {
                                         Text(key)
                                         Spacer()
-                                        Text("$\(String(format: "%.2f", overviews[monthDistribution].categories[key]!))")
+                                        Text("\(CurrencyFormatter().string(for: Double(overviews[monthDistribution].categories[key]!))!)")
                                             .fontWeight(.bold)
                                     }
                                     .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
@@ -113,7 +113,7 @@ struct SavingsChartView: View {
                                 Text("Total Spendings")
                                     .fontWeight(.bold)
                                 Spacer()
-                                Text("$\(String(format: "%.2f", overviews[monthDistribution].spendings))")
+                                Text("\(CurrencyFormatter().string(for: Double(overviews[monthDistribution].spendings))!)")
                                     .fontWeight(.black)
                             }
                             .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))

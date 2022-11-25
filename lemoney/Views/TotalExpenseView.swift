@@ -29,10 +29,10 @@ struct TotalExpenseView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Spendings: $\(String(format: "%.2f", totalSpendings))")
+                Text("Spendings: \(CurrencyFormatter().string(for: Double(totalSpendings))!)")
                     .fontWeight(.semibold)
                 Spacer()
-                Text("Left: $\(String(format: "%.2f", userSettings.budgetGoal - totalSpendings))")
+                Text("Left: \(CurrencyFormatter().string(for: Double(userSettings.budgetGoal - totalSpendings))!)")
                     .fontWeight(.semibold)
             }
             .multilineTextAlignment(.center)
@@ -47,7 +47,7 @@ struct TotalExpenseView: View {
                                 HStack {
                                     Text(expense.name).fontWeight(.medium)
                                     Spacer()
-                                    Text("$\(String(format: "%.2f", expense.price))").fontWeight(.medium)
+                                    Text("\(CurrencyFormatter().string(for: Double(expense.price))!)").fontWeight(.medium)
                                 }
                                 HStack {
                                     Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
@@ -110,7 +110,7 @@ struct TotalExpenseView: View {
                                 HStack {
                                     Text(expense.name).fontWeight(.medium)
                                     Spacer()
-                                    Text("$\(String(format: "%.2f", expense.price))").fontWeight(.medium)
+                                    Text("\(CurrencyFormatter().string(for: Double(expense.price))!)").fontWeight(.medium)
                                 }
                                 HStack {
                                     Text("\(expense.date.formatted(.dateTime.hour().minute().weekday().day().month()))")
@@ -138,7 +138,7 @@ struct TotalExpenseView: View {
             .listStyle(.plain)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Budget: $\(String(format: "%.2f", userSettings.budgetGoal))")
+                    Text("Budget: \(CurrencyFormatter().string(for: Double(userSettings.budgetGoal))!)")
                         .fontWeight(.semibold)
                 }
                 if (!viewOnly) {
