@@ -77,7 +77,7 @@ struct HomeView: View {
                         }
                         .cornerRadius(13)
                     }
-                    .padding(.bottom, -20)
+                    .padding(.bottom, -10)
                     .padding(.top, -5)
                     
                     // navigation links

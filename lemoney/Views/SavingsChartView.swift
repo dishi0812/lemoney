@@ -66,7 +66,7 @@ struct SavingsChartView: View {
                                     Text("Savings This Month")
                                         .fontWeight(.bold)
                                     Spacer()
-                                    Text("$\(CurrencyFormatter().string(for: Double(savingsThisMonth))!)")
+                                    Text("\(CurrencyFormatter().string(for: Double(savingsThisMonth))!)")
                                         .fontWeight(.black)
                                 }
                                 .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
@@ -84,9 +84,14 @@ struct SavingsChartView: View {
                                 }
                                 .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
                                 
-                                PieChart(overview: overviews[monthDistribution], keys: keys)
-                                    .frame(width: 330, height: 330)
-                                    .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                                HStack {
+                                    Spacer()
+                                    PieChart(overview: overviews[monthDistribution], keys: keys)
+                                        .frame(width: 330, height: 330)
+                                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                                    Spacer()
+                                }
+                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                             }
                             Section {
                                 ForEach(Array(overviews[monthDistribution].categories.keys), id: \.self) { key in
@@ -94,10 +99,10 @@ struct SavingsChartView: View {
                                         HStack {
                                             Text(key)
                                             Spacer()
-                                            Text("$\(CurrencyFormatter().string(for: Double(overviews[monthDistribution].categories[key]!))!)") 
+                                            Text("\(CurrencyFormatter().string(for: Double(overviews[monthDistribution].categories[key]!))!)")
                                                 .fontWeight(.bold)
                                         }
-                                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
+                                        .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
                                     }
                                 }
                             }

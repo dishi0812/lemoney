@@ -82,16 +82,21 @@ struct WishlistItemsList: View {
                                     Text(categories.first(where: { $0.id == need.categoryId })!.name)
                                 }
                                 .fontWeight(.light)
-                                ZStack(alignment: .leading) {
-                                    Rectangle()
-                                        .fill(Color(.systemGray4))
-                                        .frame(width: 300, height: 18)
-                                    Rectangle()
-                                        .fill(.green)
-                                        .frame(width: needProgressWidth(item: need), height: 18)
-                                        .cornerRadius(25, corners: [.topRight, .bottomRight])
+                                
+                                HStack {
+                                    Spacer()
+                                    ZStack(alignment: .leading) {
+                                        Rectangle()
+                                            .fill(Color(.systemGray4))
+                                            .frame(width: 300, height: 18)
+                                        Rectangle()
+                                            .fill(.green)
+                                            .frame(width: needProgressWidth(item: need), height: 18)
+                                            .cornerRadius(25, corners: [.topRight, .bottomRight])
+                                    }
+                                    .cornerRadius(13)
+                                    Spacer()
                                 }
-                                .cornerRadius(13)
                             }
                         }
                         .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : .white)
