@@ -1,10 +1,3 @@
-//
-//  SavingsChartView.swift
-//  lemoney
-//
-//  Created by TinkerTanker on 13/11/22.
-//
-
 import SwiftUI
 import Charts
 
@@ -26,70 +19,38 @@ struct SavingsChartView: View {
             Color(.systemGray6)
                 .edgesIgnoringSafeArea(.all)
             
-            VStack {
-                Picker("Type", selection: $type) {
-                    ForEach(0..<2) { i in
-                        if (i == 0) {
-                            Text("Savings")
-                                .font(.subheadline)
-                        } else {
-                            Text("Distribution")
-                                .font(.subheadline)
+            if (overviews.count > 0) {
+                VStack {
+                    Picker("Type", selection: $type) {
+                        ForEach(0..<2) { i in
+                            if (i == 0) {
+                                Text("Savings")
+                                    .font(.subheadline)
+                            } else {
+                                Text("Distribution")
+                                    .font(.subheadline)
+                            }
                         }
                     }
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .frame(width: 300)
-            
-                if (type == 0) {
-                    List {
-                        Section {
-                            Chart {
-                                ForEach(overviews) { overview in
-                                    BarMark(
-                                        x: .value("Month", overview.month),
-                                        y: .value("Savings", overview.savings)
-                                    )
-                                    .annotation { Text("\(CurrencyFormatter().string(for: Double(overview.savings))!)").font(.caption) }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .frame(width: 300)
+                    
+                    if (type == 0) {
+                        List {
+                            Section {
+                                Chart {
+                                    ForEach(overviews) { overview in
+                                        BarMark(
+                                            x: .value("Month", overview.month),
+                                            y: .value("Savings", overview.savings)
+                                        )
+                                        .annotation { Text("\(CurrencyFormatter().string(for: Double(overview.savings))!)").font(.caption) }
+                                    }
                                 }
+                                .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                                .frame(height: 300)
+                                .padding(12)
                             }
-                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
-                            .frame(height: 300)
-                            .padding(12)
-                        }
-                        
-                        Section {
-                            HStack {
-                                Text("Previous Months' Savings")
-                                    .fontWeight(.bold)
-                                Spacer()
-                                Text("\(CurrencyFormatter().string(for: Double(savings))!)")
-                                    .fontWeight(.black)
-                            }
-                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
-                        }
-                        Section {
-                            HStack {
-                                Text("Savings This Month")
-                                    .fontWeight(.bold)
-                                Spacer()
-                                Text("\(CurrencyFormatter().string(for: Double(savingsThisMonth))!)")
-                                    .fontWeight(.black)
-                            }
-                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
-                        }
-                    }
-                    .scrollContentBackground(.hidden)
-                    .background(Color(.systemGray6))
-                } else if (type == 1) {
-                    List {
-                        Section {
-                            Picker("Month", selection: $monthDistribution) {
-                                ForEach(0..<overviews.count) { i in
-                                    Text("\(overviews[i].month)")
-                                }
-                            }
-                            .listRowBackground(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
                             
                             Section {
                                 HStack {
@@ -180,4 +141,3 @@ struct SavingsChartView: View {
         }
     }
 }
-
