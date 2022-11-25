@@ -83,9 +83,9 @@ struct TotalExpenseView: View {
                             .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
                                 Button("Delete", role: .destructive) {
                                     let categoryIndex = categories.firstIndex(where: { $0.id == expense.categoryId })!
-                                    let expense = categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!
+//                                    let expense = categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!
                                     
-                                    if (categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!.isFromSetAside) {
+                                    if (expense.isFromSetAside) {
                                         let wishlistId = expense.wishlistId
                                         if (wishlistId != nil) {
                                             // deduct from wishlist's set aside and remove from set aside expenses array
