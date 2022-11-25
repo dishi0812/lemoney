@@ -41,7 +41,7 @@ struct NeedDetailsView: View {
             
             VStack {
                 HStack {
-                    Text("(\(categories.first(where: { item.categoryId == $0.id })!.name), $\(String(format: "%.2f", item.price)))")
+                    Text("\(categories.first(where: { item.categoryId == $0.id })!.name), $\(String(format: "%.2f", item.price))")
                         .padding(.horizontal, 16)
                         .multilineTextAlignment(.leading)
                         .font(.title2)
@@ -205,11 +205,14 @@ struct NeedDetailsView: View {
             
             Button {
                 if (setAsideInput > item.price) { setAsideInput = item.price }
-                let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
-                let id = UUID()
-                categories[categoryIndex].expenses.append(Expense(name: "Set Aside: \(item.name)", price: setAsideInput, date: Date(), categoryId: item.categoryId, isFromSetAside: true, wishlistId: item.id))
-                wishlist[wishlist.firstIndex(where: {$0.id == item.id})!].setAsideExpenses.append(id)
-                userSettings.balance -= setAsideInput
+                if (setAsideInput >= 0.01 && setAsideInput <= item.price) {
+                    let categoryIndex = categories.firstIndex(where: { item.categoryId == $0.id })!
+                    let id = UUID()
+                    categories[categoryIndex].expenses.append(Expense(name: "Set Aside: \(item.name)", price: setAsideInput, date: Date(), categoryId: item.categoryId, isFromSetAside: true, wishlistId: item.id))
+                    wishlist[wishlist.firstIndex(where: {$0.id == item.id})!].amtSetAside += setAsideInput
+                    wishlist[wishlist.firstIndex(where: {$0.id == item.id})!].setAsideExpenses.append(id)
+                    userSettings.balance -= setAsideInput
+                }
             } label: {
                 Text("Add")
                     .padding(15)
@@ -219,7 +222,6 @@ struct NeedDetailsView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.white)
             }
-            .disabled(setAsideInput > item.price - item.amtSetAside)
         }
     }
 }

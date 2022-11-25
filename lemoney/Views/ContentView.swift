@@ -33,7 +33,7 @@ struct ContentView: View {
     @State var showSetupSheet = false
     @State var monthOverviewPresented = false
     
-    let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+    @AppStorage("launchedBefore") var launchedBefore = false
     
     var body: some View {
         TabView {

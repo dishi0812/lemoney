@@ -73,7 +73,7 @@ struct EditWishlistItemSheet: View {
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button {
-                                if (name != "" && price > 0.00) {
+                                if (name != "" && price >= 0.01) {
                                     let wishlistItem = wishlist.first(where: { $0.id == wishlistItemId })!
                                     let oldId = wishlistItem.id
                                     let oldDate = wishlistItem.date
