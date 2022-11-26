@@ -115,33 +115,37 @@ struct SavingsChartView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .background(Color(.systemGray6))
+            .background(Color(colorScheme == .dark ? .systemGray5 : .white))
             .navigationTitle("Savings")
             .onAppear {
                 monthDistribution = overviews.count - 1
             }
         } else {
             // no overviews
-            VStack {
-                Spacer()
+            ZStack {
+                Color(.systemGray6)
+                    .edgesIgnoringSafeArea(.all)
+                
                 VStack {
-                    Text("No Data Available")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .padding(.bottom, 8)
-                    Text("Wait until next month to see the overview.")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
+                    Spacer()
+                    VStack {
+                        Text("No Data Available")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding(.bottom, 8)
+                        Text("Wait until next month to see the overview.")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                    }
+                    .padding(15)
+                    .background(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
+                    .cornerRadius(12)
+                    Spacer()
                 }
-                .padding(15)
-                .background(colorScheme == .dark ? Color(.systemGray5) : Color(.white))
-                .cornerRadius(12)
-                Spacer()
-            }
-            .background(Color(.systemGray6))
-            .navigationTitle("Savings")
-            .onAppear {
-                monthDistribution = overviews.count - 1
+                .navigationTitle("Savings")
+                .onAppear {
+                    monthDistribution = overviews.count - 1
+                }
             }
         }
     }

@@ -81,7 +81,7 @@ struct SetupView: View {
             .alert("Invalid Values", isPresented: $notSavedAlert) {
                 Text("OK")
             } message: {
-                Text("Ensure that the budget allocated for the categories corresponds to the budget goal.")
+                Text("Ensure budget allocated for the categories adds up to the budget goal.")
             }
             .alert("Invalid Values", isPresented: $negativeValuesAlert) {
                 Text("OK")
@@ -112,7 +112,7 @@ struct SetupView: View {
                                 VStack(alignment: .leading) {
                                     Text("Budget Management")
                                         .fontWeight(.bold)
-                                    Text("Set budget goals to meet your savings targets.")
+                                    Text("Set budget goals to meet your saving targets.")
                                         .fontWeight(.medium)
                                         .opacity(0.4)
                                 }

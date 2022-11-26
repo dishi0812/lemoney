@@ -125,7 +125,7 @@ struct BudgetView: View {
             //        }
             
             // delete alert
-            .alert("Are you sure you want to delete this category?", isPresented: $deleteAlertShown) {
+            .alert("Delete this category?", isPresented: $deleteAlertShown) {
                 Button("Delete", role: .destructive) {
                     categories = categories.filter {$0.id != categoryId}
                 }

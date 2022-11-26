@@ -330,7 +330,7 @@ struct WishlistItemsList: View {
                 Text("\(item.name) (\(CurrencyFormatter().string(for: Double(item.price - item.amtSetAside))!))")
             }
         }
-        .alert("Set Aside Money With Current Budget?", isPresented: $setAsideAlert) {
+        .alert("Set aside money With current budget?", isPresented: $setAsideAlert) {
             if (item != nil) {
                 let item = item!
                 let setAsideAmt = (item.price - item.amtSetAside) / Double(item.daysLeft)
@@ -352,7 +352,7 @@ struct WishlistItemsList: View {
                 Text("\(item!.name) (\(CurrencyFormatter().string(for: Double((item!.price - item!.amtSetAside) / Double(item!.daysLeft)))!))")
             }
         }
-        .alert("Set Aside Money and Buy Now?", isPresented: $setAsideAndBuyAlert) {
+        .alert("Set aside money and buy now?", isPresented: $setAsideAndBuyAlert) {
             if (item != nil) {
                 let item = item!
                 let setAsideAmt = (item.price - item.amtSetAside) / Double(item.daysLeft)

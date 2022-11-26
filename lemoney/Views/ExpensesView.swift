@@ -18,7 +18,7 @@ struct ExpensesView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Spendings: \(CurrencyFormatter().string(for: Double(categories[category].spendings))!)")
+                Text("Spent: \(CurrencyFormatter().string(for: Double(categories[category].spendings))!)")
                     .fontWeight(.semibold)
                 Spacer()
                 Text("Left: \(CurrencyFormatter().string(for: Double(categories[category].budget - categories[category].spendings))!)")
@@ -95,7 +95,7 @@ struct ExpensesView: View {
             let expense = categories[category].expenses.first(where: {$0.id == expenseId})!
             EditExpenseSheet(categoryIndex: category, expenseName: expense.name, expensePrice: expense.price, userSettings: $userSettings, categories: $categories, expenseId: expenseId)
         }
-        .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
+        .alert("Delete this expense?", isPresented: $deleteAlertShown) {
             Button("Delete", role: .destructive) {
                 let expense = categories[category].expenses.first(where: { $0.id == expenseId })!
                 
