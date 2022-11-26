@@ -175,7 +175,7 @@ struct EditProfileView: View {
         .alert("Invalid Values", isPresented: $notSavedAlert) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text("Ensure budget allocated for the categories add up to the budget goal.")
+            Text("Ensure budget allocated for the categories adds up to the budget goal.")
         }
         .alert("Invalid Values", isPresented: $negativeValuesAlert) {
             Button("OK", role: .cancel) {}
