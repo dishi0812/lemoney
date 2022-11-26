@@ -47,22 +47,20 @@ struct ContentView: View {
         }
         // setup
         .sheet(isPresented: $showSetupSheet) {
-            if (launchedBefore) {
-                SetupView(userSettings: $dataManager.data.userSettings, categories: $dataManager.data.categories, pageNum: 1, isFirstLaunch: true)
-            }
+            SetupView(userSettings: $dataManager.data.userSettings, categories: $dataManager.data.categories, pageNum: 1, isFirstLaunch: true)
         }
         .onAppear {
             if (!launchedBefore) {
                 UserDefaults.standard.set(true, forKey: "launchedBefore")
-                prevDate = Date()
                 showSetupSheet = true
+            } else if (launchedBefore) {
+                prevDate = Date()
             }
         }
         // overview
         .onChange(of: scenePhase) { newPhase in
             if (newPhase == .active) {
                 if (prevDate.formatted(.dateTime.month()) != Date().formatted(.dateTime.month()) || prevDate.formatted(.dateTime.year()) != Date().formatted(.dateTime.year())) {
-//                    FOR TESTING: prevDate.formatted(.dateTime.second()) != Date().formatted(.dateTime.second())
                     prevDate = Date()
                     var categoriesDict: [String:Double] = [:]
                     for category in dataManager.data.categories {

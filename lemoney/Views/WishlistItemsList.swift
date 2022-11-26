@@ -99,6 +99,7 @@ struct WishlistItemsList: View {
                                 }
                             }
                         }
+                        .padding(.leading, 4)
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             if (need.daysLeft >= 0) {
                                 Button {

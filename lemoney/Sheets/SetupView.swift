@@ -145,6 +145,7 @@ struct SetupView: View {
                             }
                         }
                     }
+                    .padding(25)
                     Spacer()
                     
                     Button {

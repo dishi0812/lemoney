@@ -115,7 +115,7 @@ struct SavingsChartView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .background(Color(colorScheme == .dark ? .systemGray5 : .white))
+            .background(Color(.systemGray6))
             .navigationTitle("Savings")
             .onAppear {
                 monthDistribution = overviews.count - 1
