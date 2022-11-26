@@ -80,28 +80,6 @@ struct TotalExpenseView: View {
                                 }
                                 .tint(Color(.systemGray3))
                             }
-                            .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
-                                Button("Delete", role: .destructive) {
-                                    let categoryIndex = categories.firstIndex(where: { $0.id == expense.categoryId })!
-//                                    let expense = categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!
-                                    
-                                    if (expense.isFromSetAside) {
-                                        let wishlistId = expense.wishlistId
-                                        if (wishlistId != nil) {
-                                            // deduct from wishlist's set aside and remove from set aside expenses array
-                                            let wishlistIndex = try? wishlist.firstIndex(where: { $0.id == wishlistId })
-                                            if (wishlistIndex != nil) {
-                                                wishlist[wishlistIndex!].amtSetAside -= expense.price
-                                                wishlist[wishlistIndex!].setAsideExpenses = wishlist[wishlistIndex!].setAsideExpenses.filter { $0 != expense.id }
-                                            }
-                                        }
-                                    }
-                                    
-                                    userSettings.balance += expense.price
-                                    categories[categoryIndex].expenses = categories[categoryIndex].expenses.filter { $0.id != expenseId }
-                                }
-                                Button("Cancel", role: .cancel) {}
-                            }
                             .listRowBackground(colorScheme == .dark ? Color(.systemGray6) : .white)
                         }
                     } else {
@@ -159,6 +137,28 @@ struct TotalExpenseView: View {
         .sheet(isPresented: $editExpenseSheetShown) {
             let expense = categories[categoryIndexFromId(categoryId)].expenses.first(where: {$0.id == expenseId})!
             EditExpenseSheet(categoryIndex: categoryIndexFromId(categoryId), expenseName: expense.name, expensePrice: expense.price, userSettings: $userSettings, categories: $categories, expenseId: expenseId)
+        }
+        .alert("Are you sure you want to delete this expense?", isPresented: $deleteAlertShown) {
+            Button("Delete", role: .destructive) {
+                let categoryIndex = categories.firstIndex(where: { $0.id == categoryId })!
+                let expense = categories[categoryIndex].expenses.first(where: { $0.id == expenseId })!
+                
+                if (expense.isFromSetAside) {
+                    let wishlistId = expense.wishlistId
+                    if (wishlistId != nil) {
+                        // deduct from wishlist's set aside and remove from set aside expenses array
+                        let wishlistIndex = try? wishlist.firstIndex(where: { $0.id == wishlistId })
+                        if (wishlistIndex != nil) {
+                            wishlist[wishlistIndex!].amtSetAside -= expense.price
+                            wishlist[wishlistIndex!].setAsideExpenses = wishlist[wishlistIndex!].setAsideExpenses.filter { $0 != expense.id }
+                        }
+                    }
+                }
+                
+                userSettings.balance += expense.price
+                categories[categoryIndex].expenses = categories[categoryIndex].expenses.filter { $0.id != expenseId }
+            }
+            Button("Cancel", role: .cancel) {}
         }
     }
 }
