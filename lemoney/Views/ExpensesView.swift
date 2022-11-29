@@ -54,13 +54,15 @@ struct ExpensesView: View {
                             .tint(.red)
                         }
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button {
-                                expenseId = expense.id
-                                editExpenseSheetShown = true
-                            } label: {
-                                Image(systemName: "pencil")
+                            if (!expense.isFromSetAside) {
+                                Button {
+                                    expenseId = expense.id
+                                    editExpenseSheetShown = true
+                                } label: {
+                                    Image(systemName: "pencil")
+                                }
+                                .tint(Color(.systemGray3))
                             }
-                            .tint(Color(.systemGray3))
                         }
                         .listRowBackground(colorScheme == .dark ? Color(.systemGray6) : .white)
                     }
